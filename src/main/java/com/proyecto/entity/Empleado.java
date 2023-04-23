@@ -1,6 +1,7 @@
 package com.proyecto.entity;
 
 import java.util.*;
+import org.springframework.data.annotation.CreatedDate;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,8 +19,10 @@ public class Empleado {
 
   private String dni;
 
-  @Column(name = "FECHA_REGISTRO")
-  private Date fechaRegistro;
+  @Column(name = "FECHA_REGISTRO", nullable = false, updatable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  @CreatedDate
+  private Date fechaRegistro = new Date();
 
   @ManyToOne
   @JoinColumn(name = "CARGO_ID")
@@ -34,7 +37,7 @@ public class Empleado {
   @OneToMany(mappedBy = "empleado")
   List<Comprobante> listaComprobante;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "USUARIO_ID")
   private Usuario usuario;
 
@@ -82,10 +85,6 @@ public class Empleado {
     return fechaRegistro;
   }
 
-  public void setFechaRegistro(Date fechaRegistro) {
-    this.fechaRegistro = fechaRegistro;
-  }
-
   public Cargo getCargo() {
     return cargo;
   }
@@ -124,5 +123,5 @@ public class Empleado {
 
   public void setUsuario(Usuario usuario) {
     this.usuario = usuario;
-  }  
+  }
 }

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Inicio de Sesión</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Bootstrap icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+    <!-- Custom CSS  -->
+    <link rel="stylesheet" type="text/css" href="/css/login.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  </head>
+
+  <body>
+    <div class="hero-image">
+      <div>
+        <div>
+          <h1 class="title">SISTEMA DE RESTAURANTE</h1>
+
+          <div class="login">
+            <h2>Inicio de Sesión</h2>
+
+            <form
+              action="#"
+              th:action="@{login}"
+              th:object="${registroUsuarioDTO}"
+              method="POST"
+              class="login-form needs-validation"
+            >
+              <div>
+                <!-- ${invalid ? '
+                <p class="login-error">Correo o contraseña incorrecta</p>
+                ' : '' } -->
+
+                <input
+                  class="form-control"
+                  type="text"
+                  id="email"
+                  name="email"
+                  autocomplete="email"
+                  placeholder="Correo Electrónico*"
+                  th:field="*{correo}"
+                  th:classappend="${#fields.hasErrors('correo')} ? 'is-invalid' : ''"
+                />
+                <div
+                  id="email-invalid"
+                  class="text-start invalid-feedback"
+                  th:if="${#fields.hasErrors('correo')}"
+                  th:errors="*{correo}"
+                ></div>
+              </div>
+
+              <div>
+                <input
+                  class="form-control"
+                  type="password"
+                  id="password"
+                  name="password"
+                  autocomplete="current-password"
+                  placeholder="Contraseña*"
+                  th:field="*{contrasena}"
+                  th:classappend="${#fields.hasErrors('contrasena')} ? 'is-invalid' : ''"
+                />
+                <div
+                  id="password-invalid"
+                  class="text-start invalid-feedback"
+                  th:if="${#fields.hasErrors('contrasena')}"
+                  th:errors="*{contrasena}"
+                ></div>
+              </div>
+
+              <a class="recover-password">¿Olvidaste tu contraseña?</a>
+
+              <input
+                class="btn btn-primary"
+                id="validate-login"
+                type="submit"
+                value="INGRESAR AL SISTEMA"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Recuperar Contraseña -->
+    <template id="modal-template">
+      <div
+        class="modal fade"
+        id="recover-password"
+        tabindex="-1"
+        aria-labelledby="recover-password-label"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header"></div>
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer"></div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </body>
+
+  <!-- Custom JavaScript -->
+  <script type="module" src="js/login.js"></script>
+</html>

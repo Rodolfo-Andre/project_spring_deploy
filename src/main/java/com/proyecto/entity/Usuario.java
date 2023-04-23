@@ -13,7 +13,9 @@ public class Usuario {
 
   private String contrasena;
 
-  @OneToOne(mappedBy = "usuario")
+  private int codigo;
+
+  @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
   private Empleado empleado;
 
   public Integer getId() {
@@ -38,6 +40,14 @@ public class Usuario {
 
   public void setContrasena(String contrasena) {
     this.contrasena = contrasena;
+  }
+
+  public int getCodigo() {
+    return codigo;
+  }
+
+  public void setCodigo(int codigo) {
+    this.codigo = codigo;
   }
 
   public Empleado getEmpleado() {

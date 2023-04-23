@@ -5,8 +5,7 @@ import jakarta.validation.constraints.*;
 
 @Validated
 public class RegistroUsuarioDTO extends UsuarioDTO {
-  @NotEmpty(message = 
-  "La contraseña no debe de estar vacía")
+  @NotEmpty(message = "La contraseña no debe de estar vacía")
   private String contrasena;
 
   public String getContrasena() {

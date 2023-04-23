@@ -1,0 +1,67 @@
+/* ------------------------ LOGIN ------------------------ */
+.hero-image {
+  min-height: 100vh;
+  background-image: url("/images/background.png");
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.hero-image > div {
+  background-color: rgba(0, 0, 0, 0.5);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-image > div > div {
+  flex-grow: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: var(--white-color);
+  font-weight: bolder;
+  margin: 1rem auto;
+}
+
+.login {
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 17px;
+  width: clamp(280px, 50vw, 330px);
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.login > h2 {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-error {
+  text-align: left;
+  font-size: 0.875em;
+  margin-bottom: 0.25rem;
+  color: var(--bs-red);
+}
+
+.recover-password {
+  align-self: flex-end;
+  color: var(--bs-dark);
+  text-decoration: none;
+  font-weight: 300;
+  transition: opacity 300ms ease-in-out;
+}
+
+.recover-password:hover {
+  color: var(--bs-dark);
+  opacity: 0.75;
+}
