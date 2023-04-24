@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<!-- Metaetiquetas para evitar almacenar los datos en la caché -->
+	<meta http-equiv='cache-control' content='no-cache'>
+	<meta http-equiv='expires' content='0'>
+	<meta http-equiv='pragma' content='no-cache'>
+	<title>Configuración de Mesas</title>
+	<!-- Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet">
+	<!-- Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+		crossorigin="anonymous"></script>
+	<!-- Bootstrap icon -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+	<!-- Custom CSS  -->
+	<link rel="stylesheet" type="text/css" src="/css/style.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+</head>
+
+<body class="d-flex">
+
+	<div th:include="/fragments/snippet_nav"></div>
+
+	<main class="main">
+		<div class="box info">
+			<div class="header-info">
+				<h2 class="mb-3">Configuración de Mesas</h2>
+
+
+				<button id="btn-add" class="btn-add">
+					Añadir Mesa
+					<i class="fs-4 bi bi-plus-circle-fill"></i>
+				</button>
+			</div>
+
+			<hr class="separator">
+
+			<div class="body-info">
+				<div class="d-row" th:if="${listaMesas.size() <= 0}">
+					<div class="data">
+						<span>No hay datos para mostrar</span>
+					</div>
+				</div>
+				<table id="tableMesas" class="display" style="width:100%"th:if="${listaMesas.size() > 0}">
+					<thead>
+						<th>Código</th>
+						<th>Cantidad asientos</th>
+						<th>Estado</th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</thead>
+					<tbody>
+						<tr th:each="mesa : ${listaMesas}">
+							<td th:text="${mesa.id}"></td>
+							<td th:text="${mesa.cantidadAsientos}"></td>
+							<td th:text="${mesa.estado}"></td>
+							<td><i class="icon-info bi bi-info-circle-fill"></i></td>
+							<td><i class="icon-update bi bi-pencil-square"></i></td>
+							<td><i class="icon-delete bi bi-trash-fill"></i></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+
+		</div>
+	</main>
+	<template th:include="/fragments/modal-template" id="modal-template">
+	</template>
+
+
+</body>
+
+<!-- Custom JavaScript -->
+
+<script type="module" src="/js/mesas.js"></script>
+<script src="/js/jquery.js"></script>
+<!-- Custom JavaScript -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script>
+	$(document).ready(function () {
+		$('#tableMesas').DataTable();
+	});
+
+</script>
+
+</html>
