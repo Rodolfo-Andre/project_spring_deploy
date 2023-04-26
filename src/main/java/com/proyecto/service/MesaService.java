@@ -17,6 +17,10 @@ public class MesaService {
 		return repo.findAll();
 	}
 	
+	public Mesa obtenerPorId(Integer m) {
+		return repo.findById(m).orElse(null);
+	}
+	
 	public void agregar(Mesa m) {
 		repo.save(m);
 	}

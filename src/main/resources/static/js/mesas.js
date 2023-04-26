@@ -1,3 +1,4 @@
+
 import useFetch from "./fetch.js";
 import { showModal } from "./modal.js";
 
@@ -23,13 +24,12 @@ const handleOnClick = () => {
 			let contentModal = {
 				header: `<i class="icon text-center text-primary bi bi-plus-circle-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">Nueva Mesas</h4>`,
-				body: `<form class="d-flex flex-column gap-4" id="form-add" action="mesas" method="POST">
-							<input type="hidden" name="type" value="addInfoObject"/>
-							
+				body: `<form class="d-flex flex-column gap-4" id="form-add" action="/Mesa/grabar"  method="POST">
+
 							<div class="row align-items-sm-center">
 								<label class="col-sm-5 fw-bold" for="name">Cantidad de Asientos:</label>
 								<div class="col-sm-7">
-									<input class="form-control" type="text" id="quantityChairs" name="quantityChairs" value=""/>
+									<input class="form-control" type="text"  id="quantityChairs" name="quantityChairs" value=""/>
 									<div id="name-invalid" class="text-start invalid-feedback">Introduce la cantidad de asientos correctamente. Solo se acepta 1 dígito.</div>
 								</div>
 							</div>		
