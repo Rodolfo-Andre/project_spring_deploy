@@ -1,16 +1,11 @@
 package com.proyecto;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.proyecto.dao.EmpleadoRepository;
-import com.proyecto.dao.UsuarioRepository;
-import com.proyecto.entity.Empleado;
-import com.proyecto.entity.Usuario;
+import com.proyecto.dao.*;
+import com.proyecto.entity.*;
 
 @SpringBootTest
 class ProyectoAplicacionesWebApplicationTests {

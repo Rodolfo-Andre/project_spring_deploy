@@ -1,30 +1,28 @@
-.titulo{
-	font-family: 'Bungee', cursive;
+.titulo {
+  font-family: "Bungee", cursive;
 }
-.estiloCaja{
-	border-bottom: dashed;
-	border-bottom-width: 2px;
-	border-color: gray;
+.estiloCaja {
+  border-bottom: dashed;
+  border-bottom-width: 2px;
+  border-color: gray;
 }
-.cabeza{
-	max-width: 100%;
-	max-height: 50%;
+.cabeza {
+  max-width: 100%;
+  max-height: 50%;
 }
-.cuerpoPaginaBorde{
-	
-	border-style:dashed;
+.cuerpoPaginaBorde {
+  border-style: dashed;
 }
 
-.body{
-background: #FED400; 
+.body {
+  background: #fed400;
 
-  margin:0;
+  margin: 0;
   display: flex;
   flex-direction: column;
- /* fallback for old browsers */
-
+  /* fallback for old browsers */
 }
-.tituloCarta{
-	font-family: 'Pacifico', cursive;
-	text-transform: uppercase;
+.tituloCarta {
+  font-family: "Pacifico", cursive;
+  text-transform: uppercase;
 }
