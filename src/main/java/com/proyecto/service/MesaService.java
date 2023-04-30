@@ -1,31 +1,33 @@
 package com.proyecto.service;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.proyecto.dao.MesaRepository;
 import com.proyecto.entity.Mesa;
 
 @Service
 public class MesaService {
-	@Autowired
-	MesaRepository repo;
-	
-	public List<Mesa> getAll(){
-		return repo.findAll();
-	}
-	
-	public void agregar(Mesa m) {
-		repo.save(m);
-	}
-	
-	public void modificar(Mesa m) {
-		repo.save(m);
-	}
-	
-	public void Eliminar(Integer id) {
-		repo.deleteById(id);
-	}
+  @Autowired
+  MesaRepository mesaRepository;
+
+  public List<Mesa> getAll() {
+    return mesaRepository.findAll();
+  }
+
+  public Mesa obtenerPorId(Integer m) {
+    return mesaRepository.findById(m).orElse(null);
+  }
+
+  public void agregar(Mesa m) {
+    mesaRepository.save(m);
+  }
+
+  public void actualizar(Mesa m) {
+    mesaRepository.save(m);
+  }
+
+  public void eliminar(Integer id) {
+    mesaRepository.deleteById(id);
+  }
 }

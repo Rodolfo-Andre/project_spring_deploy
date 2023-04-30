@@ -5,7 +5,7 @@
   th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::link})}"
 >
   <head>
-    <title>Configuración de Mesa</title>
+    <title>Configuración de Categoría</title>
 
     <link
       rel="stylesheet"
@@ -22,10 +22,10 @@
       <main class="main">
         <div class="box info">
           <div class="header-info">
-            <h2 class="mb-3">Configuración de Mesas</h2>
+            <h2 class="mb-3">Configuración de Categoría</h2>
 
             <button id="btn-add" class="btn btn-primary">
-              Añadir Mesa
+              Añadir Categoría
               <i class="fs-4 bi bi-plus-circle-fill"></i>
             </button>
           </div>
@@ -34,24 +34,25 @@
 
           <div class="body-info">
             <table
-              id="tableMesas"
-              class="table"
+              id="tablaCategoriaPlato"
+              class="table display"
               style="width: 100%"
-              aria-describedby="Tabla de Mesas"
+              aria-describedby="Tabla de Categorías de Patos"
             >
               <thead>
                 <th>Código</th>
-                <th>Cantidad asientos</th>
-                <th>Estado</th>
+                <th>Categoría</th>
                 <th>Información</th>
                 <th>Modificar</th>
                 <th>Eliminar</th>
               </thead>
               <tbody>
-                <tr th:each="mesa : ${listaMesas}" class="align-middle">
-                  <td th:text="${mesa.id}"></td>
-                  <td th:text="${mesa.cantidadAsientos}"></td>
-                  <td th:text="${mesa.estado}"></td>
+                <tr
+                  th:each="categoriaPlato : ${listaCategoriaPlato}"
+                  class="align-middle"
+                >
+                  <td th:text="${categoriaPlato.id}"></td>
+                  <td th:text="${categoriaPlato.nombre}"></td>
                   <td class="text-center">
                     <i class="icon-action icon-info bi bi-info-circle-fill"></i>
                   </td>
@@ -88,7 +89,7 @@
         src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"
       ></script>
 
-      <script type="module" src="js/mesas.js"></script>
+      <script type="module" src="js/categoria-plato.js"></script>
     </th:block>
   </body>
 </html>

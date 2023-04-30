@@ -1,233 +1,193 @@
-<div class="d-flex flex-column flex-shrink-0 bg-light shadow vh-100 sticky-top" style="width: 280px; overflow-y: overlay;">
-	<!---------------------------- CABECERA ------------------------------>
-	<a href="" class="d-block p-sm-2 link-dark text-decoration-none text-center border-bottom d-flex align-items-center gap-2 border-2 border-light shadow-sm p-1 bg-body" data-bs-toggle="tooltip" data-bs-placement="right" title="Regresar al Inicio">
-		<img src="/svg/reddit.svg" alt="mdo" width="32" height="32" class="rounded-circle">
-		<span class="fs-5 fw-semibold">Nombre de la Empresa</span>
-	</a>
-	
-	<!---------------------------- CONTENIDO DE SECCIONES ------------------------------>
-	<ul class="list-unstyled ps-0 m-2 nav nav-pills nav-flush flex-column mb-auto  text-start">
-		<!---------------------------- SECCIoN INICIO ------------------------------>
-		<li class="nav-item">
-			<a href="index?type=index" class="nav-link active py-2 d-flex justify-content-center align-items-center ps-4  rounded-2 text-start " aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="OPCIoN 1"> 
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16" style="margin: 5px;">
-		        	<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z" />
-		        </svg> 
-		       	<span class="fs-5 fw-semibold">Inicio</span>
-			</a>
-		</li>
-		
-		<!---------------------------- SECCIoN GENERAR COMANDAS ------------------------------>
-		<c:if test = "${ usuarioAutenticado.getEmpleado().getCargo().getCargo().equals('Administrador') || usuarioAutenticado.getEmpleado().getCargo().getCargo().equals('Mesero') || usuarioAutenticado.getEmpleado().getCargo().getCargo().equals('Cajero') || usuarioAutenticado.getEmpleado().getCargo().getCargo().equals('Cocinero') }">
-			<li>
-				<a href="comanda?p=1" class="nav-link link-dark d-flex align-items-center gap-2 " >
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
-	                	<path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zM11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z" />
-	                    <path d="M2.354.646a.5.5 0 0 0-.801.13l-.5 1A.5.5 0 0 0 1 2v13H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H15V2a.5.5 0 0 0-.053-.224l-.5-1a.5.5 0 0 0-.8-.13L13 1.293l-.646-.647a.5.5 0 0 0-.708 0L11 1.293l-.646-.647a.5.5 0 0 0-.708 0L9 1.293 8.354.646a.5.5 0 0 0-.708 0L7 1.293 6.354.646a.5.5 0 0 0-.708 0L5 1.293 4.354.646a.5.5 0 0 0-.708 0L3 1.293 2.354.646zm-.217 1.198.51.51a.5.5 0 0 0 .707 0L4 1.707l.646.647a.5.5 0 0 0 .708 0L6 1.707l.646.647a.5.5 0 0 0 .708 0L8 1.707l.646.647a.5.5 0 0 0 .708 0L10 1.707l.646.647a.5.5 0 0 0 .708 0L12 1.707l.646.647a.5.5 0 0 0 .708 0l.509-.51.137.274V15H2V2.118l.137-.274z" />
-	                </svg> 
-	                <span class="fs-5 fw-semibold ">Generar Comandas</span>
-				</a> 
-			</li>
-		</c:if>
-		
-		<!---------------------------- SECCIoN CAJA REGISTRADORA ------------------------------>
-		<c:if test = "${ usuarioAutenticado.getEmpleado().getCargo().getCargo().equals('Administrador') || usuarioAutenticado.getEmpleado().getCargo().getCargo().equals('Cajero') }">
-			<li>
-				<a href="AperturasController?type=listarDetalleVentas&p=1&cboCajas=seleccionar" class="nav-link link-dark d-flex align-items-center gap-2  " title="OPCIoN 3" data-bs-toggle="tooltip" data-bs-placement="right"> 
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
-		 				<path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
-					</svg>
-		            <span class="fs-5 fw-semibold text-ce">Caja Registradora</span>
-				</a>
-			</li>
-		</c:if>
+<div
+  class="d-flex flex-column flex-shrink-0 bg-light shadow vh-100"
+  style="width: 280px; overflow-y: overlay; z-index: 1"
+>
+  <a
+    href="/"
+    class="p-2 link-dark text-decoration-none text-center border-bottom d-flex align-items-center gap-2 border-2 border-light shadow bg-body"
+  >
+    <img
+      th:src="@{/images/reddit.svg}"
+      alt="mdo"
+      width="32"
+      height="32"
+      class="rounded-circle"
+    />
+    <span class="fs-5 fw-semibold">Nombre de la Empresa</span>
+  </a>
 
-		<c:if test = "${ usuarioAutenticado.getEmpleado().getCargo().getCargo().equals('Administrador') }">
-			<!---------------------------- SECCIoN CONFIGURACIoN ----------------------------->
-			<li>
-				<a href="#" class=" nav-link link-dark  d-flex align-items-center gap-2 " role="button" data-bs-toggle="collapse" data-bs-placement="right" aria-expanded="true" aria-controls="menuConfiguracion" data-bs-target="#menuConfiguracion">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
-	                	<path d="M12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z" />
-	                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1 0a7 7 0 1 0-13.202 3.249l1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2A7 7 0 0 0 15 8Zm-8.295.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z" />
-	                </svg>
-	               	<span class="fs-5 fw-semibold text-ce">Configuracion</span>
-				</a> 
-			
-				<!---------------------------- SUBSECCIONES DE CONFIGURACIoN ------------------------------>
-				<div class="collapse" id="menuConfiguracion">
-					<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small list-unstyled text-start">
-						<!---------------------------- SUBSECCIONES DE CONFIGURACIoN - CONFIGURAR EMPLEADOS ------------------------------->
-						<li class="nav-item border-top">
-							<a href="mantenimiento-usuario?p=1" class="nav-link link-dark border-bottom text-decoration-none d-flex align-items-center gap-2 " style="font-size: 15px;">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-	                            	<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-	                                <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
-	                                <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
-	                            </svg>
-	                            <span class="fs-6 fw-semibold" style="font-size: 15px;">Configurar Empleados</span>
-							</a>
-						</li>
-	
-						<!---------------------------- SUBSECCIONES DE CONFIGURACIoN - CONFIGURAR PLATOS ------------------------------>
-					<li class="nav-item ">
-							<a href="categoria-plato?pCategoria=1&pPlatos=1" class="nav-link link-dark border-bottom text-decoration-none d-flex align-items-center gap-2 " style="font-size: 15px;">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-egg-fried" viewBox="0 0 16 16">
-	                            	<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-	                                <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z" />
-	                            </svg>
-	                            <span class="fs-6 fw-semibold" style="font-size: 15px;">Configurar Platos</span>
-							</a>
-						</li>
-						<!---------------------------- SUBSECCIONES DE CONFIGURACIoN - CONFIGURAR MESA ------------------------------>
-						<li class="nav-item">
-							<a href="mesas?p=1" class="nav-link link-dark border-bottom text-decoration-none d-flex align-items-center gap-2 " style="font-size: 15px;">
-								<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 297 297" style="enable-background:new 0 0 297 297;" xml:space="preserve">
-									<path d="M181.115,236.463h-22.731V125.768h87.963c5.458,0,9.884-4.425,9.884-9.883V66.961c0-5.458-4.426-9.884-9.884-9.884H50.653 c-5.458,0-9.884,4.426-9.884,9.884v48.924c0,5.458,4.426,9.883,9.884,9.883h87.963v110.695h-22.731 c-5.459,0-9.884,4.426-9.884,9.884c0,5.458,4.425,9.884,9.884,9.884h65.23c5.458,0,9.884-4.426,9.884-9.884 C190.999,240.889,186.573,236.463,181.115,236.463z M60.536,76.845h175.928v29.156H60.536V76.845z"/>
-									<path d="M0,246.347c0,5.458,4.426,9.884,9.884,9.884s9.883-4.426,9.883-9.884v-55.348h61.772v55.348 c0,5.458,4.426,9.884,9.884,9.884c5.458,0,9.883-4.426,9.883-9.884V148.5c0-5.458-4.425-9.884-9.883-9.884H19.767V50.653 c0-5.458-4.425-9.884-9.883-9.884S0,45.195,0,50.653V246.347z M19.767,158.384h61.772v12.849H19.767V158.384z"/>
-									<path d="M195.693,246.347c0,5.458,4.426,9.884,9.884,9.884c5.458,0,9.884-4.426,9.884-9.884v-55.348h61.772v55.348 c0,5.458,4.425,9.884,9.883,9.884c5.458,0,9.884-4.426,9.884-9.884V50.653c0-5.458-4.426-9.884-9.884-9.884 c-5.458,0-9.883,4.426-9.883,9.884v87.963h-71.656c-5.458,0-9.884,4.426-9.884,9.884V246.347z M215.461,171.232v-12.849h61.772 v12.849H215.461z"/>
-								</svg>
-	                            <span class="fs-6 fw-semibold" style="font-size: 15px;">Configurar Mesa</span>
-							</a>
-						</li>
-						
-						<!---------------------------- SUBSECCIONES DE CONFIGURACIoN - MoTODOS DE PAGO ------------------------------>
-						<li class="nav-item">
-							<a href="metodo-pago?p=1" class="nav-link link-dark border-bottom text-decoration-none d-flex align-items-center gap-2 " style="font-size: 15px;">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16">
-	                            	<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z" />
-	                                <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z" />
-	                            </svg>
-	                            <span class="fs-6 fw-semibold" style="font-size: 15px;">Motodos de Pago</span>
-							</a>
-						</li>
-						
-						<!---------------------------- SUBSECCIONES DE CONFIGURACIoN - CLIENTE ------------------------------>
-						<li class="nav-item">
-							<a href="cliente?p=1" class="nav-link link-dark border-bottom text-decoration-none d-flex align-items-center gap-2 " style="font-size: 15px;">
-								<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-									<g>
-										<g>
-											<polygon points="357.871,391.592 287.48,381.364 256,317.577 224.52,381.364 154.129,391.592 205.064,441.242 193.04,511.349 256,478.249 318.96,511.349 306.936,441.242 		"/>
-										</g>
-										<g>
-											<polygon points="512,346.347 451.058,337.491 423.805,282.269 396.55,337.491 335.608,346.347 379.706,389.332 369.296,450.028 423.805,421.372 478.313,450.028 467.902,389.332 		"/>
-										</g>
-										<g>
-											<polygon points="176.392,346.347 115.45,337.491 88.195,282.269 60.942,337.491 0,346.347 44.098,389.332 33.688,450.028 88.195,421.372 142.704,450.028 132.294,389.332 		"/>
-										</g>
-										<g>
-											<path d="M308.507,182.256c8.547-11.146,13.643-25.07,13.643-40.17c0-36.476-29.675-66.15-66.15-66.15s-66.15,29.674-66.15,66.15 c0,15.1,5.096,29.024,13.644,40.17c-26.469,9.845-45.379,35.362-45.379,65.219v59.184h195.771v-59.184 C353.886,217.619,334.976,192.102,308.507,182.256z"/>
-										</g>
-										<g>
-											<rect x="240.839" y="0.651" width="30.321" height="50.019"/>
-										</g>
-										<g>
-											<rect x="158.511" y="34.748" transform="matrix(0.7071 -0.7071 0.7071 0.7071 8.6121 140.3069)" width="30.321" height="50.019"/>
-										</g>
-										<g>
-											<rect x="114.562" y="126.923" width="50.019" height="30.321"/>
-										</g>
-									
-										<g>
-											<rect x="347.416" y="126.923" width="50.019" height="30.321"/>
-										</g>
-										<g>
-											<rect x="313.313" y="44.603" transform="matrix(0.7071 -0.7071 0.7071 0.7071 56.8332 256.7344)" width="50.019" height="30.321"/>
-										</g>
-									</g>
-								</svg>
-	
-	                            <span class="fs-6 fw-semibold" style="font-size: 15px;">Cliente</span>
-							</a>
-						</li>
-						
-						<!---------------------------- SUBSECCIONES DE CONFIGURACIoN - ESTABLECIMIENTO ------------------------------>
-						<li class="nav-item">
-							<a href="establecimiento" class="nav-link link-dark border-bottom text-decoration-none d-flex align-items-center gap-2 " style="font-size: 15px;">
-								<svg version="1.1" id="Layer_1" width="24" height="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 455 455" style="enable-background:new 0 0 455 455;" xml:space="preserve">
-									<path d="M321.397,92.374c6.728,27.219,31.317,47.462,60.55,47.462c28.901,0,53.738-20.222,61.19-47.462H321.397z"/>
-									<rect x="242.219" y="289.119" width="69.034" height="40"/>
-									<rect x="143.186" y="289.119" width="69.033" height="40"/>
-									<rect x="341.253" y="289.119" width="69.033" height="40"/>
-									<path d="M381.948,169.836c-32.353,0-60.875-16.731-77.381-42.004c-16.507,25.272-45.028,42.004-77.382,42.004 s-60.875-16.731-77.382-42.004c-16.506,25.272-45.028,42.004-77.381,42.004c-9.857,0-19.356-1.559-28.27-4.434v93.717h366.134 v-93.729C401.229,168.302,391.7,169.836,381.948,169.836z"/>
-									<rect x="44.152" y="359.119" width="366.134" height="95.881"/>
-									<rect x="44.152" y="289.119" width="69.034" height="40"/>
-									<polygon points="413.731,0 41.708,0 17.088,62.374 438.351,62.374 	"/>
-									<path d="M227.185,139.836c29.234,0,53.824-20.243,60.551-47.462H166.634C173.361,119.593,197.951,139.836,227.185,139.836z"/>
-									<path d="M132.972,92.374H11.862c6.726,27.221,31.325,47.462,60.56,47.462C101.655,139.836,126.245,119.593,132.972,92.374z"/>
-		                       	</svg>
-		                      	<span class="fs-6 fw-semibold" style="font-size: 15px;">Establecimiento</span>
-							</a>
-						</li>
-						
-						<!---------------------------- SUBSECCIONES DE CONFIGURACIoN - CAJA ------------------------------>
-						<li class="nav-item">
-							<a href="cajas?p=1" class="nav-link link-dark border-bottom text-decoration-none d-flex align-items-center gap-2 " style="font-size: 15px;">
-								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="mdi-cash-register" width="24" height="24" viewBox="0 0 24 24">
-									<path d="M2,17H22V21H2V17M6.25,7H9V6H6V3H14V6H11V7H17.8C18.8,7 19.8,8 20,9L20.5,16H3.5L4.05,9C4.05,8 5.05,7 6.25,7M13,9V11H18V9H13M6,9V10H8V9H6M9,9V10H11V9H9M6,11V12H8V11H6M9,11V12H11V11H9M6,13V14H8V13H6M9,13V14H11V13H9M7,4V5H13V4H7Z" />
-								</svg>
-		                      	<span class="fs-6 fw-semibold" style="font-size: 15px;">Cajas</span>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</li>
-		</c:if>
-		
-		<c:if test = "${ usuarioAutenticado.getEmpleado().getCargo().getCargo().equals('Administrador') || usuarioAutenticado.getEmpleado().getCargo().getCargo().equals('Gerente') }">
-			<!---------------------------- SECCIoN GENERAR REPORTES ------------------------------>
-			<li>
-				<a href="#" class=" nav-link link-dark d-flex align-items-center gap-2  " role="button" data-bs-toggle="collapse" data-bs-placement="right" aria-expanded="true" aria-controls="menuReportes" data-bs-target="#menuReportes">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-journal-check" viewBox="0 0 16 16">
-	                	<path fill-rule="evenodd" d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
-	                    <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
-	                    <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
-	                </svg>
-	                <span class="fs-5 fw-semibold text-ce">Generar Reportes</span>
-	            </a> 
-				
-				<!---------------------------- SUBSECCIONES DE GENERAR REPORTES ------------------------------>
-				<div class="collapse" id="menuReportes">
-					<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small list-unstyled text-start">
-						<!---------------------------- SUBSECCIONES DE GENERAR REPORTES - VENTA DIARIA ------------------------------>
-						<li class="nav-item border-top py-2">
-							<a href="Comprobante?p=1" class="nav-link link-dark border-bottom text-decoration-none d-flex align-items-center gap-2 " style="font-size: 15px;">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-calendar3-event" viewBox="0 0 16 16">
-	                            	<path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
-	                                <path d="M12 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-	                            </svg>
-	                            <span class="fs-6 fw-semibold" style="font-size: 15px;">Venta Diaria</span>
-							</a>
-						</li>
-	
-						<!---------------------------- SUBSECCIONES DE GENERAR REPORTES - CAJA REGISTRADORA ------------------------------>
-						<li class="nav-item  py-2">
-							<a href="AperturasController?type=listarAperturas&p=1" class="nav-link link-dark border-bottom text-decoration-none" style="font-size: 15px;">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 16">
-	                            	<path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-	                            	<path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z" />
-	                            </svg>
-	                            <span class="fs-6 fw-semibold" style="font-size: 15px;">Reporte Caja </span>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</li>
-		</c:if>
-	</ul>
+  <ul class="list-unstyled m-2 mb-auto nav nav-pills flex-column">
+    <li class="nav-item">
+      <a
+        href="/"
+        class="nav-link active d-flex justify-content-center align-items-center gap-2"
+      >
+        <i class="bi bi-house-door-fill fs-4"></i>
+        <span class="fs-5 fw-semibold">Inicio</span>
+      </a>
+    </li>
 
-	<!---------------------------- PIE DE PoGINA ------------------------------>
-	<div class="btn-group dropup d-flex flex-column border-top text-center link-dark text-decoration-none text-center border-bottom border-2 border-light p-1 bg-body" style="box-shadow: 0px -10px 7px -10px rgba(0, 0, 0, 8%);">
-		<!---------------------------- IMAGEN - USUARIO ------------------------------>
-		<a href="#" class="d-flex align-items-center justify-content-center  link-dark text-decoration-none dropdown-toggle user-photo" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
-			
-			<span class="fs-6 fw-semibold m-2">USUARIO</span>
-		</a>
-	
-		<!---------------------------- LISTA DE OPCIONES ------------------------------>
-		<ul class="dropdown-menu dropdown-menu-end">
-			<li><a href="categoria-plato?type=listarCarta" class="dropdown-item">Carta</a></li>
-			<li><a href="login?type=logout" class="dropdown-item">Cerrar Sesion</a></li>
-		</ul>
-	</div>
+    <li>
+      <a href="#" class="nav-link link-dark d-flex align-items-center gap-2">
+        <i class="bi bi-receipt-cutoff fs-4"></i>
+        <span class="fs-5 fw-semibold">Generar Comandas</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" class="nav-link link-dark d-flex align-items-center gap-2">
+        <i class="bi bi-wallet fs-4"></i>
+        <span class="fs-5 fw-semibold">Caja Registradora</span>
+      </a>
+    </li>
+
+    <li>
+      <a
+        href="#"
+        class="nav-link link-dark d-flex align-items-center gap-2"
+        data-bs-toggle="collapse"
+        data-bs-target="#menuConfiguracion"
+      >
+        <i class="bi bi-wrench-adjustable-circle fs-4"></i>
+        <span class="fs-5 fw-semibold">Configuracion</span>
+      </a>
+
+      <div class="collapse" id="menuConfiguracion">
+        <ul class="list-unstyled">
+          <li class="nav-item border-top border-bottom">
+            <a
+              href="#"
+              class="nav-link link-dark d-flex align-items-center gap-2"
+            >
+              <i class="bi bi-people-fill fs-4"></i>
+              <span class="fw-semibold">Configurar Empleados</span>
+            </a>
+          </li>
+
+          <li class="nav-item border-bottom">
+            <a
+              href="/categoria-plato"
+              class="nav-link link-dark d-flex align-items-center gap-2"
+            >
+              <i class="bi bi-tags fs-4"></i>
+              <span class="fw-semibold">Configurar Categoría de Platos</span>
+            </a>
+          </li>
+
+          <li class="nav-item border-bottom">
+            <a
+              href="#"
+              class="nav-link link-dark d-flex align-items-center gap-2"
+            >
+              <i class="bi bi-egg-fried fs-4"></i>
+              <span class="fw-semibold">Configurar Platos</span>
+            </a>
+          </li>
+
+          <li class="nav-item border-bottom">
+            <a
+              href="/mesa"
+              class="nav-link link-dark d-flex align-items-center gap-2"
+            >
+              <span class="material-symbols-outlined fs-4">
+                table_restaurant
+              </span>
+              <span class="fw-semibold">Configurar Mesa</span>
+            </a>
+          </li>
+
+          <li class="nav-item border-bottom">
+            <a
+              href="#"
+              class="nav-link link-dark d-flex align-items-center gap-2"
+            >
+              <i class="bi bi-credit-card fs-4"></i>
+              <span class="fw-semibold">Métodos de Pagos</span>
+            </a>
+          </li>
+
+          <li class="nav-item border-bottom">
+            <a
+              href="#"
+              class="nav-link link-dark d-flex align-items-center gap-2"
+            >
+              <i class="bi bi-shop fs-4"></i>
+              <span class="fw-semibold">Establecimiento</span>
+            </a>
+          </li>
+
+          <li class="nav-item border-bottom">
+            <a
+              href="#"
+              class="nav-link link-dark d-flex align-items-center gap-2"
+            >
+              <i class="bi bi-currency-dollar fs-4"></i>
+              <span class="fw-semibold">Cajas</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+    <li>
+      <a
+        href="#"
+        class="nav-link link-dark d-flex align-items-center gap-2"
+        data-bs-toggle="collapse"
+        data-bs-target="#menuReportes"
+      >
+        <i class="bi bi-journal-check fs-4"></i>
+        <span class="fs-5 fw-semibold">Generar Reportes</span>
+      </a>
+
+      <div class="collapse" id="menuReportes">
+        <ul class="list-unstyled">
+          <li class="nav-item border-top border-bottom">
+            <a
+              href="#"
+              class="nav-link link-dark d-flex align-items-center gap-2"
+            >
+              <i class="bi bi-calendar3-event fs-4"></i>
+              <span class="fw-semibold">Venta Diaria</span>
+            </a>
+          </li>
+
+          <li class="nav-item border-bottom">
+            <a
+              href="#"
+              class="nav-link link-dark d-flex align-items-center gap-2"
+            >
+              <i class="bi bi-cash-stack fs-4"></i>
+              <span class="fw-semibold">Reporte Caja </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+
+  <div
+    class="dropdown dropup d-flex justify-content-center border-top border-2 border-light bg-body p-1 shadow"
+  >
+    <a
+      href="#"
+      class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+      data-bs-toggle="dropdown"
+    >
+      <span
+        class="fs-6 fw-semibold m-2"
+        th:text="${#authentication.principal.usuario.empleado.nombre}"
+        >USUARIO</span
+      >
+    </a>
+
+    <ul class="dropdown-menu">
+      <li>
+        <a href="#" class="dropdown-item">Carta</a>
+      </li>
+      <li>
+        <a href="#" class="dropdown-item">Cerrar Sesion</a>
+      </li>
+    </ul>
+  </div>
 </div>

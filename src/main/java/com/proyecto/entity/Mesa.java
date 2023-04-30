@@ -1,23 +1,25 @@
 package com.proyecto.entity;
 
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "MESA")
 public class Mesa {
-	@Id
+  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+  private Integer id;
 
   @Column(name = "CANTIDAD_ASIENTOS")
-	private int cantidadAsientos;
+  private int cantidadAsientos;
 
   @Column(name = "ESTADO")
-	private String estado;
+  private String estado;
 
-	@OneToMany(mappedBy = "mesa")
-	private List<Comanda> listaComanda;
+  @OneToMany(mappedBy = "mesa")
+  @JsonIgnore
+  private List<Comanda> listaComanda;
 
   public Integer getId() {
     return id;

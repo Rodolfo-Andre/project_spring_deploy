@@ -15,6 +15,13 @@ public class Cargo {
   @OneToMany(mappedBy = "cargo")
   private List<Empleado> listaEmpleado;
 
+  public Cargo() {
+  }
+
+  public Cargo(String nombre) {
+    this.nombre = nombre;
+  }
+
   public Integer getId() {
     return id;
   }

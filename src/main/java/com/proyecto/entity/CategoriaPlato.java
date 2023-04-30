@@ -36,5 +36,16 @@ public class CategoriaPlato {
 
   public void setListaPlato(List<Plato> listaPlato) {
     this.listaPlato = listaPlato;
-  }  
+  }
+
+  public static String generarIdCategoriaPlato(List<CategoriaPlato> listaCategoriaPlato) {
+    if (listaCategoriaPlato.isEmpty())
+      return "CP-01";
+
+    String ultimoId = listaCategoriaPlato.get(listaCategoriaPlato.size() - 1).getId();
+
+    int numero = Integer.parseInt(String.join("", ultimoId.split("CP-")));
+
+    return "CP-" + String.format("%02d", numero + 1);
+  }
 }
