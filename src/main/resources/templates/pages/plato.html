@@ -5,7 +5,7 @@
   th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::link})}"
 >
   <head>
-    <title>Configuración de Categoría</title>
+    <title>Configuración de Plato</title>
 
     <link
       rel="stylesheet"
@@ -22,10 +22,10 @@
       <main class="main">
         <div class="box info">
           <div class="header-info">
-            <h2 class="mb-3">Configuración de Categorías de Platos</h2>
+            <h2 class="mb-3">Configuración de Platos</h2>
 
             <button id="btn-add" class="btn btn-primary">
-              Añadir Categoría de Plato
+              Añadir Plato
               <i class="fs-4 bi bi-plus-circle-fill"></i>
             </button>
           </div>
@@ -34,25 +34,34 @@
 
           <div class="body-info">
             <table
-              id="tablaCategoriaPlato"
+              id="tablaPlato"
               class="table display"
               style="width: 100%"
-              aria-describedby="Tabla de Categorías de Patos"
+              aria-describedby="Tabla de Patos"
             >
               <thead class="align-middle">
                 <th>Código</th>
+                <th>Plato</th>
+                <th>Imagen</th>
+                <th>Precio</th>
                 <th>Categoría</th>
                 <th>Información</th>
                 <th>Modificar</th>
                 <th>Eliminar</th>
               </thead>
               <tbody>
-                <tr
-                  th:each="categoriaPlato : ${listaCategoriaPlato}"
-                  class="align-middle"
-                >
-                  <td th:text="${categoriaPlato.id}"></td>
-                  <td th:text="${categoriaPlato.nombre}"></td>
+                <tr th:each="plato : ${listaPlato}" class="align-middle">
+                  <td th:text="${plato.id}"></td>
+                  <td th:text="${plato.nombre}"></td>
+                  <td>
+                    <img
+                      style="width: 250px"
+                      th:src="${plato.imagen}"
+                      th:alt="${plato.nombre}"
+                    />
+                  </td>
+                  <td th:text="${plato.precioPlato}"></td>
+                  <td th:text="${plato.categoriaPlato.nombre}"></td>
                   <td class="text-center">
                     <i class="icon-action icon-info bi bi-info-circle-fill"></i>
                   </td>
@@ -89,7 +98,7 @@
         src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"
       ></script>
 
-      <script type="module" src="js/categoria-plato.js"></script>
+      <script type="module" src="js/plato.js"></script>
     </th:block>
   </body>
 </html>

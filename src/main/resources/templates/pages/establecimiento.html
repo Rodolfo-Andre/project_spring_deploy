@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::enlaces})}"
+>
+  <head>
+    <title>Configuración de Establecimiento</title>
+    <th:block th:fragment="enlaces"> </th:block>
+  </head>
+
+  <body class="d-flex">
+    <th:block th:fragment="cuerpo">
+      <main class="main">
+        <div class="box info">
+          <div class="header-info">
+            <h2 class="mb-3">Establecimiento</h2>
+          </div>
+
+          <hr class="separator" />
+
+          <div class="body-info">
+            <form
+              class="container"
+              action="/establecimiento/actualizar"
+              method="POST"
+              th:object="${establecimiento}"
+            >
+              <input
+                type="hidden"
+                th:field="*{id}"
+                th:value="${establecimiento.id}"
+              />
+
+              <div class="row g-3 align-items-end">
+                <div class="col-12 col-lg-6">
+                  <label class="h4">Nombre del establecimiento</label>
+                  <div>
+                    <input
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      th:field="*{nombre}"
+                      th:value="${establecimiento.nombre}"
+                    />
+                    <div id="name-invalid" class="text-start invalid-feedback">
+                      Introduce el nombre del establecimiento correctamente.
+                      Mínimo 3 caracteres, máximo 100.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                  <label class="h4">Teléfono</label>
+                  <div>
+                    <input
+                      class="form-control"
+                      id="telephone"
+                      name="telephone"
+                      th:field="*{telefono}"
+                      th:value="${establecimiento.telefono}"
+                    />
+                    <div
+                      id="telephone-invalid"
+                      class="text-start invalid-feedback"
+                    >
+                      Introduce un teléfono válido. Solo acepta 9 dígitos y
+                      comienza con 9.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                  <label class="h4">Dirección</label>
+                  <div>
+                    <input
+                      class="form-control"
+                      id="address"
+                      name="address"
+                      th:field="*{direccion}"
+                      th:value="${establecimiento.direccion}"
+                    />
+                    <div
+                      id="address-invalid"
+                      class="text-start invalid-feedback"
+                    >
+                      Introduce una dirección válida. Mínimo 3 caracteres,
+                      máximo 50.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                  <label class="h4">RUC</label>
+                  <div>
+                    <input
+                      class="form-control"
+                      id="ruc"
+                      name="ruc"
+                      th:field="*{ruc}"
+                      th:value="${establecimiento.ruc}"
+                    />
+                    <div id="ruc-invalid" class="text-start invalid-feedback">
+                      Introduce un número de RUC válido, mínimo 11 dígitos y
+                      máximo 20.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 text-end">
+                  <input
+                    id="btn-update"
+                    type="submit"
+                    class="btn btn-primary my-2"
+                    value="Actualizar información"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+
+      <!-- Custom JavaScript -->
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+
+      <script type="module" src="js/establecimiento.js"></script>
+    </th:block>
+  </body>
+</html>

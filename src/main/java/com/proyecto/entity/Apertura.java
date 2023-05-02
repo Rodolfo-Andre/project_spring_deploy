@@ -1,6 +1,7 @@
 package com.proyecto.entity;
 
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -28,7 +29,8 @@ public class Apertura {
   private Caja caja;
 
   @OneToMany(mappedBy = "apertura")
-	private List<Comprobante> listaComprobante;
+  @JsonIgnore
+  private List<Comprobante> listaComprobante;
 
   public Integer getId() {
     return id;
@@ -84,5 +86,5 @@ public class Apertura {
 
   public void setListaComprobante(List<Comprobante> listaComprobante) {
     this.listaComprobante = listaComprobante;
-  }  
+  }
 }

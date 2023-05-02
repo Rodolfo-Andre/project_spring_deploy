@@ -11,7 +11,7 @@ public class MesaService {
   @Autowired
   MesaRepository mesaRepository;
 
-  public List<Mesa> getAll() {
+  public List<Mesa> obtenerTodo() {
     return mesaRepository.findAll();
   }
 

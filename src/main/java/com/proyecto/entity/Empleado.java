@@ -2,6 +2,7 @@ package com.proyecto.entity;
 
 import java.util.*;
 import org.springframework.data.annotation.CreatedDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -29,12 +30,15 @@ public class Empleado {
   private Cargo cargo;
 
   @OneToMany(mappedBy = "empleado")
+  @JsonIgnore
   List<Comanda> listaComanda;
 
   @OneToMany(mappedBy = "empleado")
+  @JsonIgnore
   List<Apertura> listaApertura;
 
   @OneToMany(mappedBy = "empleado")
+  @JsonIgnore
   List<Comprobante> listaComprobante;
 
   @OneToOne(cascade = CascadeType.ALL)

@@ -12,18 +12,18 @@ import com.proyecto.service.MesaService;
 @RequestMapping(value = "mesa")
 public class MesaController {
   @Autowired
-  MesaService mesaServices;
+  MesaService mesaService;
 
   @GetMapping(value = "")
   public String index(Model model) {
-    model.addAttribute("listaMesas", mesaServices.getAll());
+    model.addAttribute("listaMesas", mesaService.obtenerTodo());
     return "pages/mesas";
   }
 
   @GetMapping(value = "obtener/{id}")
   @ResponseBody
-  public Mesa buscarPorId(@PathVariable Integer id, Model model) {
-    return mesaServices.obtenerPorId(id);
+  public Mesa buscarPorId(@PathVariable Integer id) {
+    return mesaService.obtenerPorId(id);
   }
 
   @PostMapping(value = "grabar")
@@ -32,7 +32,7 @@ public class MesaController {
       Mesa mesa = new Mesa();
       mesa.setCantidadAsientos(sillas);
       mesa.setEstado("Libre");
-      mesaServices.agregar(mesa);
+      mesaService.agregar(mesa);
       redirect.addFlashAttribute("Mensaje", "Mesa agregada correctamente");
     } catch (Exception e) {
       e.printStackTrace();
@@ -46,10 +46,10 @@ public class MesaController {
   public String actualizar(RedirectAttributes redirect, @RequestParam("id") int id,
       @RequestParam("quantityChairs") int sillas) {
     try {
-      Mesa mesa = mesaServices.obtenerPorId(id);
+      Mesa mesa = mesaService.obtenerPorId(id);
       mesa.setCantidadAsientos(sillas);
 
-      mesaServices.actualizar(mesa);
+      mesaService.actualizar(mesa);
       redirect.addFlashAttribute("Mensaje", "Mesa actualizada correctamente");
     } catch (Exception e) {
       e.printStackTrace();
@@ -60,9 +60,9 @@ public class MesaController {
   }
 
   @PostMapping(value = "eliminar")
-  public String actualizar(RedirectAttributes redirect, @RequestParam("id") int id) {
+  public String eliminar(RedirectAttributes redirect, @RequestParam("id") int id) {
     try {
-      mesaServices.eliminar(id);
+      mesaService.eliminar(id);
       redirect.addFlashAttribute("Mensaje", "Mesa eliminada correctamente");
     } catch (Exception e) {
       e.printStackTrace();

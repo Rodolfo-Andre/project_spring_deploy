@@ -10,6 +10,10 @@ public class EstablecimientoService {
   @Autowired
   private EstablecimientoRepository establecimientoRepository;
 
+  public Establecimiento obtenerPrimero() {
+    return establecimientoRepository.findAll().get(0);
+  }
+
   public void actualizar(Establecimiento e) {
     establecimientoRepository.save(e);
   }

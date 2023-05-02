@@ -2,6 +2,7 @@ package com.proyecto.entity;
 
 import jakarta.persistence.*;
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "CATEGORIA_PLATO")
@@ -12,6 +13,7 @@ public class CategoriaPlato {
   private String nombre;
 
   @OneToMany(mappedBy = "categoriaPlato")
+  @JsonIgnore
   private List<Plato> listaPlato;
 
   public String getId() {

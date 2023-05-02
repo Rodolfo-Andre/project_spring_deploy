@@ -14,9 +14,9 @@ public class DetalleComanda {
 
   @Column(name = "PRECIO_UNITARIO")
   private double precioUnitario;
-  
-  @Column(name ="Observacion")
-  private String Observacion;
+
+  @Column(name = "Observacion")
+  private String observacion;
 
   @ManyToOne
   @JoinColumn(name = "PLATO_ID")

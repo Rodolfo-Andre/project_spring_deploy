@@ -1,18 +1,20 @@
 package com.proyecto.entity;
 
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ESTADO_COMANDA")
 public class EstadoComanda {
-	@Id
+  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+  private Integer id;
 
-	private String estado;
+  private String estado;
 
   @OneToMany(mappedBy = "estadoComanda")
+  @JsonIgnore
   private List<Comanda> listaComanda;
 
   public Integer getId() {
@@ -37,5 +39,5 @@ public class EstadoComanda {
 
   public void setListaComanda(List<Comanda> listaComanda) {
     this.listaComanda = listaComanda;
-  }  
+  }
 }

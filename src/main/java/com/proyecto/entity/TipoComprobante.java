@@ -1,6 +1,7 @@
 package com.proyecto.entity;
 
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,7 @@ public class TipoComprobante {
   private String tipo;
 
   @OneToMany(mappedBy = "tipoComprobante")
+  @JsonIgnore
   private List<Comprobante> listaComprobante;
 
   public Integer getId() {
@@ -37,5 +39,5 @@ public class TipoComprobante {
 
   public void setListaComprobante(List<Comprobante> listaComprobante) {
     this.listaComprobante = listaComprobante;
-  }  
+  }
 }

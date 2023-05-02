@@ -2,25 +2,28 @@ package com.proyecto.entity;
 
 import jakarta.persistence.*;
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="ESTABLECIMIENTO")
+@Table(name = "ESTABLECIMIENTO")
 public class Establecimiento {
-	@Id
-	public String id;
-	
-	private String nombre;
-	
-	private String telefono;
-	
-	private String direccion;
-	
-	private String ruc;
+  @Id
+  public String id;
+
+  private String nombre;
+
+  private String telefono;
+
+  private String direccion;
+
+  private String ruc;
 
   @OneToMany(mappedBy = "establecimiento")
+  @JsonIgnore
   private List<Comprobante> listaComprobante;
 
   @OneToMany(mappedBy = "establecimiento")
+  @JsonIgnore
   private List<Caja> listaCaja;
 
   public String getId() {
@@ -77,5 +80,5 @@ public class Establecimiento {
 
   public void setListaCaja(List<Caja> listaCaja) {
     this.listaCaja = listaCaja;
-  }	
+  }
 }

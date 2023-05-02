@@ -128,10 +128,7 @@ const addEventToButtonAdd = () => {
     const contentModal = {
       header: `<i class="icon text-center text-primary bi bi-plus-circle-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">Nueva Categoría de Plato</h4>`,
-      body: `<form class="d-flex flex-column gap-4" id="form-add" action="/categoria-plato/grabar" method="POST">
-							<input type="hidden" name="type" value="addInfoObject"/>
-							<input type="hidden" name="object" value="categoryDish"/>					
-							
+      body: `<form class="d-flex flex-column gap-4" id="form-add" action="/categoria-plato/grabar" method="POST">		
 							<div class="row align-items-sm-center">
 								<label class="col-sm-5 fw-bold" for="name">Nombre de la Categoría:</label>
 								<div class="col-sm-7">

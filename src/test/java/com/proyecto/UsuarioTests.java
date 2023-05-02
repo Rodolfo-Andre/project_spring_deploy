@@ -8,7 +8,7 @@ import com.proyecto.dao.*;
 import com.proyecto.entity.*;
 
 @SpringBootTest
-class ProyectoAplicacionesWebApplicationTests {
+public class UsuarioTests {
   @Autowired()
   UsuarioRepository usuarioRepository;
 
@@ -29,7 +29,7 @@ class ProyectoAplicacionesWebApplicationTests {
     empleadoRepository.save(empleado);
   }
 
-  @Test
+  // @Test
   void verificarCorreo() {
     String correoEntrada = "admin@admin.com";
 

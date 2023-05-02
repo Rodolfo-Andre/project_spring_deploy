@@ -2,22 +2,24 @@ package com.proyecto.entity;
 
 import jakarta.persistence.*;
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "PLATO")
 public class Plato {
-	@Id
-	private String id;
-	
-	private String nombre;
+  @Id
+  private String id;
 
-	private String imagen;
+  private String nombre;
+
+  private String imagen;
 
   @Column(name = "PRECIO_PLATO")
-	private double precioPlato;
+  private double precioPlato;
 
-	@OneToMany(mappedBy="plato")
-	private List<DetalleComanda> listaDetalleComanda;
+  @OneToMany(mappedBy = "plato")
+  @JsonIgnore
+  private List<DetalleComanda> listaDetalleComanda;
 
   @ManyToOne
   @JoinColumn(name = "CATEGORIA_PLATO_ID")
@@ -69,5 +71,16 @@ public class Plato {
 
   public void setCategoriaPlato(CategoriaPlato categoriaPlato) {
     this.categoriaPlato = categoriaPlato;
+  }
+
+  public static String generarIdPlato(List<Plato> listaPlato) {
+    if (listaPlato.isEmpty())
+      return "P-001";
+
+    String ultimoId = listaPlato.get(listaPlato.size() - 1).getId();
+
+    int numero = Integer.parseInt(String.join("", ultimoId.split("P-")));
+
+    return "P-" + String.format("%03d", numero + 1);
   }
 }

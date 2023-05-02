@@ -2,6 +2,7 @@ package com.proyecto.entity;
 
 import jakarta.persistence.*;
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "METODO_PAGO")
@@ -13,6 +14,7 @@ public class MetodoPago {
   private String metodo;
 
   @OneToMany(mappedBy = "metodoPago")
+  @JsonIgnore
   private List<DetalleComprobante> comprobante;
 
   public Integer getId() {

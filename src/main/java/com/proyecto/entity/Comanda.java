@@ -2,35 +2,37 @@ package com.proyecto.entity;
 
 import jakarta.persistence.*;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "COMANDA")
 public class Comanda {
-	@Id
+  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+  private Integer id;
 
   @Column(name = "CANTIDAD_ASIENTOS")
-	private int cantidadAsientos;
+  private int cantidadAsientos;
 
   @Column(name = "PRECIO_TOTAL")
-	private double precioTotal;
+  private double precioTotal;
 
   @ManyToOne
   @JoinColumn(name = "MESA_ID")
   private Mesa mesa;
 
-	@ManyToOne
+  @ManyToOne
   @JoinColumn(name = "ESTADO_COMANDA_ID")
-	private EstadoComanda estadoComanda;
+  private EstadoComanda estadoComanda;
 
   @ManyToOne
   @JoinColumn(name = "EMPLEADO_ID")
   private Empleado empleado;
 
   @OneToMany(mappedBy = "comanda")
+  @JsonIgnore
   private List<DetalleComanda> listaDetalleComanda;
-	
+
   @OneToOne(mappedBy = "comanda")
   private Comprobante comprobante;
 
