@@ -13,6 +13,13 @@ public class EstadoComanda {
 
   private String estado;
 
+  public EstadoComanda() {
+  }
+
+  public EstadoComanda(String estado) {
+    this.estado = estado;
+  }
+
   @OneToMany(mappedBy = "estadoComanda")
   @JsonIgnore
   private List<Comanda> listaComanda;

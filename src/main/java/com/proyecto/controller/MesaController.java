@@ -9,7 +9,7 @@ import com.proyecto.entity.Mesa;
 import com.proyecto.service.MesaService;
 
 @Controller
-@RequestMapping(value = "mesa")
+@RequestMapping(value = "/configuracion/mesa")
 public class MesaController {
   @Autowired
   MesaService mesaService;
@@ -20,13 +20,13 @@ public class MesaController {
     return "pages/mesas";
   }
 
-  @GetMapping(value = "obtener/{id}")
+  @GetMapping(value = "/obtener/{id}")
   @ResponseBody
   public Mesa buscarPorId(@PathVariable Integer id) {
     return mesaService.obtenerPorId(id);
   }
 
-  @PostMapping(value = "grabar")
+  @PostMapping(value = "/grabar")
   public String grabar(RedirectAttributes redirect, @RequestParam("quantityChairs") int sillas) {
     try {
       Mesa mesa = new Mesa();
@@ -39,10 +39,10 @@ public class MesaController {
       redirect.addFlashAttribute("Mensaje", "Error al agregar");
     }
 
-    return "redirect:/mesa";
+    return "redirect:/configuracion/mesa";
   }
 
-  @PostMapping(value = "actualizar")
+  @PostMapping(value = "/actualizar")
   public String actualizar(RedirectAttributes redirect, @RequestParam("id") int id,
       @RequestParam("quantityChairs") int sillas) {
     try {
@@ -56,10 +56,10 @@ public class MesaController {
       redirect.addFlashAttribute("Mensaje", "Error al actualizar");
     }
 
-    return "redirect:/mesa";
+    return "redirect:/configuracion/mesa";
   }
 
-  @PostMapping(value = "eliminar")
+  @PostMapping(value = "/eliminar")
   public String eliminar(RedirectAttributes redirect, @RequestParam("id") int id) {
     try {
       mesaService.eliminar(id);
@@ -69,6 +69,6 @@ public class MesaController {
       redirect.addFlashAttribute("Mensaje", "Error al eliminar");
     }
 
-    return "redirect:/mesa";
+    return "redirect:/configuracion/mesa";
   }
 }

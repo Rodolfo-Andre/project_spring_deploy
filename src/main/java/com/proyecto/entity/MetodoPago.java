@@ -17,6 +17,13 @@ public class MetodoPago {
   @JsonIgnore
   private List<DetalleComprobante> comprobante;
 
+  public MetodoPago() {
+  }
+
+  public MetodoPago(String metodo) {
+    this.metodo = metodo;
+  }
+
   public Integer getId() {
     return id;
   }

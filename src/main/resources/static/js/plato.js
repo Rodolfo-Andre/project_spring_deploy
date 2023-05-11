@@ -70,7 +70,7 @@ const addEventToTable = () => {
       }
 
       if ($listBtnInfo.filter(e.currentTarget).length) {
-        $.get(`plato/obtener/${id}`, (data) => {
+        $.get(`/configuracion/plato/obtener/${id}`, (data) => {
           if (data) {
             const contentModal = {
               header: `<i class="icon text-center text-link bi bi-info-circle-fill"></i>
@@ -92,19 +92,19 @@ const addEventToTable = () => {
       }
 
       if ($listBtnUpdate.filter(e.currentTarget).length) {
-        $.get(`categoria-plato/obtener`, (data) => {
+        $.get(`/configuracion/categoria-plato/obtener`, (data) => {
           const listOptions = data.map(
               (categoryDish) =>
                 `<option value="${categoryDish.id}">${categoryDish.nombre}</option>`
             ),
             $options = listOptions.join(" ");
 
-          $.get(`plato/obtener/${id}`, (data) => {
+          $.get(`/configuracion/plato/obtener/${id}`, (data) => {
             if (data) {
               const contentModal = {
                 header: `<i class="icon text-center text-warning bi bi-pencil-square"></i>
 											<h4 class="modal-title text-center" id="modal-prototype-label">Plato - ${data.id}</h4>`,
-                body: `<form class="d-flex flex-column gap-4" id="form-update" action="/plato/actualizar" method="POST" enctype="multipart/form-data">
+                body: `<form class="d-flex flex-column gap-4" id="form-update" action="/configuracion/plato/actualizar" method="POST" enctype="multipart/form-data">
 												<input type="hidden" name="id" value="${data.id}"/>
 						
 												<div class="container-img-dish">
@@ -180,7 +180,7 @@ const addEventToTable = () => {
         const contentModal = {
           header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR EL PLATO - ${id}?</h4>`,
-          body: `<form id="form-delete" action="/plato/eliminar" method="POST">
+          body: `<form id="form-delete" action="/configuracion/plato/eliminar" method="POST">
 							<input type="hidden" name="id" value="${id}"/>
 						</form>`,
           footer: `<input form="form-delete" type="submit" class="w-50 text-white btn btn-danger" value="ELIMINAR"/>
@@ -195,7 +195,7 @@ const addEventToTable = () => {
 
 const addEventToButtonAdd = () => {
   $("#btn-add").on("click", () => {
-    $.get(`categoria-plato/obtener`, (data) => {
+    $.get(`/configuracion/categoria-plato/obtener`, (data) => {
       if (!data.length) {
         const contentModal = {
           header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
@@ -219,7 +219,7 @@ const addEventToButtonAdd = () => {
       const contentModal = {
         header: `<i class="icon text-center text-primary bi bi-plus-circle-fill"></i>
 								<h4 class="modal-title text-center" id="modal-prototype-label">Nuevo Plato</h4>`,
-        body: `<form class="d-flex flex-column gap-4" id="form-add" action="/plato/grabar" method="POST" enctype="multipart/form-data">
+        body: `<form class="d-flex flex-column gap-4" id="form-add" action="/configuracion/plato/grabar" method="POST" enctype="multipart/form-data">
 									<div class="container-img-dish">
 										<div class="img-dish">
 											<img id="add-img-dish">		

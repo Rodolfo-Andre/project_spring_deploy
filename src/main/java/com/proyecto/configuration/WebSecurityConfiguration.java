@@ -14,13 +14,18 @@ import com.proyecto.service.UsuarioDetallesService;
 public class WebSecurityConfiguration {
   @Bean
   public WebSecurityCustomizer configure() {
-    return web -> web.ignoring().requestMatchers("/css/**", "/js/**", "/images/**");
+    return web -> web.ignoring().requestMatchers("/css/**", "/js/**",
+        "/images/**", "/language/**");
   }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf().disable()
-        .authorizeHttpRequests(a -> a.requestMatchers("/**").authenticated())
+        .authorizeHttpRequests(a ->
+
+        a.requestMatchers("/login/**").permitAll()
+            .requestMatchers("/configuracion/**").hasRole("ADMINISTRADOR")
+            .requestMatchers("/**").authenticated())
         .formLogin(t -> t.loginPage("/login")
             .usernameParameter("email")
             .loginProcessingUrl("/login")

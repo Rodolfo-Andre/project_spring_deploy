@@ -65,7 +65,7 @@ const addEventToTable = () => {
       }
 
       if ($listBtnInfo.filter(e.currentTarget).length) {
-        $.get(`mesa/obtener/${id}`, (data) => {
+        $.get(`/configuracion/mesa/obtener/${id}`, (data) => {
           if (data) {
             const contentModal = {
               header: `<i class="icon text-center text-link bi bi-info-circle-fill"></i>
@@ -83,12 +83,12 @@ const addEventToTable = () => {
       }
 
       if ($listBtnUpdate.filter(e.currentTarget).length) {
-        $.get(`mesa/obtener/${id}`, (data) => {
+        $.get(`/configuracion/mesa/obtener/${id}`, (data) => {
           if (data) {
             const contentModal = {
               header: `<i class="icon text-center text-warning bi bi-pencil-square"></i>
 										<h4 class="modal-title text-center" id="modal-prototype-label">Mesa - ${data.id}</h4>`,
-              body: `<form class="d-flex flex-column gap-4" id="form-update" action="/mesa/actualizar" method="POST">
+              body: `<form class="d-flex flex-column gap-4" id="form-update" action="/configuracion/mesa/actualizar" method="POST">
 										<input type="hidden" name="id" value="${data.id}"/>
 												
 										<div class="row align-items-sm-center">
@@ -112,7 +112,7 @@ const addEventToTable = () => {
         const contentModal = {
           header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR LA MESA - ${id}?</h4>`,
-          body: `<form id="form-delete" action="/mesa/eliminar" method="POST">
+          body: `<form id="form-delete" action="/configuracion/mesa/eliminar" method="POST">
 							<input type="hidden" name="id" value="${id}"/>
 						</form>`,
           footer: `<input form="form-delete" type="submit" class="w-50 text-white btn btn-danger" value="ELIMINAR"/>
@@ -130,7 +130,7 @@ const addEventToButtonAdd = () => {
     const contentModal = {
       header: `<i class="icon text-center text-primary bi bi-plus-circle-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">Nueva Mesas</h4>`,
-      body: `<form class="d-flex flex-column gap-4" id="form-add" action="/mesa/grabar"  method="POST">
+      body: `<form class="d-flex flex-column gap-4" id="form-add" action="/configuracion/mesa/grabar"  method="POST">
 							<div class="row align-items-sm-center">
 								<label class="col-sm-5 fw-bold" for="name">Cantidad de Asientos:</label>
 								<div class="col-sm-7">

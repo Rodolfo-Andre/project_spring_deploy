@@ -11,7 +11,7 @@ import com.proyecto.service.PlatoService;
 import com.proyecto.utils.ServicioImagen;
 
 @Controller
-@RequestMapping(value = "plato")
+@RequestMapping(value = "/configuracion/plato")
 public class PlatoController {
   @Autowired
   PlatoService platoService;
@@ -22,13 +22,13 @@ public class PlatoController {
     return "pages/plato";
   }
 
-  @GetMapping(value = "obtener/{id}")
+  @GetMapping(value = "/obtener/{id}")
   @ResponseBody
   public Plato buscarPorId(@PathVariable String id) {
     return platoService.obtenerPorId(id);
   }
 
-  @PostMapping(value = "grabar")
+  @PostMapping(value = "/grabar")
   public String grabar(RedirectAttributes redirect,
       @RequestParam("name") String nombre,
       @RequestParam("price") Double precio,
@@ -53,10 +53,10 @@ public class PlatoController {
       redirect.addFlashAttribute("Mensaje", "Error al agregar");
     }
 
-    return "redirect:/plato";
+    return "redirect:/configuracion/plato";
   }
 
-  @PostMapping(value = "actualizar")
+  @PostMapping(value = "/actualizar")
   public String actualizar(RedirectAttributes redirect,
       @RequestParam("id") String id,
       @RequestParam("name") String nombre,
@@ -85,10 +85,10 @@ public class PlatoController {
       redirect.addFlashAttribute("Mensaje", "Error al actualizar");
     }
 
-    return "redirect:/plato";
+    return "redirect:/configuracion/plato";
   }
 
-  @PostMapping(value = "eliminar")
+  @PostMapping(value = "/eliminar")
   public String eliminar(RedirectAttributes redirect, @RequestParam("id") String id) {
     try {
       platoService.eliminar(id);
@@ -98,6 +98,6 @@ public class PlatoController {
       redirect.addFlashAttribute("Mensaje", "Error al eliminar");
     }
 
-    return "redirect:/plato";
+    return "redirect:/configuracion/plato";
   }
 }

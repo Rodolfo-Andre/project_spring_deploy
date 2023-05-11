@@ -9,7 +9,7 @@ import com.proyecto.entity.MetodoPago;
 import com.proyecto.service.MetodoPagoService;
 
 @Controller
-@RequestMapping(value = "metodo-pago")
+@RequestMapping(value = "/configuracion/metodo-pago")
 public class MetodoPagoController {
   @Autowired
   MetodoPagoService metodoPagoService;
@@ -20,13 +20,13 @@ public class MetodoPagoController {
     return "pages/metodo-pago";
   }
 
-  @GetMapping(value = "obtener/{id}")
+  @GetMapping(value = "/obtener/{id}")
   @ResponseBody
   public MetodoPago buscarPorId(@PathVariable Integer id) {
     return metodoPagoService.obtenerPorId(id);
   }
 
-  @PostMapping(value = "grabar")
+  @PostMapping(value = "/grabar")
   public String grabar(RedirectAttributes redirect, @RequestParam("name") String metodo) {
     try {
       MetodoPago metodoPago = new MetodoPago();
@@ -39,10 +39,10 @@ public class MetodoPagoController {
       redirect.addFlashAttribute("Mensaje", "Error al agregar");
     }
 
-    return "redirect:/metodo-pago";
+    return "redirect:/configuracion/metodo-pago";
   }
 
-  @PostMapping(value = "actualizar")
+  @PostMapping(value = "/actualizar")
   public String actualizar(RedirectAttributes redirect, @RequestParam("id") int id,
       @RequestParam("name") String metodo) {
     try {
@@ -56,10 +56,10 @@ public class MetodoPagoController {
       redirect.addFlashAttribute("Mensaje", "Error al actualizar");
     }
 
-    return "redirect:/metodo-pago";
+    return "redirect:/configuracion/metodo-pago";
   }
 
-  @PostMapping(value = "eliminar")
+  @PostMapping(value = "/eliminar")
   public String eliminar(RedirectAttributes redirect, @RequestParam("id") int id) {
     try {
       metodoPagoService.eliminar(id);
@@ -69,6 +69,6 @@ public class MetodoPagoController {
       redirect.addFlashAttribute("Mensaje", "Error al eliminar");
     }
 
-    return "redirect:/metodo-pago";
+    return "redirect:/configuracion/metodo-pago";
   }
 }

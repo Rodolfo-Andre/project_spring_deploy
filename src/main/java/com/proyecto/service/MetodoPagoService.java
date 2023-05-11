@@ -30,4 +30,8 @@ public class MetodoPagoService {
   public void eliminar(Integer id) {
     metodoPagoRepository.deleteById(id);
   }
+
+  public long obtenerTamano() {
+    return metodoPagoRepository.count();
+  }
 }

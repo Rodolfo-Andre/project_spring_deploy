@@ -31,4 +31,8 @@ public class CategoriaPlatoService {
   public void eliminar(String id) {
     categoriaPlatoRepository.deleteById(id);
   }
+
+  public long obtenerTamano() {
+    return categoriaPlatoRepository.count();
+  }
 }

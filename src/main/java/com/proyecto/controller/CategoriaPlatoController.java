@@ -1,7 +1,6 @@
 package com.proyecto.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,7 @@ import com.proyecto.entity.CategoriaPlato;
 import com.proyecto.service.CategoriaPlatoService;
 
 @Controller
-@RequestMapping(value = "categoria-plato")
+@RequestMapping(value = "/configuracion/categoria-plato")
 public class CategoriaPlatoController {
   @Autowired
   CategoriaPlatoService categoriaPlatoService;
@@ -22,19 +21,19 @@ public class CategoriaPlatoController {
     return "pages/categoria-plato";
   }
 
-  @GetMapping(value = "obtener/{id}")
+  @GetMapping(value = "/obtener/{id}")
   @ResponseBody
   public CategoriaPlato buscarPorId(@PathVariable String id) {
     return categoriaPlatoService.obtenerPorId(id);
   }
 
-  @GetMapping(value = "obtener")
+  @GetMapping(value = "/obtener")
   @ResponseBody
   public List<CategoriaPlato> obtenerTodo() {
     return categoriaPlatoService.obtenerTodo();
   }
 
-  @PostMapping(value = "grabar")
+  @PostMapping(value = "/grabar")
   public String grabar(RedirectAttributes redirect, @RequestParam("name") String nombreCategoria) {
     try {
       CategoriaPlato categoriaPlato = new CategoriaPlato();
@@ -47,10 +46,10 @@ public class CategoriaPlatoController {
       redirect.addFlashAttribute("Mensaje", "Error al agregar");
     }
 
-    return "redirect:/categoria-plato";
+    return "redirect:/configuracion/categoria-plato";
   }
 
-  @PostMapping(value = "actualizar")
+  @PostMapping(value = "/actualizar")
   public String actualizar(RedirectAttributes redirect, @RequestParam("id") String id,
       @RequestParam("name") String nombre) {
     try {
@@ -64,10 +63,10 @@ public class CategoriaPlatoController {
       redirect.addFlashAttribute("Mensaje", "Error al actualizar");
     }
 
-    return "redirect:/categoria-plato";
+    return "redirect:/configuracion/categoria-plato";
   }
 
-  @PostMapping(value = "eliminar")
+  @PostMapping(value = "/eliminar")
   public String eliminar(RedirectAttributes redirect, @RequestParam("id") String id) {
     try {
       categoriaPlatoService.eliminar(id);
@@ -77,6 +76,6 @@ public class CategoriaPlatoController {
       redirect.addFlashAttribute("Mensaje", "Error al eliminar");
     }
 
-    return "redirect:/categoria-plato";
+    return "redirect:/configuracion/categoria-plato";
   }
 }

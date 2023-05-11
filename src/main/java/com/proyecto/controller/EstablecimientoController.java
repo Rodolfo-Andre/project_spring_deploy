@@ -9,7 +9,7 @@ import com.proyecto.entity.Establecimiento;
 import com.proyecto.service.EstablecimientoService;
 
 @Controller
-@RequestMapping(value = "establecimiento")
+@RequestMapping(value = "/configuracion/establecimiento")
 public class EstablecimientoController {
   @Autowired
   EstablecimientoService establecimientoService;
@@ -21,7 +21,7 @@ public class EstablecimientoController {
     return "pages/establecimiento";
   }
 
-  @PostMapping(value = "actualizar")
+  @PostMapping(value = "/actualizar")
   public String actualizar(RedirectAttributes redirect, Establecimiento establecimiento) {
     try {
       establecimientoService.actualizar(establecimiento);
@@ -31,6 +31,6 @@ public class EstablecimientoController {
       redirect.addFlashAttribute("Mensaje", "Error al actualizar");
     }
 
-    return "redirect:/establecimiento";
+    return "redirect:/configuracion/establecimiento";
   }
 }

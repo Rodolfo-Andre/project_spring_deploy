@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layouts/base :: layout(~{::title}, ~{::body}, ~{::enlaces})}"
+>
+  <head>
+    <title>Zona Restringida</title>
+    <th:block th:fragment="enlaces"> </th:block>
+  </head>
+  <body>
+    <div
+      style="max-width: 800px"
+      class="m-auto vh-100 d-flex justify-content-center align-items-center px-4"
+    >
+      <div>
+        <h1 class="text-center">
+          Error 403 - No tienes los accesos para visualizar esta página
+        </h1>
+        <div style="max-width: 600px" class="mx-auto my-3">
+          <img th:src="@{/images/403.jpg}" alt="Inicio" />
+        </div>
+        <a href="/"><< Ir al inicio</a>
+      </div>
+    </div>
+  </body>
+</html>

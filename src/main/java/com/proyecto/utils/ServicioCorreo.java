@@ -2,53 +2,40 @@ package com.proyecto.utils;
 
 import java.util.Properties;
 import javax.mail.*;
-import javax.mail.Transport;
 import javax.mail.internet.*;
 
-public class ServicioCorreo implements Runnable {
-  private String correo;
-	private String mensaje;
-	private String sujeto;
-	
-	public ServicioCorreo(String correo, String mensaje, String sujeto) {
-		this.correo = correo;
-		this.mensaje = mensaje;
-		this.sujeto = sujeto;
-	}
-	
-	public void enviarMensaje(String correo, String mensaje, String sujeto) {
-		Properties propiedades = System.getProperties();
+public class ServicioCorreo {
+  public static void enviarMensaje(String correo, String mensaje, String sujeto) throws Exception {
+    Properties propiedades = System.getProperties();
 
-		propiedades.setProperty("mail.smtp.host", "smtp.office365.com");  
-		propiedades.setProperty("mail.smtp.starttls.enable", "true");
-		propiedades.setProperty("mail.smtp.port", "587");
+    propiedades.put("mail.smtp.host", "smtp.office365.com");
+    propiedades.setProperty("mail.smtp.starttls.enable", "true");
+    propiedades.setProperty("mail.smtp.port", "587");
+    propiedades.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
+    propiedades.setProperty("mail.smtp.auth", "true");
 
-		String correoEmisor = "pruebacorreoCib@outlook.com";
-		String contrasena = "correoGmailCom";
+    String correoEmisor = "pruebacorreoCib@outlook.com";
+    String contrasena = "CorreoGmailCom";
 
-		Session sesion = Session.getDefaultInstance(propiedades, new Authenticator() {
-		    @Override
-		    protected PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication (correoEmisor, contrasena);
-		    }
-		});
+    Session sesion = Session.getDefaultInstance(propiedades);
 
-		MimeMessage mensajero = new MimeMessage(sesion); 
+    MimeMessage mensajero = new MimeMessage(sesion);
+    mensajero.setFrom(new InternetAddress(correoEmisor));
+    mensajero.setRecipient(Message.RecipientType.TO, new InternetAddress(correo));
+    mensajero.setSubject(sujeto);
+    mensajero.setText(mensaje);
 
-		try {
-			mensajero.setFrom(new InternetAddress(correoEmisor));
-			mensajero.addRecipient(Message.RecipientType.TO, new InternetAddress(correo));
-			mensajero.setSubject(sujeto);
-			mensajero.setText(mensaje);
-			
-			Transport.send(mensajero, mensajero.getRecipients(Message.RecipientType.TO));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    Transport transporte = sesion.getTransport("smtp");
 
-	@Override
-	public void run() {
-		enviarMensaje(correo, mensaje, sujeto);
-	}
+    try {
+      transporte.connect(correoEmisor, contrasena);
+      transporte.sendMessage(mensajero, mensajero.getAllRecipients());
+      System.out.println("Enviando Mensaje");
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("El email no ha sido enviado");
+    } finally {
+      transporte.close();
+    }
+  }
 }

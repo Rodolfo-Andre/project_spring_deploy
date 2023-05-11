@@ -12,6 +12,14 @@ public class CategoriaPlato {
 
   private String nombre;
 
+  public CategoriaPlato() {
+  }
+
+  public CategoriaPlato(String id, String nombre) {
+    this.id = id;
+    this.nombre = nombre;
+  }
+
   @OneToMany(mappedBy = "categoriaPlato")
   @JsonIgnore
   private List<Plato> listaPlato;

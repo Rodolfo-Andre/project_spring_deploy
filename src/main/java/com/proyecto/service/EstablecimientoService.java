@@ -14,7 +14,15 @@ public class EstablecimientoService {
     return establecimientoRepository.findAll().get(0);
   }
 
+  public void agregar(Establecimiento e) {
+    establecimientoRepository.save(e);
+  }
+
   public void actualizar(Establecimiento e) {
     establecimientoRepository.save(e);
+  }
+
+  public long obtenerTamano() {
+    return establecimientoRepository.count();
   }
 }

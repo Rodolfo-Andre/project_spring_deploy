@@ -13,6 +13,13 @@ public class TipoComprobante {
 
   private String tipo;
 
+  public TipoComprobante() {
+  }
+
+  public TipoComprobante(String tipo) {
+    this.tipo = tipo;
+  }
+
   @OneToMany(mappedBy = "tipoComprobante")
   @JsonIgnore
   private List<Comprobante> listaComprobante;
