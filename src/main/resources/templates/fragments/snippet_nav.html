@@ -1,193 +1,197 @@
 <div
-  class="d-flex flex-column flex-shrink-0 bg-light shadow vh-100"
-  style="width: 280px; overflow-y: overlay; z-index: 1"
+  class="offcanvas-md offcanvas-start d-flex flex-column flex-shrink-0 bg-light shadow"
+  id="sideBar"
+  tabindex="-1"
+  style="width: 280px; overflow-y: overlay"
 >
-  <a
-    href="/"
-    class="p-2 link-dark text-decoration-none text-center border-bottom d-flex align-items-center gap-2 border-2 border-light shadow bg-body"
-  >
-    <img
-      th:src="@{/images/reddit.svg}"
-      alt="mdo"
-      width="32"
-      height="32"
-      class="rounded-circle"
-    />
-    <span class="fs-5 fw-semibold">Nombre de la Empresa</span>
-  </a>
-
-  <ul class="list-unstyled m-2 mb-auto nav nav-pills flex-column">
-    <li class="nav-item">
-      <a
-        href="/"
-        class="nav-link active d-flex justify-content-center align-items-center gap-2"
-      >
-        <i class="bi bi-house-door-fill fs-4"></i>
-        <span class="fs-5 fw-semibold">Inicio</span>
-      </a>
-    </li>
-
-    <li>
-      <a href="#" class="nav-link link-dark d-flex align-items-center gap-2">
-        <i class="bi bi-receipt-cutoff fs-4"></i>
-        <span class="fs-5 fw-semibold">Generar Comandas</span>
-      </a>
-    </li>
-
-    <li>
-      <a href="#" class="nav-link link-dark d-flex align-items-center gap-2">
-        <i class="bi bi-wallet fs-4"></i>
-        <span class="fs-5 fw-semibold">Caja Registradora</span>
-      </a>
-    </li>
-
-    <li sec:authorize="hasRole('ADMINISTRADOR')">
-      <a
-        href="#"
-        class="nav-link link-dark d-flex align-items-center gap-2"
-        data-bs-toggle="collapse"
-        data-bs-target="#menuConfiguracion"
-      >
-        <i class="bi bi-wrench-adjustable-circle fs-4"></i>
-        <span class="fs-5 fw-semibold">Configuracion</span>
-      </a>
-
-      <div class="collapse" id="menuConfiguracion">
-        <ul class="list-unstyled">
-          <li class="nav-item border-top border-bottom">
-            <a
-              href="#"
-              class="nav-link link-dark d-flex align-items-center gap-2"
-            >
-              <i class="bi bi-people-fill fs-4"></i>
-              <span class="fw-semibold">Configurar Empleados</span>
-            </a>
-          </li>
-
-          <li class="nav-item border-bottom">
-            <a
-              href="/configuracion/categoria-plato"
-              class="nav-link link-dark d-flex align-items-center gap-2"
-            >
-              <i class="bi bi-tags fs-4"></i>
-              <span class="fw-semibold">Configurar Categoría de Platos</span>
-            </a>
-          </li>
-
-          <li class="nav-item border-bottom">
-            <a
-              href="/configuracion/plato"
-              class="nav-link link-dark d-flex align-items-center gap-2"
-            >
-              <i class="bi bi-egg-fried fs-4"></i>
-              <span class="fw-semibold">Configurar Platos</span>
-            </a>
-          </li>
-
-          <li class="nav-item border-bottom">
-            <a
-              href="/configuracion/mesa"
-              class="nav-link link-dark d-flex align-items-center gap-2"
-            >
-              <span class="material-symbols-outlined fs-4">
-                table_restaurant
-              </span>
-              <span class="fw-semibold">Configurar Mesa</span>
-            </a>
-          </li>
-
-          <li class="nav-item border-bottom">
-            <a
-              href="/configuracion/metodo-pago"
-              class="nav-link link-dark d-flex align-items-center gap-2"
-            >
-              <i class="bi bi-credit-card fs-4"></i>
-              <span class="fw-semibold">Métodos de Pagos</span>
-            </a>
-          </li>
-
-          <li class="nav-item border-bottom">
-            <a
-              href="/configuracion/establecimiento"
-              class="nav-link link-dark d-flex align-items-center gap-2"
-            >
-              <i class="bi bi-shop fs-4"></i>
-              <span class="fw-semibold">Establecimiento</span>
-            </a>
-          </li>
-
-          <li class="nav-item border-bottom">
-            <a
-              href="#"
-              class="nav-link link-dark d-flex align-items-center gap-2"
-            >
-              <i class="bi bi-currency-dollar fs-4"></i>
-              <span class="fw-semibold">Cajas</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </li>
-
-    <li>
-      <a
-        href="#"
-        class="nav-link link-dark d-flex align-items-center gap-2"
-        data-bs-toggle="collapse"
-        data-bs-target="#menuReportes"
-      >
-        <i class="bi bi-journal-check fs-4"></i>
-        <span class="fs-5 fw-semibold">Generar Reportes</span>
-      </a>
-
-      <div class="collapse" id="menuReportes">
-        <ul class="list-unstyled">
-          <li class="nav-item border-top border-bottom">
-            <a
-              href="#"
-              class="nav-link link-dark d-flex align-items-center gap-2"
-            >
-              <i class="bi bi-calendar3-event fs-4"></i>
-              <span class="fw-semibold">Venta Diaria</span>
-            </a>
-          </li>
-
-          <li class="nav-item border-bottom">
-            <a
-              href="#"
-              class="nav-link link-dark d-flex align-items-center gap-2"
-            >
-              <i class="bi bi-cash-stack fs-4"></i>
-              <span class="fw-semibold">Reporte Caja </span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </li>
-  </ul>
-
-  <div
-    class="dropdown dropup d-flex justify-content-center border-top border-2 border-light bg-body p-1 shadow"
-  >
+  <div class="offcanvas-body d-flex flex-column flex-grow-1 p-0">
     <a
-      href="#"
-      class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
-      data-bs-toggle="dropdown"
+      href="/"
+      class="p-2 link-dark text-decoration-none text-center border-bottom d-flex align-items-center gap-2 border-2 border-light shadow bg-body"
     >
-      <span
-        class="fs-6 fw-semibold m-2"
-        th:text="${#authentication.principal.usuario.empleado.nombre}"
-        >USUARIO</span
-      >
+      <img
+        th:src="@{/images/reddit.svg}"
+        alt="mdo"
+        width="32"
+        height="32"
+        class="rounded-circle"
+      />
+      <span class="fs-5 fw-semibold">Nombre de la Empresa</span>
     </a>
 
-    <ul class="dropdown-menu">
-      <li>
-        <a href="#" class="dropdown-item">Carta</a>
+    <ul class="list-unstyled m-2 mb-auto nav nav-pills flex-column">
+      <li class="nav-item">
+        <a
+          href="/"
+          class="nav-link active d-flex justify-content-center align-items-center gap-2"
+        >
+          <i class="bi bi-house-door-fill fs-4"></i>
+          <span class="fs-5 fw-semibold">Inicio</span>
+        </a>
       </li>
+
       <li>
-        <a href="/logout" class="dropdown-item">Cerrar Sesion</a>
+        <a href="#" class="nav-link link-dark d-flex align-items-center gap-2">
+          <i class="bi bi-receipt-cutoff fs-4"></i>
+          <span class="fs-5 fw-semibold">Generar Comandas</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#" class="nav-link link-dark d-flex align-items-center gap-2">
+          <i class="bi bi-wallet fs-4"></i>
+          <span class="fs-5 fw-semibold">Caja Registradora</span>
+        </a>
+      </li>
+
+      <li sec:authorize="hasRole('ADMINISTRADOR')">
+        <a
+          href="#"
+          class="nav-link link-dark d-flex align-items-center gap-2"
+          data-bs-toggle="collapse"
+          data-bs-target="#menuConfiguracion"
+        >
+          <i class="bi bi-wrench-adjustable-circle fs-4"></i>
+          <span class="fs-5 fw-semibold">Configuracion</span>
+        </a>
+
+        <div class="collapse" id="menuConfiguracion">
+          <ul class="list-unstyled">
+            <li class="nav-item border-top border-bottom">
+              <a
+                href="#"
+                class="nav-link link-dark d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-people-fill fs-4"></i>
+                <span class="fw-semibold">Configurar Empleados</span>
+              </a>
+            </li>
+
+            <li class="nav-item border-bottom">
+              <a
+                href="/configuracion/categoria-plato"
+                class="nav-link link-dark d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-tags fs-4"></i>
+                <span class="fw-semibold">Configurar Categoría de Platos</span>
+              </a>
+            </li>
+
+            <li class="nav-item border-bottom">
+              <a
+                href="/configuracion/plato"
+                class="nav-link link-dark d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-egg-fried fs-4"></i>
+                <span class="fw-semibold">Configurar Platos</span>
+              </a>
+            </li>
+
+            <li class="nav-item border-bottom">
+              <a
+                href="/configuracion/mesa"
+                class="nav-link link-dark d-flex align-items-center gap-2"
+              >
+                <span class="material-symbols-outlined fs-4">
+                  table_restaurant
+                </span>
+                <span class="fw-semibold">Configurar Mesa</span>
+              </a>
+            </li>
+
+            <li class="nav-item border-bottom">
+              <a
+                href="/configuracion/metodo-pago"
+                class="nav-link link-dark d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-credit-card fs-4"></i>
+                <span class="fw-semibold">Métodos de Pagos</span>
+              </a>
+            </li>
+
+            <li class="nav-item border-bottom">
+              <a
+                href="/configuracion/establecimiento"
+                class="nav-link link-dark d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-shop fs-4"></i>
+                <span class="fw-semibold">Establecimiento</span>
+              </a>
+            </li>
+
+            <li class="nav-item border-bottom">
+              <a
+                href="#"
+                class="nav-link link-dark d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-currency-dollar fs-4"></i>
+                <span class="fw-semibold">Cajas</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <a
+          href="#"
+          class="nav-link link-dark d-flex align-items-center gap-2"
+          data-bs-toggle="collapse"
+          data-bs-target="#menuReportes"
+        >
+          <i class="bi bi-journal-check fs-4"></i>
+          <span class="fs-5 fw-semibold">Generar Reportes</span>
+        </a>
+
+        <div class="collapse" id="menuReportes">
+          <ul class="list-unstyled">
+            <li class="nav-item border-top border-bottom">
+              <a
+                href="#"
+                class="nav-link link-dark d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-calendar3-event fs-4"></i>
+                <span class="fw-semibold">Venta Diaria</span>
+              </a>
+            </li>
+
+            <li class="nav-item border-bottom">
+              <a
+                href="#"
+                class="nav-link link-dark d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-cash-stack fs-4"></i>
+                <span class="fw-semibold">Reporte Caja </span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </li>
     </ul>
+
+    <div
+      class="dropdown dropup d-flex justify-content-center border-top border-2 border-light bg-body p-1 shadow"
+    >
+      <a
+        href="#"
+        class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+        data-bs-toggle="dropdown"
+      >
+        <span
+          class="fs-6 fw-semibold m-2"
+          th:text="${#authentication.principal.usuario.empleado.nombre}"
+          >USUARIO</span
+        >
+      </a>
+
+      <ul class="dropdown-menu">
+        <li>
+          <a href="#" class="dropdown-item">Carta</a>
+        </li>
+        <li>
+          <a href="/logout" class="dropdown-item">Cerrar Sesion</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

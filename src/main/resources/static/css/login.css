@@ -1,6 +1,6 @@
 /* ------------------------ LOGIN ------------------------ */
 .hero-image {
-  min-height: 100vh;
+  min-height: 100svh;
   background-image: url("/images/background.png");
   background-position: center center;
   background-attachment: fixed;
@@ -9,7 +9,7 @@
 
 .hero-image > div {
   background-color: rgba(0, 0, 0, 0.5);
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
 }

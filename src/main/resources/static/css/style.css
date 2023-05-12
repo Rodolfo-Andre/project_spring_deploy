@@ -23,6 +23,10 @@ img {
   object-fit: cover;
 }
 
+body {
+  min-height: 100svh;
+}
+
 /* --------------------- MODIFICACIONES DE CLASES DE BOOTSTRAP --------------------- */
 .nav-item > a {
   padding-left: 2.5rem;
@@ -38,18 +42,6 @@ img {
 .form-control,
 .form-select {
   border: 1px solid var(--secondary-color);
-}
-
-input[type="search"] {
-  background-image: url("../img/search.png");
-  /* Calculos de bootstrap que aplica para sus elemento de validaciones */
-  background-repeat: no-repeat;
-  background-position: right calc(0.375em + 0.1875rem) center;
-  background-size: calc(1em + 0.375rem) calc(1em + 0.375rem);
-}
-
-input[type="search"]:valid {
-  background-image: none;
 }
 
 /* -------- MODALES -------- */
@@ -97,19 +89,12 @@ a {
 
 /* -------- MAIN -------- */
 .main {
-  font-size: clamp(10px, 2vw, 1rem);
-  background-color: #f7fefe;
+  width: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 25px;
-  padding: clamp(10px, 2vw, 1.75rem);
-}
-/* -------- PARA EL USUARIO ACTUAL -------- */
-.user-photo > img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  padding: 2rem;
 }
 
 /* -------- CAJA GENERAL -------- */
@@ -120,59 +105,12 @@ a {
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
 }
 
-/* -------- PARA EL FORMULARIO DE B�SQUEDA -------- */
-.form-search {
-  display: grid;
-  margin-bottom: 1rem;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, clamp(100px, 50vw, 200px));
-}
-
-.form-search > * {
-  font-size: inherit;
-}
-
-/* -------- PARA BOTONES -------- */
-.btn-add {
-  display: flex;
-  color: var(--white-color);
-  background-color: var(--primary-color);
-  align-items: center;
-  gap: 10px;
-  border: none;
-  border-radius: 8px;
-  padding: 0.5rem;
-  width: fit-content;
-  text-decoration: none;
-}
-
-.btn-add:hover {
-  color: var(--white-color);
-}
-
 /* -------- PARA EL CUERPO DE INFORMACI�N -------- */
 .body-info {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   gap: 15px;
-}
-
-/* -------- DATOS EN FILA -------- */
-.d-row {
-  display: flex;
-  gap: 20px;
-  justify-content: space-between;
-  background-color: var(--gray-light-color);
-  padding: 0.75rem;
-  border-radius: 10px;
-}
-
-.data {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
 }
 
 /* -------- �CONOS DE OPERACIONES CRUD -------- */
@@ -203,42 +141,6 @@ a {
 .icon-delete,
 .icon-delete:hover {
   color: var(--bs-red);
-}
-
-/* -------- PAGINACI�N Y NAVEGACI�N -------- */
-.pagination {
-  margin: 0;
-  gap: 8px;
-}
-
-.navigation-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.navigation-info > * {
-  padding: 0 0.5rem;
-}
-
-/* -------- LINKS -------- */
-.link-desactive {
-  color: var(--dark-color);
-  text-decoration: none;
-  cursor: default;
-}
-
-.link-desactive:hover {
-  color: var(--dark-color);
-}
-
-.link-active {
-  text-decoration: none;
-}
-
-.link-active:hover {
-  color: var(--link-color);
-  text-decoration: underline;
 }
 
 /* -------- Imagen de Platos -------- */
