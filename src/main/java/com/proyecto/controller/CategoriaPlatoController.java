@@ -26,7 +26,7 @@ public class CategoriaPlatoController {
   public CategoriaPlato buscarPorId(@PathVariable String id) {
     return categoriaPlatoService.obtenerPorId(id);
   }
-
+  
   @GetMapping(value = "/obtener")
   @ResponseBody
   public List<CategoriaPlato> obtenerTodo() {

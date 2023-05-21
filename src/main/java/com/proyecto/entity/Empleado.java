@@ -3,6 +3,8 @@ package com.proyecto.entity;
 import java.util.*;
 import org.springframework.data.annotation.CreatedDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.proyecto.utils.Utilidades;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -27,6 +29,7 @@ public class Empleado {
 
   @ManyToOne
   @JoinColumn(name = "CARGO_ID")
+ 
   private Cargo cargo;
 
   @OneToMany(mappedBy = "empleado")
@@ -128,4 +131,14 @@ public class Empleado {
   public void setUsuario(Usuario usuario) {
     this.usuario = usuario;
   }
+  
+  //Generar Contraseña
+  public static String generarContrasenia(String apellido) {  	
+		int nroCaracterExtraer = 2;
+		int nroRamdom = Utilidades.generarNumeroRandom(1, apellido.length() - nroCaracterExtraer);
+		String caracterApe = apellido.substring(nroRamdom, nroRamdom + nroCaracterExtraer);
+		String mayusculaCaracterApe = caracterApe.substring(0, 1).toUpperCase() +  caracterApe.substring(1);
+		
+      return mayusculaCaracterApe + "$" + Utilidades.generarNumeroRandom(1000, 5000) ;
+  }	
 }

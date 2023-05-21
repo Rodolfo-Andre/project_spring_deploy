@@ -1,5 +1,7 @@
 package com.proyecto.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +18,7 @@ public class Usuario {
   private int codigo;
 
   @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+ @JsonIgnore
   private Empleado empleado;
 
   public Integer getId() {

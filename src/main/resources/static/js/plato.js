@@ -5,9 +5,9 @@ const $d = document;
 
 $d.addEventListener("DOMContentLoaded", () => {
   initializeTable();
-  addEventToTable();
+  //addEventToTable();
   addEventToButtonAdd();
-  addEventToButtonConfirmAddAndConfirmUpdate();
+  //addEventToButtonConfirmAddAndConfirmUpdate();
 });
 
 const initializeTable = () => {
@@ -143,7 +143,7 @@ const addEventToTable = () => {
 															<select class="form-select" name="cboCategoryDish" id="cboCategoryDish">
 																${$options}
 															</select>
-													</div>
+														</div>
 												</div>
 											</form>`,
                 footer: `<input  id="b-dish" form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
@@ -195,6 +195,7 @@ const addEventToTable = () => {
 
 const addEventToButtonAdd = () => {
   $("#btn-add").on("click", () => {
+    
     $.get(`/configuracion/categoria-plato/obtener`, (data) => {
       if (!data.length) {
         const contentModal = {
@@ -216,6 +217,7 @@ const addEventToButtonAdd = () => {
         ),
         $options = listOptions.join(" ");
 
+        console.log($options)
       const contentModal = {
         header: `<i class="icon text-center text-primary bi bi-plus-circle-fill"></i>
 								<h4 class="modal-title text-center" id="modal-prototype-label">Nuevo Plato</h4>`,
