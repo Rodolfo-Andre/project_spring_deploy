@@ -31,16 +31,23 @@ const initializeTable = () => {
 
         if (!["Información", "Modificar", "Eliminar"].includes(title)) {
           $(this).html(
-            "<label>" +
-              title +
-              '</label><br><input type="seacrh" placeholder="Buscar..." class="form-control form-control-sm"/></div>'
+            `
+            <div class="d-flex gap-3 flex-column align-items-start">
+              <label>${title}</label>
+              <input type="seacrh" placeholder="Buscar..." class="form-control form-control-sm w-auto"/>
+            </div>
+           `
           );
 
-          $("input", this).on("keyup change", function () {
-            if (table.column(i).search() !== this.value) {
-              table.column(i).search(this.value).draw();
-            }
-          });
+          $("input", this)
+            .on("click", function (e) {
+              e.stopPropagation();
+            })
+            .on("keyup change", function (e) {
+              if (table.column(i).search() !== this.value) {
+                table.column(i).search(this.value).draw();
+              }
+            });
         }
       });
     },

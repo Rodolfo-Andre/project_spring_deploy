@@ -30,16 +30,23 @@ const initializeTable = () => {
 
         if (!["Información", "Modificar", "Eliminar"].includes(title)) {
           $(this).html(
-            "<label>" +
-              title +
-              '</label><br><input type="seacrh" placeholder="Buscar..." class="form-control form-control-sm"/></div>'
+            `
+            <div class="d-flex gap-3 flex-column align-items-start">
+              <label>${title}</label>
+              <input type="seacrh" placeholder="Buscar..." class="form-control form-control-sm w-auto"/>
+            </div>
+           `
           );
 
-          $("input", this).on("keyup change", function () {
-            if (table.column(i).search() !== this.value) {
-              table.column(i).search(this.value).draw();
-            }
-          });
+          $("input", this)
+            .on("click", function (e) {
+              e.stopPropagation();
+            })
+            .on("keyup change", function (e) {
+              if (table.column(i).search() !== this.value) {
+                table.column(i).search(this.value).draw();
+              }
+            });
         }
       });
     },
@@ -132,13 +139,13 @@ const addEventToButtonAdd = () => {
 							<div class="row align-items-sm-center">
 								<label class="col-sm-5 fw-bold" for="name">Nombre de la Categoría:</label>
 								<div class="col-sm-7">
-									<input class="form-control form-control-lg" type="text" id="name" name="name" value=""/>
+									<input class="form-control" type="text" id="name" name="name" value=""/>
 									<div id="name-invalid" class="text-start invalid-feedback">Introduce la categoría de plato correctamente. Mínimo 3 caracteres, máximo 20.</div>
 								</div>
 							</div>
 						</form>`,
-      footer: `<input id="add" form="form-add" type="submit" class="w-50 btn btn-primary btn-lg" value="AÑADIR"/>
-						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary btn-lg">CANCELAR</button>`,
+      footer: `<input id="add" form="form-add" type="submit" class="w-50 btn btn-primary" value="AÑADIR"/>
+						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
     };
 
     showModal(contentModal);

@@ -1,13 +1,12 @@
-import useFetch from "./fetch.js";
 import { showModal } from "./modal.js";
 
 const $d = document;
 
 $d.addEventListener("DOMContentLoaded", () => {
   initializeTable();
-  //addEventToTable();
+  addEventToTable();
   addEventToButtonAdd();
-  //addEventToButtonConfirmAddAndConfirmUpdate();
+  addEventToButtonConfirmAddAndConfirmUpdate();
 });
 
 const initializeTable = () => {
@@ -36,16 +35,23 @@ const initializeTable = () => {
           !["Imagen", "Información", "Modificar", "Eliminar"].includes(title)
         ) {
           $(this).html(
-            "<label>" +
-              title +
-              '</label><br><input type="seacrh" placeholder="Buscar..." class="form-control form-control-sm"/></div>'
+            `
+            <div class="d-flex gap-3 flex-column align-items-start">
+              <label>${title}</label>
+              <input type="seacrh" placeholder="Buscar..." class="form-control form-control-sm w-auto"/>
+            </div>
+           `
           );
 
-          $("input", this).on("keyup change", function () {
-            if (table.column(i).search() !== this.value) {
-              table.column(i).search(this.value).draw();
-            }
-          });
+          $("input", this)
+            .on("click", function (e) {
+              e.stopPropagation();
+            })
+            .on("keyup change", function (e) {
+              if (table.column(i).search() !== this.value) {
+                table.column(i).search(this.value).draw();
+              }
+            });
         }
       });
     },
@@ -160,16 +166,7 @@ const addEventToTable = () => {
               let files = null;
 
               $inputFile.addEventListener("change", () => {
-                let $img = $d.getElementById("update-img-dish");
-
-                if ($inputFile.files.length === 0) {
-                  if (files != null) {
-                    $inputFile.files = files;
-                  }
-                } else {
-                  files = $inputFile.files;
-                  $img.setAttribute("src", URL.createObjectURL(files[0]));
-                }
+                checkFile($inputFile, "update-img-dish", files);
               });
             }
           });
@@ -195,7 +192,6 @@ const addEventToTable = () => {
 
 const addEventToButtonAdd = () => {
   $("#btn-add").on("click", () => {
-    
     $.get(`/configuracion/categoria-plato/obtener`, (data) => {
       if (!data.length) {
         const contentModal = {
@@ -217,7 +213,7 @@ const addEventToButtonAdd = () => {
         ),
         $options = listOptions.join(" ");
 
-        console.log($options)
+      console.log($options);
       const contentModal = {
         header: `<i class="icon text-center text-primary bi bi-plus-circle-fill"></i>
 								<h4 class="modal-title text-center" id="modal-prototype-label">Nuevo Plato</h4>`,
@@ -271,16 +267,9 @@ const addEventToButtonAdd = () => {
       let files = null;
 
       $inputFile.addEventListener("change", () => {
-        const $img = $d.getElementById("add-img-dish");
+        const result = checkFile($inputFile, "add-img-dish", files);
 
-        if ($inputFile.files.length === 0) {
-          if (files != null) {
-            $inputFile.files = files;
-          }
-        } else {
-          files = $inputFile.files;
-          $img.setAttribute("src", URL.createObjectURL(files[0]));
-        }
+        if (result) files = result;
       });
     });
   });
@@ -337,6 +326,34 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
       }
     }
   });
+};
+
+const checkFile = ($inputFile, imgId, files) => {
+  const $img = $d.getElementById(imgId);
+  const isCorrect =
+    $inputFile.files.length > 0 && $inputFile.files[0].size < 1048576;
+  const isFileNotNull = files !== null;
+
+  if ($inputFile.files.length === 0 && isFileNotNull) {
+    $inputFile.files = files;
+    return;
+  }
+
+  if (!isCorrect) {
+    alert("Por favor seleccione una imagen con peso menor a 1MB");
+
+    if (isFileNotNull) {
+      $inputFile.files = files;
+      return;
+    }
+
+    $inputFile.value = null;
+    return;
+  }
+
+  files = $inputFile.files;
+  $img.setAttribute("src", URL.createObjectURL(files[0]));
+  return files;
 };
 
 /* if (object == "dish") {

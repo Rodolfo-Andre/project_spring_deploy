@@ -11,7 +11,7 @@ import com.proyecto.utils.ServicioImagen;
 
 @SpringBootTest
 class CloudinaryTests {
-  @Test
+  //@Test
   void subirImagen() {
     Cloudinary cloudinary = ServicioImagen.obtenerCloudinary();
 

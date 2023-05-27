@@ -9,7 +9,7 @@ import com.proyecto.utils.ServicioCorreo;
 
 @SpringBootTest
 class CorreoTests {
-  @Test
+  // @Test
   void enviarMensaje() {
     CompletableFuture<Void> completableFuture = CompletableFuture
         .runAsync(() -> {

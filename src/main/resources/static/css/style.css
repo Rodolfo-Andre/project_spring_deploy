@@ -87,14 +87,18 @@ a {
   font-size: 4rem;
 }
 
+.header-info > button > * {
+  vertical-align: middle;
+}
+
 /* -------- MAIN -------- */
 .main {
-  width: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 25px;
   padding: 2rem;
+  min-width: 0%;
 }
 
 /* -------- CAJA GENERAL -------- */
@@ -116,6 +120,7 @@ a {
 /* -------- �CONOS DE OPERACIONES CRUD -------- */
 .icon-action {
   cursor: pointer;
+  font-size: 1.5rem;
   transition: opacity 300ms ease-in-out;
 }
 
