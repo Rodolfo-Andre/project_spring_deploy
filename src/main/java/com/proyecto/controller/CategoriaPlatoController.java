@@ -85,4 +85,10 @@ public class CategoriaPlatoController {
 
     return "redirect:/configuracion/categoria-plato";
   }
+
+  @GetMapping(value = "/obtener-tamano-plato-por-categoria/{id}")
+  @ResponseBody
+  public int obtenerTamanoPlatoDeCategoria(@PathVariable String id) {
+    return categoriaPlatoService.obtenerTamanoPlatoDeCategoria(id);
+  }
 }

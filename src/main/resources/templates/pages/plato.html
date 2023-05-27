@@ -54,11 +54,13 @@
                   <td th:text="${plato.id}"></td>
                   <td th:text="${plato.nombre}"></td>
                   <td>
-                    <img
-                      style="width: 100px; height: 100px"
-                      th:src="${plato.imagen}"
-                      th:alt="${plato.nombre}"
-                    />
+                    <div style="width: 200px">
+                      <img
+                        style="width: 100px; height: 100px"
+                        th:src="${plato.imagen}"
+                        th:alt="${plato.nombre}"
+                      />
+                    </div>
                   </td>
                   <td th:text="${plato.precioPlato}"></td>
                   <td th:text="${plato.categoriaPlato.nombre}"></td>

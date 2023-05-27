@@ -3,11 +3,7 @@
   --primary-color: #0d6efd;
   --secondary-color: #5197ff;
   --white-color: #ffffff;
-  --gray-color: #cccccc;
-  --gray-light-color: #f3f3f3;
-  --gray-dark-color: #666666;
   --link-color: #0094ff;
-  --dark-color: #212529;
 }
 
 /* --------------------- TIPOGRAF�A --------------------- */
@@ -25,6 +21,7 @@ img {
 
 body {
   min-height: 100svh;
+  background-color: rgb(238, 242, 246);
 }
 
 /* --------------------- MODIFICACIONES DE CLASES DE BOOTSTRAP --------------------- */
@@ -97,7 +94,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 25px;
-  padding: 2rem;
+  padding: 1rem;
   min-width: 0%;
 }
 
@@ -106,7 +103,6 @@ a {
   background-color: var(--white-color);
   padding: 1rem;
   border-radius: 17px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
 }
 
 /* -------- PARA EL CUERPO DE INFORMACI�N -------- */

@@ -114,7 +114,7 @@ const addEventToTable = () => {
       }
 
       if ($listBtnDelete.filter(e.currentTarget).length) {
-        const contentModal = {
+        let contentModal = {
           header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR LA CATEGORIA DE PLATO - ${id}?</h4>`,
           body: `<form id="form-delete" action="/configuracion/categoria-plato/eliminar" method="POST">
@@ -124,7 +124,23 @@ const addEventToTable = () => {
 						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
         };
 
-        showModal(contentModal);
+        $.get(
+          `/configuracion/categoria-plato/obtener-tamano-plato-por-categoria/${id}`,
+          (quantityOfDishesFound) => {
+            if (quantityOfDishesFound) {
+              contentModal = {
+                header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
+										<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR LA CATEGORÍA - ${id}</h4>`,
+                body: `<p>No es posible eliminar la categoría debido a que se encontró ${quantityOfDishesFound} ${
+                  quantityOfDishesFound > 1 ? "platos" : "plato"
+                } asignado a dicha categoría.</p>`,
+                footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
+              };
+            }
+
+            showModal(contentModal);
+          }
+        );
       }
     }
   );
@@ -181,39 +197,3 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
     }
   });
 };
-
-/* if (object == "categoryDish") {
-        let params = {
-          type: "findDishInCategoryDish",
-          id,
-        };
-
-        let props = {
-          url: "categoria-plato?" + new URLSearchParams(params),
-          success: async (json) => {
-            let quantityOfDishesFound = (await json)["quantityOfDishesFound"];
-
-            console.log(quantityOfDishesFound);
-
-            // Regla del Negocio: No se puede eliminar una categoria esté siendo referenciada por uno o más platos
-            if (quantityOfDishesFound) {
-              contentModal = {
-                header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
-										<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR LA CATEGORÍA - ${id}</h4>`,
-                body: `<p>No se puede eliminar la categoría debido a que se encontró ${quantityOfDishesFound} ${
-                  quantityOfDishesFound > 1 ? "platos" : "plato"
-                } en dicha categoría.</p>`,
-                footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
-              };
-            }
-
-            showModal(contentModal);
-          },
-          options: {
-            method: "POST",
-          },
-        };
-
-        useFetch(props);
-      }
- */
