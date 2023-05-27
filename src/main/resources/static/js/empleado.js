@@ -80,7 +80,7 @@ const addEventToTable = () => {
           if (data) {
             const contentModal = {
               header: `<i class="icon text-center text-link bi bi-info-circle-fill"></i>
-										 <h4 class="modal-title text-center" id="modal-prototype-label">Categoría de Plato - ${data.id}</h4>`,
+										 <h4 class="modal-title text-center" id="modal-prototype-label">Empleado - ${data.id}</h4>`,
               body: `<div class="text-center">
 											<div><strong>Nombre del empleado: </strong>${data.nombre}</div>
                       <div><strong>Apellido del empleado: </strong>${
@@ -123,8 +123,8 @@ const addEventToTable = () => {
           $.get(`/configuracion/empleado/obtener/${id}`, (data) => {
             if (data) {
               const contentModal = {
-                header: `<i class="icon text-center text-primary bi bi-plus-circle-fill"></i>
-						          <h4 class="modal-title text-center" id="modal-prototype-label">Nuevo Empleado-${data.id}-</h4>`,
+                header: `<i class="icon text-center text-warning bi bi-pencil-square"></i>
+						          <h4 class="modal-title text-center" id="modal-prototype-label">Actualizar Empleado - ${data.id}</h4>`,
                 body: `<form class="d-flex flex-column gap-4" id="form-add" action="/configuracion/empleado/actualizar" method="POST">		
                     <input type="hidden" name="id" value="${data.id}"/>
 							
@@ -179,8 +179,8 @@ const addEventToTable = () => {
 
 							
 						</form>`,
-                footer: `<input id="add" form="form-add" type="submit" class="w-50 btn btn-primary" value="AÑADIR"/>
-						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
+                footer: `<input id="update" form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
+										<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
               };
 
               showModal(contentModal);

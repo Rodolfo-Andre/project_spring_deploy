@@ -105,7 +105,7 @@ const addEventToTable = () => {
 											</div>		
 										</form>`,
               footer: `<input id="update" form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
-										<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>	`,
+										<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
             };
 
             showModal(contentModal);
