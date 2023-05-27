@@ -14,6 +14,7 @@ import com.proyecto.service.EmpleadoService;
 public class EmpleadoController {
   @Autowired
   EmpleadoService empleadoService;
+
   @Autowired
   PasswordEncoder passwordEncoder;
 
