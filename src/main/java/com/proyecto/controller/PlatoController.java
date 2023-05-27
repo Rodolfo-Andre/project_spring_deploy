@@ -47,10 +47,12 @@ public class PlatoController {
       plato.setCategoriaPlato(categoriaPlato);
 
       platoService.agregar(plato);
-      redirect.addFlashAttribute("Mensaje", "Plato agregado correctamente");
+      redirect.addFlashAttribute("mensaje", "Plato registrado correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al agregar");
+      redirect.addFlashAttribute("mensaje", "Error al registrar plato");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/plato";
@@ -79,10 +81,12 @@ public class PlatoController {
       plato.setCategoriaPlato(categoriaPlato);
 
       platoService.actualizar(plato);
-      redirect.addFlashAttribute("Mensaje", "Plato actualizado correctamente");
+      redirect.addFlashAttribute("mensaje", "Plato actualizado correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al actualizar");
+      redirect.addFlashAttribute("mensaje", "Error al actualizar plato");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/plato";
@@ -92,10 +96,12 @@ public class PlatoController {
   public String eliminar(RedirectAttributes redirect, @RequestParam("id") String id) {
     try {
       platoService.eliminar(id);
-      redirect.addFlashAttribute("Mensaje", "Plato eliminado correctamente");
+      redirect.addFlashAttribute("mensaje", "Plato eliminado correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al eliminar");
+      redirect.addFlashAttribute("mensaje", "Error al eliminar plato");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/plato";

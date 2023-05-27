@@ -340,7 +340,16 @@ const checkFile = ($inputFile, imgId, files) => {
   }
 
   if (!isCorrect) {
-    alert("Por favor seleccione una imagen con peso menor a 1MB");
+    Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    }).fire({
+      icon: "error",
+      title: "Por favor seleccione una imagen con peso menor a 1MB",
+    });
 
     if (isFileNotNull) {
       $inputFile.files = files;

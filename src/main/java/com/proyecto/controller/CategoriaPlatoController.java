@@ -1,6 +1,6 @@
 package com.proyecto.controller;
 
-import java.util.List;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +26,7 @@ public class CategoriaPlatoController {
   public CategoriaPlato buscarPorId(@PathVariable String id) {
     return categoriaPlatoService.obtenerPorId(id);
   }
-  
+
   @GetMapping(value = "/obtener")
   @ResponseBody
   public List<CategoriaPlato> obtenerTodo() {
@@ -40,10 +40,13 @@ public class CategoriaPlatoController {
       categoriaPlato.setNombre(nombreCategoria);
 
       categoriaPlatoService.agregar(categoriaPlato);
-      redirect.addFlashAttribute("Mensaje", "Categoría de plato agregada correctamente");
+
+      redirect.addFlashAttribute("mensaje", "Categoría de plato registrada correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al agregar");
+      redirect.addFlashAttribute("mensaje", "Error al registrar categoría de plato");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/categoria-plato";
@@ -57,10 +60,12 @@ public class CategoriaPlatoController {
       categoriaPlato.setNombre(nombre);
 
       categoriaPlatoService.actualizar(categoriaPlato);
-      redirect.addFlashAttribute("Mensaje", "Categoría de plato actualizada correctamente");
+      redirect.addFlashAttribute("mensaje", "Categoría de plato actualizada correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al actualizar");
+      redirect.addFlashAttribute("mensaje", "Error al actualizar categoría de plato");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/categoria-plato";
@@ -70,10 +75,12 @@ public class CategoriaPlatoController {
   public String eliminar(RedirectAttributes redirect, @RequestParam("id") String id) {
     try {
       categoriaPlatoService.eliminar(id);
-      redirect.addFlashAttribute("Mensaje", "Categoría de plato eliminada correctamente");
+      redirect.addFlashAttribute("mensaje", "Categoría de plato eliminada correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al eliminar");
+      redirect.addFlashAttribute("mensaje", "Error al eliminar categoría de plato");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/categoria-plato";

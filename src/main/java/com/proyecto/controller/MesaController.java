@@ -33,10 +33,12 @@ public class MesaController {
       mesa.setCantidadAsientos(sillas);
       mesa.setEstado("Libre");
       mesaService.agregar(mesa);
-      redirect.addFlashAttribute("Mensaje", "Mesa agregada correctamente");
+      redirect.addFlashAttribute("mensaje", "Mesa registrada correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al agregar");
+      redirect.addFlashAttribute("mensaje", "Error al registrar mesa");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/mesa";
@@ -50,10 +52,12 @@ public class MesaController {
       mesa.setCantidadAsientos(sillas);
 
       mesaService.actualizar(mesa);
-      redirect.addFlashAttribute("Mensaje", "Mesa actualizada correctamente");
+      redirect.addFlashAttribute("mensaje", "Mesa actualizada correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al actualizar");
+      redirect.addFlashAttribute("mensaje", "Error al actualizar mesa");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/mesa";
@@ -63,10 +67,12 @@ public class MesaController {
   public String eliminar(RedirectAttributes redirect, @RequestParam("id") int id) {
     try {
       mesaService.eliminar(id);
-      redirect.addFlashAttribute("Mensaje", "Mesa eliminada correctamente");
+      redirect.addFlashAttribute("mensaje", "Mesa eliminada correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al eliminar");
+      redirect.addFlashAttribute("mensaje", "Error al eliminar mesa");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/mesa";

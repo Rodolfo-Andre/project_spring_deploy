@@ -3,7 +3,7 @@ package com.proyecto.controller;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.proyecto.entity.Usuario;
@@ -15,6 +15,8 @@ import com.proyecto.utils.*;
 public class SesionController {
   @Autowired
   UsuarioService usuarioService;
+  @Autowired
+  PasswordEncoder passwordEncoder;
 
   @GetMapping(value = "")
   public String login() {
@@ -53,19 +55,16 @@ public class SesionController {
 
     int codigo = Utilidades.generarNumeroRandom(1000, 9000);
 
-    /*
-     * CompletableFuture
-     * .runAsync(() -> {
-     * try {
-     * ServicioCorreo.enviarMensaje("rcaballerov_10@outlook.com ",
-     * "Tu código de verificación es: " + codigo, "Código de Verificaión");
-     * } catch (Exception e) {
-     * respuesta.put("sent", false);
-     * return respuesta;
-     * e.printStackTrace();
-     * }
-     * });
-     */
+    CompletableFuture
+        .runAsync(() -> {
+          try {
+            ServicioCorreo.enviarMensaje(usuario.getCorreo(),
+                "Tu código de verificación es: " + codigo, "Código de Verificaión");
+          } catch (Exception e) {
+
+            e.printStackTrace();
+          }
+        });
 
     System.out.println("Tu código es" + codigo);
 
@@ -97,8 +96,6 @@ public class SesionController {
   @PostMapping(value = "/cambiar-contrasena")
   @ResponseBody
   public Map<String, Boolean> cambiarContrasena(@RequestBody Map<String, Object> request) {
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     String email = request.get("email").toString();
     String password = request.get("password").toString();
     String passwordEncoded = passwordEncoder.encode(password);

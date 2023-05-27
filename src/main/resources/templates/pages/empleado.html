@@ -75,7 +75,10 @@
                     <i class="icon-action icon-update bi bi-pencil-square"></i>
                   </td>
                   <td class="text-center">
-                    <i class="icon-action icon-delete bi bi-trash-fill"></i>
+                    <i
+                      th:if="${#authentication.principal.usuario.empleado.id != empleado.id }"
+                      class="icon-action icon-delete bi bi-trash-fill"
+                    ></i>
                   </td>
                 </tr>
               </tbody>

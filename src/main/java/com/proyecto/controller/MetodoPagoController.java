@@ -33,10 +33,12 @@ public class MetodoPagoController {
       metodoPago.setMetodo(metodo);
 
       metodoPagoService.agregar(metodoPago);
-      redirect.addFlashAttribute("Mensaje", "Método de pago agregado correctamente");
+      redirect.addFlashAttribute("mensaje", "Método de pago registrado correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al agregar");
+      redirect.addFlashAttribute("mensaje", "Error al registrar método de pago");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/metodo-pago";
@@ -50,10 +52,12 @@ public class MetodoPagoController {
       metodoPago.setMetodo(metodo);
 
       metodoPagoService.actualizar(metodoPago);
-      redirect.addFlashAttribute("Mensaje", "Método de pago actualizado correctamente");
+      redirect.addFlashAttribute("mensaje", "Método de pago actualizado correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al actualizar");
+      redirect.addFlashAttribute("mensaje", "Error al actualizar método de pago");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/metodo-pago";
@@ -63,10 +67,12 @@ public class MetodoPagoController {
   public String eliminar(RedirectAttributes redirect, @RequestParam("id") int id) {
     try {
       metodoPagoService.eliminar(id);
-      redirect.addFlashAttribute("Mensaje", "Método de pago eliminado correctamente");
+      redirect.addFlashAttribute("mensaje", "Método de pago eliminado correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al eliminar");
+      redirect.addFlashAttribute("mensaje", "Error al eliminar método de pago");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/metodo-pago";

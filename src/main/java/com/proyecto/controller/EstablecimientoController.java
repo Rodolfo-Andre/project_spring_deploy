@@ -25,10 +25,12 @@ public class EstablecimientoController {
   public String actualizar(RedirectAttributes redirect, Establecimiento establecimiento) {
     try {
       establecimientoService.actualizar(establecimiento);
-      redirect.addFlashAttribute("Mensaje", "Establecimiento actualizado correctamente");
+      redirect.addFlashAttribute("mensaje", "Establecimiento actualizado correctamente");
+      redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
       e.printStackTrace();
-      redirect.addFlashAttribute("Mensaje", "Error al actualizar");
+      redirect.addFlashAttribute("mensaje", "Error al eliminar establecimiento");
+      redirect.addFlashAttribute("tipo", "error");
     }
 
     return "redirect:/configuracion/establecimiento";
