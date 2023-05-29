@@ -68,4 +68,13 @@ public class DetalleComanda {
   public void setComanda(Comanda comanda) {
     this.comanda = comanda;
   }
+
+  public String getObservacion() {
+    return this.observacion;
+  }
+
+
+  public void setObservacion(String observacion) {
+    this.observacion = observacion;
+  }
 }

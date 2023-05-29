@@ -35,4 +35,8 @@ public class EmpleadoService {
 
     }
 
+    public Empleado findEmpleadoByIdUsario(Integer id) {
+        return empleadoRepository.findEmpleadoByUsuario(id);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.proyecto.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BaseDataInput {
@@ -9,8 +10,12 @@ public class BaseDataInput {
     private int cantidadPersonas;
     private double precioTotal;
     private List<PlatoComanda> listaPlatos;
+    public int idUsuario;
 
     public BaseDataInput() {
+
+        this.listaPlatos = new ArrayList<PlatoComanda>();
+
     }
 
     public int getNumeroMesa() {

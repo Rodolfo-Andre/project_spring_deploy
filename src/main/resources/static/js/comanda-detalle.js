@@ -10,6 +10,7 @@ const ViewCore = function () {
     init: async function () {
       let me = this;
       this.txtNumeroComanda = $("#txt-numero-comanda");
+      this.IdUsuario = $("#txt-id-usuario");
       this.txtEstadoMesa = $("#txt-estado-mesa");
       this.txtNumeroMesa = $("#txt-numero-mesa");
       this.txtCantidadPersonas = $("#txt-cantidad-persona");
@@ -21,15 +22,15 @@ const ViewCore = function () {
       this.btnGenerar = $("#btn-guardar-comanda");
       this.containerError = $("#alerta-error");
       this.btnAddPlato = $("#btn-add-plato");
-
       this.btnActualizar = $("#btn-actualizar-comanda");
       this.listaDeEnvioPlatos = [];
       this.getCategoriaPlato();
 
+      //values modal
+
       if (this.txtEstadoMesa.val() == "Ocupado") {
         await this.getSingle(this.getUrlParameter());
       }
-
       this.attachEvents();
     },
     attachEvents: function () {
@@ -140,27 +141,29 @@ const ViewCore = function () {
         });
       });
     },
-    modalPlato: async function () {
+    modalPlato: async function (dataModal) {
       const categorias = await this.getCategoriaPlato();
       let me = this;
       let listPlatos = [];
       let plato = {};
       const contentModal = {
         header: `<i class="icon text-center text-primary bi bi-plus-circle-fill"></i>
-                            <h4 class="modal-title text-center" id="modal-prototype-label">Nuevo Empleado</h4>
-
+                            <h4 class="modal-title text-center" id="modal-prototype-label">
+                            ${dataModal ? "Editar Plato" : "Agregar Plato"}
+                            </h4>
                             <div 
                              style="display: none"
                             class="alert alert-danger m-2" id="error-platos">
-                            </div>
-                            
-                            `,
-        body: `<form class="d-flex flex-column gap-4" id="form-add" action="/configuracion/empleado/registrar" method="POST">		
+                            </div>`,
+        body: `<form class="d-flex flex-column gap-4" id="form-add"  method="POST">		
                 <div class="row align-items-sm-center">
                         <label class="col-sm-5 fw-bold">Cateogria:</label>
                     <div class="col-sm-7">
                     <select 
-                        id="categoria" class="form-select" name="categoria" style="text-transform: capitalize">
+                        id="categoria" 
+                        ${dataModal ? "disabled" : ""}
+                        value="${dataModal ? dataModal.categoriaPlato.id : ""}"
+                        class="form-select" name="categoria" style="text-transform: capitalize">
                         <option value="">Seleccione</option>
                         ${categorias.map((categoria) => {
                           return `<option value="${categoria.id}">${categoria.nombre}</option>`;
@@ -174,7 +177,8 @@ const ViewCore = function () {
                     <div class="col-sm-7">
                     <select 
                      id="plato"
-                     disabled
+                      ${dataModal ? "disabled" : ""}
+                      value="${dataModal ? dataModal.id : ""}"
                     class="form-select" name="plato" style="text-transform: capitalize">
                     <option value="">Seleccione</option>
                     </select>
@@ -185,13 +189,29 @@ const ViewCore = function () {
                                     <label class="col-sm-5 fw-bold" for="name">Cantidad:</label>
                                     <div class="col-sm-7">
                                         <input 
+                                        value="${
+                                          dataModal ? dataModal.cantidad : ""
+                                        }"
                                          id="cantidadDePedido"
                                         class="form-control" type="number" id="name" name="cantidad" />
                                     </div>
                     </div>
+
+                    <div class="row align-items-sm-center">
+                    <label class="col-sm-5 fw-bold" for="name">Observacion:</label>
+                    <div class="col-sm-7">
+                        <input 
+                         id="txt-observacion"
+                        class="form-control" 
+                        value="${dataModal ? dataModal.observacion : ""}"
+                        type="text" id="name" name="observacion" />
+                    </div>
+    </div>
     
                             </form>`,
-        footer: `<button id="add"  class="w-50 btn btn-primary"  > AÑADIR</button>
+        footer: `<button id="add"  class="w-50 btn btn-primary"  > 
+         ${dataModal ? "EDITAR" : "AGREGAR"}
+        </button>
         <button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
       };
 
@@ -220,6 +240,30 @@ const ViewCore = function () {
         e.preventDefault();
         const platoId = $("#plato").val();
         const cantidad = $("#cantidadDePedido").val();
+        const observacion = $("#txt-observacion").val();
+
+        if (dataModal) {
+          dataModal.cantidad = cantidad;
+          dataModal.observacion = observacion;
+          me.initTable(dataModal);
+          me.showMessage(
+            "Plato editado correctamente",
+            "success",
+            "Exito!"
+          ).then(() => {
+            $("#modal-prototype").modal("hide");
+          });
+          return;
+        }
+
+        const exitePlato = me.listaDeEnvioPlatos.find(
+          (plato) => plato.id == platoId
+        );
+
+        if (exitePlato) {
+          me.showMessage("El plato ya fue agregado", "error", "Error!");
+          return;
+        }
 
         let data = {
           id: platoId,
@@ -228,7 +272,9 @@ const ViewCore = function () {
           cantidad: cantidad,
           categoriaPlato: plato.categoriaPlato,
           precio: plato.precioPlato,
+          observacion: observacion,
         };
+
         $("#cantidadDePedido").val("");
         const errors = Object.keys(data).filter((key) => {
           return data[key] == "" || data[key] == null || data[key] == undefined;
@@ -240,64 +286,27 @@ const ViewCore = function () {
           return;
         }
 
-        $("#error-platos").text("").css("display", "none");
+        if (cantidad <= 0) {
+          $("#error-platos")
+            .text("La cantidad debe ser mayor a 0")
+            .css("display", "block");
+          return;
+        }
 
-        me.addPlatoToTable(data, cantidad);
+        $("#error-platos").text("").css("display", "none");
+        me.initTable(data);
+        me.showMessage(
+          "Plato añadido correctamente",
+          "success",
+          "Agregado"
+        ).then(() => {
+          $("#modal-prototype").modal("hide");
+        });
       });
     },
     addPlatoToTable: function (data) {
       let me = this;
-
-      const exits = me.listaDeEnvioPlatos.find((plato) => plato.id == data.id);
-      if (exits) {
-        exits.cantidad = parseInt(exits.cantidad) + parseInt(data.cantidad);
-        $(`tr[data-id="${exits.id}"]`).remove();
-        data = exits;
-        me.listaDeEnvioPlatos = me.listaDeEnvioPlatos.filter(
-          (plato) => plato.id != data.id
-        );
-      }
-
-      $("#tbBodyPlatos").append(`<tr
-      data-id="${data.id}"
-      >
-      <td>${data.id}</td>
-      <td>
-      <img src="${data.imagen}" alt="" width="50" height="50">
-        </td>
-        <td>${data.nombre}</td>
-        <td>${data.cantidad}</td>
-        <td>${data.categoriaPlato.nombre}</td>
-        <td>${data.precio * data.cantidad}</td>
-        <td>
-            <button class="btn btn-danger btn-sm js-btn-delete">
-            <i class="bi bi-trash-fill"></i>    
-            </button>
-            </td>
-            </tr>`);
-
-      me.listaDeEnvioPlatos.push(data);
-      console.log(me.listaDeEnvioPlatos);
-      const total = me.listaDeEnvioPlatos.reduce((total, plato) => {
-        return total + plato.precio * plato.cantidad;
-      }, 0);
-
-      me.txtPrecioTotal.val(total);
-
-      $(".js-btn-delete").click(function (e) {
-        e.preventDefault();
-        const id = $(this).parents("tr").data("id");
-        console.log("id", id);
-        me.listaDeEnvioPlatos = me.listaDeEnvioPlatos.filter(
-          (plato) => plato.id != id
-        );
-        $(this).parents("tr").remove();
-        me.txtPrecioTotal.val(
-          me.listaDeEnvioPlatos.reduce((total, plato) => {
-            return total + plato.precio * plato.cantidad;
-          }, 0)
-        );
-      });
+      me.initTable(data);
     },
 
     getSingle: async function (id) {
@@ -312,7 +321,6 @@ const ViewCore = function () {
         me.txtPrecioTotal.val(data.precioTotal);
         me.txtEstadoComanda.val(data.estadoComanda.estado);
         const listado = [];
-        console.log(data.listaDetalleComanda);
 
         data.listaDetalleComanda.forEach((plato) => {
           listado.push({
@@ -322,10 +330,9 @@ const ViewCore = function () {
             cantidad: plato.cantidadPedido,
             categoriaPlato: plato.plato.categoriaPlato,
             precio: plato.plato.precioPlato,
+            observacion: plato.observacion,
           });
         });
-
-        console.log(listado);
 
         this.listaDeEnvioPlatos = listado;
 
@@ -342,17 +349,15 @@ const ViewCore = function () {
         // );
       }
     },
-
-    deleteComanda: async function (id) {},
-
     saveComanda: async function () {
       let me = this;
       const listIdPlatos = this.listaDeEnvioPlatos.map((plato) => ({
         id: plato.id,
         cantidad: plato.cantidad,
+        observacion: plato.observacion,
       }));
-      console.log(this.txtEstadoMesa.val());
-      
+      console.log(listIdPlatos);
+
       const baseUrl = this.contextUrl + this.apis.save;
       const baseData = {
         id:
@@ -363,6 +368,7 @@ const ViewCore = function () {
         precioTotal: parseFloat(this.txtPrecioTotal.val()) ?? 0,
         cantidadPersonas: parseInt(this.txtCantidadPersonas.val()),
         listaPlatos: listIdPlatos,
+        idUsuario: me.IdUsuario.val(),
       };
 
       try {
@@ -386,13 +392,8 @@ const ViewCore = function () {
         });
       } catch (error) {
         const message = error.message ?? "Error al registrar la comanda";
-        console.log(error);
 
-        this.showMessage(
-          "Ocurrio un error al registrar la comanda",
-          "error",
-          "Comanda"
-        );
+        this.showMessage(message, "error", "Comanda");
       }
     },
     showMessage: function (message, icon, title, ...options) {
@@ -411,14 +412,27 @@ const ViewCore = function () {
       return valor;
     },
 
-    initTable: function () {
+    initTable: function (data = null) {
       let me = this;
-      const listado = this.listaDeEnvioPlatos;
 
-      if (listado.length > 0) {
-        listado.forEach((plato) => {
-          console.log(plato);
+      $("#tbBodyPlatos").html("");
 
+      if (data != null && data != undefined) {
+        console.log("data", data);
+
+        const plato = me.listaDeEnvioPlatos.find(
+          (plato) => plato.id == data.id
+        );
+        if (plato != undefined) {
+          plato.cantidad = parseInt(plato.cantidad) + parseInt(data.cantidad);
+          plato.observacion = data.observacion;
+        } else {
+          me.listaDeEnvioPlatos.push(data);
+        }
+      }
+
+      if (me.listaDeEnvioPlatos.length > 0) {
+        me.listaDeEnvioPlatos.forEach((plato) => {
           $("#tbBodyPlatos").append(`<tr
         data-id="${plato.id}"
         >
@@ -430,6 +444,12 @@ const ViewCore = function () {
           <td>${plato.cantidad}</td>
           <td>${plato.categoriaPlato.nombre}</td>
           <td>${plato.precio * plato.cantidad}</td>
+          <td> 
+          <button class="btn btn-warning btn-sm js-btn-edit">
+          <i class="bi bi-pencil-fill"></i>
+          </button>
+          </td>
+
           <td>
               <button class="btn btn-danger btn-sm js-btn-delete">
               <i class="bi bi-trash-fill"></i>    
@@ -438,59 +458,33 @@ const ViewCore = function () {
               </tr>`);
         });
       }
+      const total = me.listaDeEnvioPlatos.reduce((total, plato) => {
+        return total + plato.precio * plato.cantidad;
+      }, 0);
 
-      $(".js-btn-delete").click(async function (e) {
+      me.txtPrecioTotal.val(total);
+      console.log("me.listaDeEnvioPlatos", me.listaDeEnvioPlatos);
+
+      $(".js-btn-edit").click(function (e) {
         e.preventDefault();
         const id = $(this).parents("tr").data("id");
-        console.log(id);
+        const plato = me.listaDeEnvioPlatos.find((plato) => plato.id == id);
+        me.modalPlato(plato);
+      });
 
-        try {
-          const url = "/configuracion/comanda/eliminar-comanda";
-          const response = await fetch(url, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              platoID: id,
-              comandaID: parseInt(me.txtNumeroComanda.val()),
-            }),
-          });
+      $(".js-btn-delete").click(function (e) {
+        e.preventDefault();
+        const id = $(this).parents("tr").data("id");
+        me.listaDeEnvioPlatos = me.listaDeEnvioPlatos.filter(
+          (plato) => plato.id != id
+        );
 
-          const data = await response.json();
-
-          if (data.status == "error") {
-            me.listaDeEnvioPlatos = me.listaDeEnvioPlatos.filter(
-              (plato) => plato.id != id
-            );
-
-            $(this).parents("tr").remove();
-            me.txtPrecioTotal.val(
-              me.listaDeEnvioPlatos.reduce((total, plato) => {
-                return total + plato.precio * plato.cantidad;
-              }, 0)
-            );
-          } else {
-            me.listaDeEnvioPlatos = me.listaDeEnvioPlatos.filter(
-              (plato) => plato.id != id
-            );
-
-            $(this).parents("tr").remove();
-            me.txtPrecioTotal.val(
-              me.listaDeEnvioPlatos.reduce((total, plato) => {
-                return total + plato.precio * plato.cantidad;
-              }, 0)
-            );
-          }
-        } catch (error) {
-          console.log(error);
-
-          me.showMessage(
-            "Ocurrio un error al eliminar el plato",
-            "error",
-            "Error"
-          );
-        }
+        $(this).parents("tr").remove();
+        me.txtPrecioTotal.val(
+          me.listaDeEnvioPlatos.reduce((total, plato) => {
+            return total + plato.precio * plato.cantidad;
+          }, 0)
+        );
       });
     },
   };

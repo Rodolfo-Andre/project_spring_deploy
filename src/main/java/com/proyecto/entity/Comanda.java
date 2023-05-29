@@ -2,7 +2,6 @@ package com.proyecto.entity;
 
 import jakarta.persistence.*;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "COMANDA")
@@ -17,6 +16,9 @@ public class Comanda {
   @Column(name = "PRECIO_TOTAL")
   private double precioTotal;
 
+  @Column(name = "FECHA_EMISION")
+  private String fechaEmision;
+
   @ManyToOne
   @JoinColumn(name = "MESA_ID")
   private Mesa mesa;
@@ -30,7 +32,7 @@ public class Comanda {
   private Empleado empleado;
 
   @OneToMany(mappedBy = "comanda")
-  
+
   private List<DetalleComanda> listaDetalleComanda;
 
   @OneToOne(mappedBy = "comanda")
@@ -98,5 +100,15 @@ public class Comanda {
 
   public void setComprobante(Comprobante comprobante) {
     this.comprobante = comprobante;
+  }
+
+
+  public String getFechaEmision() {
+    return fechaEmision;
+  }
+
+
+  public void setFechaEmision(String fechaEmision) {
+    this.fechaEmision = fechaEmision;
   }
 }

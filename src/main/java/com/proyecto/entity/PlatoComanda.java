@@ -6,6 +6,8 @@ public class PlatoComanda {
 
     private int cantidad;
 
+    private String observacion;
+
     public PlatoComanda() {
     }
 
@@ -28,6 +30,14 @@ public class PlatoComanda {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public String getObservacion() {
+        return this.observacion;
+    }
+
+    public void setObservacion(String Observacion) {
+        this.observacion = Observacion;
     }
 
 }

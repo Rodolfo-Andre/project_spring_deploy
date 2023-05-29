@@ -1,5 +1,7 @@
 package com.proyecto.controller;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import com.proyecto.entity.Plato;
 import com.proyecto.entity.PlatoComanda;
 import com.proyecto.service.ComandaService;
 import com.proyecto.service.DetalleComandaService;
+import com.proyecto.service.EmpleadoService;
 import com.proyecto.service.MesaService;
 import com.proyecto.service.PlatoService;
 
@@ -38,6 +41,8 @@ public class ComandaController {
     PlatoService platoService;
     @Autowired
     DetalleComandaService detalleComandaService;
+    @Autowired
+    EmpleadoService empleadoService;
 
     @GetMapping(value = "")
     public String index(Model model) {
@@ -81,7 +86,8 @@ public class ComandaController {
 
         if (mesa.getEstado().equals("Libre")) {
             List<Comanda> listaComandas = comandaService.obtenerTodo();
-            int idComanda = listaComandas.get(listaComandas.size() - 1).getId() + 1;
+            int idComanda = (listaComandas.size() == 0) ? 1 : listaComandas.get(listaComandas.size() - 1).getId() + 1;
+
             model.addAttribute("idComanda", idComanda);
         } else {
             Comanda comanda = comandaService.obtenerTodo().stream().filter(c -> c.getMesa().getId() == id).findFirst()
@@ -97,108 +103,106 @@ public class ComandaController {
     @PostMapping(value = "/registrar")
     public ResponseEntity<Map<String, String>> Guardar(
             @RequestBody BaseDataInput baseData,
-            RedirectAttributes redirect
-
-    ) {
-        String mensaje = "";
-        String status = "success";
+            RedirectAttributes redirect) {
         try {
             CheckStatus statusPlatos = verificarSiExistePlatos(baseData.getListaPlatos());
 
             if (statusPlatos.getStatus().equals(CheckStatus.StatusError)) {
-                mensaje = statusPlatos.getMensaje();
-                status = statusPlatos.getStatus();
-                return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
+                return ResponseEntity.ok()
+                        .body(Map.of("mensaje", statusPlatos.getMensaje(), "status", statusPlatos.getStatus()));
             }
+
             if (baseData.getId() == 0) {
-
-                Mesa mesa = mesaService.obtenerPorId(baseData.getNumeroMesa());
-                if (mesa.getEstado().equals("Ocupado")) {
-                    mensaje = "Error! La mesa ya esta ocupada";
-                    status = CheckStatus.StatusError;
-                    return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
-
-                }
-
-                Comanda comanda = new Comanda();
-                comanda.setCantidadAsientos(baseData.getCantidadPersonas());
-                comanda.setPrecioTotal(baseData.getPrecioTotal());
-                comanda.setMesa(mesa);
-
-                EstadoComanda estadoComanda = new EstadoComanda();
-                estadoComanda.setId(2);
-                comanda.setEstadoComanda(estadoComanda);
-
-                Empleado empleado = new Empleado();
-                empleado.setId(1);
-                comanda.setEmpleado(empleado);
-
-                Comanda comandaGuardado = comandaService.agregar(comanda);
-
-                List<DetalleComanda> listaDetalleComanda = new ArrayList<>();
-                for (PlatoComanda platoC : baseData.getListaPlatos()) {
-                    DetalleComanda detalleComanda = new DetalleComanda();
-
-                    Plato plato = platoService.obtenerPorId(platoC.getId());
-                    detalleComanda.setPlato(plato);
-                    detalleComanda.setCantidadPedido(platoC.getCantidad());
-                    detalleComanda.setPrecioUnitario(plato.getPrecioPlato());
-                    detalleComanda.setComanda(comandaGuardado);
-
-                    listaDetalleComanda.add(detalleComanda);
-
-                    detalleComandaService.registrar(detalleComanda);
-
-                }
-
-                comandaGuardado.setListaDetalleComanda(listaDetalleComanda);
-
-                comandaService.actualizar(comandaGuardado);
-
-                mesa.setEstado("Ocupado");
-                mesaService.actualizar(mesa);
-
-                mensaje = "Comanda registrada correctamente";
-                status = "success";
+                return registrarNuevaComanda(baseData);
             } else {
-                Comanda comanda = comandaService.obtenerPorId(baseData.getId());
-                comanda.setPrecioTotal(baseData.getPrecioTotal());
-
-                for (PlatoComanda platoC : baseData.getListaPlatos()) {
-                    DetalleComanda detalleComanda = new DetalleComanda();
-                    detalleComanda = detalleComandaService.findByComandaId(comanda.getId(), platoC.getId());
-
-                    if (detalleComanda == null) {
-                        detalleComanda = new DetalleComanda();
-                        Plato plato = platoService.obtenerPorId(platoC.getId());
-                        detalleComanda.setPlato(plato);
-                        detalleComanda.setCantidadPedido(platoC.getCantidad());
-                        detalleComanda.setPrecioUnitario(plato.getPrecioPlato());
-                        detalleComanda.setComanda(comanda);
-
-                        detalleComandaService.registrar(detalleComanda);
-                        comanda.getListaDetalleComanda().add(detalleComanda);
-
-                    } else {
-                        detalleComanda.setCantidadPedido(platoC.getCantidad());
-                        detalleComandaService.actualizar(detalleComanda);
-                    }
-
-                }
-                comandaService.actualizar(comanda);
-
-                mensaje = "Comanda actualizada correctamente";
-                status = "success";
-
+                return actualizarComandaExistente(baseData);
             }
-
         } catch (Exception e) {
-            mensaje = "Error al registrar la comanda";
-            status = "error";
+            String mensaje = "Error al registrar la comanda";
+            String status = "error";
+            return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
+        }
+    }
 
+    private ResponseEntity<Map<String, String>> registrarNuevaComanda(BaseDataInput baseData) {
+        Mesa mesa = mesaService.obtenerPorId(baseData.getNumeroMesa());
+        if (mesa.getEstado().equals("Ocupado")) {
+            String mensaje = "Error! La mesa ya está ocupada";
+            String status = CheckStatus.StatusError;
+            return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
         }
 
+        Comanda comanda = new Comanda();
+        comanda.setCantidadAsientos(baseData.getCantidadPersonas());
+        comanda.setPrecioTotal(baseData.getPrecioTotal());
+        comanda.setMesa(mesa);
+
+        EstadoComanda estadoComanda = new EstadoComanda();
+        estadoComanda.setId(2);
+        comanda.setEstadoComanda(estadoComanda);
+
+        Empleado empleado = empleadoService.findEmpleadoByIdUsario(baseData.idUsuario);
+        comanda.setEmpleado(empleado);
+        Date date = new Date();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy");
+        String formattedDate = dateFormat.format(date);
+        formattedDate.toString();
+
+        comanda.setFechaEmision(formattedDate);
+
+        Comanda comandaGuardado = comandaService.agregar(comanda);
+
+        List<DetalleComanda> listaDetalleComanda = new ArrayList<>();
+        for (PlatoComanda platoC : baseData.getListaPlatos()) {
+            DetalleComanda detalleComanda = crearDetalleComanda(platoC, comandaGuardado);
+            listaDetalleComanda.add(detalleComanda);
+        }
+
+        comandaGuardado.setListaDetalleComanda(listaDetalleComanda);
+        comandaService.actualizar(comandaGuardado);
+
+        mesa.setEstado("Ocupado");
+        mesaService.actualizar(mesa);
+
+        String mensaje = "Comanda registrada correctamente";
+        String status = "success";
         return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
+    }
+
+    private ResponseEntity<Map<String, String>> actualizarComandaExistente(BaseDataInput baseData) {
+        Comanda comanda = comandaService.obtenerPorId(baseData.getId());
+        comanda.setPrecioTotal(baseData.getPrecioTotal());
+
+        for (DetalleComanda dComanda : comanda.getListaDetalleComanda()) {
+            detalleComandaService.eliminar(dComanda.getId());
+        }
+
+        List<DetalleComanda> listaDetalleComanda = new ArrayList<>();
+        for (PlatoComanda platoC : baseData.getListaPlatos()) {
+            DetalleComanda detalleComanda = crearDetalleComanda(platoC, comanda);
+            listaDetalleComanda.add(detalleComanda);
+        }
+
+        comanda.setListaDetalleComanda(listaDetalleComanda);
+        comandaService.actualizar(comanda);
+
+        String mensaje = "Comanda actualizada correctamente";
+        String status = "success";
+        return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
+    }
+
+    private DetalleComanda crearDetalleComanda(PlatoComanda platoC, Comanda comanda) {
+        DetalleComanda detalleComanda = new DetalleComanda();
+        Plato plato = platoService.obtenerPorId(platoC.getId());
+        detalleComanda.setPlato(plato);
+        
+        detalleComanda.setObservacion(platoC.getObservacion());
+        detalleComanda.setCantidadPedido(platoC.getCantidad());
+        detalleComanda.setPrecioUnitario(plato.getPrecioPlato());
+        detalleComanda.setComanda(comanda);
+        detalleComandaService.registrar(detalleComanda);
+        return detalleComanda;
     }
 
     private CheckStatus verificarSiExistePlatos(List<PlatoComanda> listaPlatos) {
@@ -219,7 +223,21 @@ public class ComandaController {
     @PostMapping(value = "/eliminar")
     public String eliminar(RedirectAttributes redirect, @RequestParam("id") int id) {
         try {
-            comandaService.eliminar(id);
+            Comanda comanda = comandaService.obtenerPorId(id);
+
+            if (comanda == null) {
+                redirect.addFlashAttribute("mensaje", "Error! La comanda no existe");
+                redirect.addFlashAttribute("tipo", "error");
+                return "redirect:/configuracion/comanda";
+            }
+
+            comandaService.eliminar(comanda.getId());
+            
+            
+            Mesa mesa = comanda.getMesa();
+            mesa.setEstado("Libre");
+            mesaService.actualizar(mesa);
+            
             redirect.addFlashAttribute("mensaje", "Comanda eliminado correctamente");
             redirect.addFlashAttribute("tipo", "success");
         } catch (Exception e) {
@@ -231,13 +249,13 @@ public class ComandaController {
         return "redirect:/configuracion/comanda";
     }
 
-
-    @PostMapping (value = "/eliminar-comanda")
+    @PostMapping(value = "/eliminar-comanda")
     public ResponseEntity<Map<String, String>> eliminarComanda(@RequestBody DeleteDetalleComandaInput input) {
         String mensaje = "";
         String status = "success";
         try {
-            DetalleComanda detalleComanda = detalleComandaService.findDetalleComandaByPlatoIdAndComandaId(input.platoID, input.comandaID);
+            DetalleComanda detalleComanda = detalleComandaService.findDetalleComandaByPlatoIdAndComandaId(input.platoID,
+                    input.comandaID);
             if (detalleComanda == null) {
                 mensaje = "Error! El detalle comanda no existe";
                 status = "error";

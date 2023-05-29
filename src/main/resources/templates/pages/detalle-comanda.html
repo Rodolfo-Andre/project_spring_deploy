@@ -14,7 +14,9 @@
         <main class="main">
             <div class="box info">
                 <div class="header-info">
-                    <h2 class="mb-3">Nueva Comanda</h2>
+                    <h2 th:text="${comanda != null ?  'Actualizar Comanda N° ' + comanda.getId() : 'Nueva Comanda'}"
+                        class="mb-3">
+                        Nueva Comanda</h2>
                 </div>
                 <hr class="separator" />
                 <div class="body-info">
@@ -52,6 +54,9 @@
                                     <input type="number" class="form-control" id="txt-cantidad-persona"
                                         name="txt-cantidad-persona" placeholder="Cantidad">
                                     <input type="hidden" class="form-control" id="txt-cantidad-maxima">
+
+                                    <input id="txt-id-usuario" th:value="${#authentication.principal.usuario.id}"
+                                        type="hidden">
 
                                 </div>
                             </div>
@@ -92,7 +97,7 @@
                                 Añadir Plato
                                 <i class="bi bi-plus-circle"></i>
                             </button>
-                            
+
                             <button th:if="${mesa.getEstado() == 'Ocupado'}" type="button"
                                 class="btn btn-danger  col-md-3" id="btn-del-plato">
                                 Eliminar Comanda
@@ -119,33 +124,10 @@
                                     <th>Cantidad</th>
                                     <th>Categoria</th>
                                     <th>Precio Total</th>
+                                    <th>Editar</th>
                                     <th>Eliminar</th>
                                 </thead>
                                 <tbody id="tbBodyPlatos">
-                                    <!-- <tr th:if="${#lists.isEmpty(comanda.getListaDetalleComanda())}">
-                                        <td colspan="7" class="text-center">No hay platos agregados</td>
-                                    </tr> -->
-<!-- 
-                                    <tr th:each="detalleComanda : ${comanda.getListaDetalleComanda()}"
-                                        th:if="${mesa.getEstado() == 'Ocupado'}">
-
-                                        <td th:text="${detalleComanda.getPlato().getId()}"></td>
-                                        <td>
-                                            <img th:src="${detalleComanda.getPlato().getImagen()}" alt=""
-                                                class="img-thumbnail" width="100px">
-                                        </td>
-                                        <td th:text="${detalleComanda.getPlato().getNombre()}"></td>
-                                        <td th:text="${detalleComanda.getCantidadPedido()}"></td>
-                                        <td th:text="${detalleComanda.getPlato().getCategoriaPlato().getNombre()}">
-                                        </td>
-                                        <td
-                                            th:text="${detalleComanda.getPrecioUnitario() * detalleComanda.getCantidadPedido()}">
-                                        </td>
-                                        <td class="text-center">
-                                            <i class="icon-action icon-delete bi bi-trash-fill"></i>
-                                        </td>
-                                    </tr> -->
-
                                 </tbody>
                             </table>
                         </div>
