@@ -35,4 +35,17 @@ public class CategoriaPlatoService {
   public long obtenerTamano() {
     return categoriaPlatoRepository.count();
   }
+
+  public int obtenerTamanoPlatoDeCategoria(String id) {
+    CategoriaPlato categoriaPlato = categoriaPlatoRepository.findById(id).orElse(null);
+    int tamanoPlato = 0;
+
+    if (categoriaPlato == null) {
+      return 0;
+    }
+
+    tamanoPlato = categoriaPlato.getListaPlato().size();
+
+    return tamanoPlato;
+  }
 }

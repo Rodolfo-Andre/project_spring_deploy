@@ -104,8 +104,8 @@ const addEventToTable = () => {
 											</div>
 										</div>		
 									</form>`,
-              footer: `<input form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
-									<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>	`,
+              footer: `<input id="update" form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
+									<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-danger">CANCELAR</button>	`,
             };
 
             showModal(contentModal);
@@ -121,7 +121,7 @@ const addEventToTable = () => {
 							<input type="hidden" name="id" value="${id}"/>
 						</form>`,
           footer: `<input form="form-delete" type="submit" class="w-50 text-white btn btn-danger" value="ELIMINAR"/>
-						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
+						<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
         };
 
         showModal(contentModal);
@@ -144,8 +144,8 @@ const addEventToButtonAdd = () => {
 								</div>
 							</div>
 						</form>`,
-      footer: `<input form="form-add" type="submit" class="w-50 btn btn-primary" value="AÑADIR"/>
-						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
+      footer: `<input id="add" form="form-add" type="submit" class="w-50 btn btn-primary" value="AÑADIR"/>
+						<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-danger">CANCELAR</button>`,
     };
 
     showModal(contentModal);
@@ -156,7 +156,7 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
   $($d).on("click", "#add, #update", (e) => {
     const $btnConfirmAdd = $("#add")[0],
       $btnConfirmUpdate = $("#update")[0];
-
+    e.preventDefault();
     if ($btnConfirmAdd == e.target || $btnConfirmUpdate == e.target) {
       let $inputName = $d.getElementById("name");
 
@@ -180,6 +180,18 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         return;
       }
     }
+
+    const $form = $(e.target.form);
+    const $loader = $(`<div class="flex-grow-1 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                        </div>`);
+
+    $(e.target).replaceWith($loader);
+    $("#btn-cancel").prop("disabled", true);
+
+    $form.submit();
   });
 };
 

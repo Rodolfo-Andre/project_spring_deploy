@@ -152,8 +152,8 @@ const addEventToTable = () => {
 														</div>
 												</div>
 											</form>`,
-                footer: `<input  id="b-dish" form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
-											<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
+                footer: `<input id="update" form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
+											<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-danger">CANCELAR</button>`,
               };
 
               showModal(contentModal);
@@ -181,7 +181,7 @@ const addEventToTable = () => {
 							<input type="hidden" name="id" value="${id}"/>
 						</form>`,
           footer: `<input form="form-delete" type="submit" class="w-50 text-white btn btn-danger" value="ELIMINAR"/>
-						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
+						<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
         };
 
         showModal(contentModal);
@@ -200,7 +200,7 @@ const addEventToButtonAdd = () => {
           body: `<div class="text-center">
 									No se puede agregar plato debido a que no tienes categorías registradas. Registra al menos una categoría para que puedas registrar un plato.
 									</div>`,
-          footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CANCELAR</button>`,
+          footer: `<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CANCELAR</button>`,
         };
 
         showModal(contentModal);
@@ -258,7 +258,7 @@ const addEventToButtonAdd = () => {
 									</div>
 								</form>`,
         footer: `<input id="add" form="form-add" type="submit" class="w-50 btn btn-primary" value="AÑADIR"/>
-								<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
+								<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-danger">CANCELAR</button>`,
       };
 
       showModal(contentModal);
@@ -325,6 +325,18 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         return;
       }
     }
+
+    const $form = $(e.target.form);
+    const $loader = $(`<div class="flex-grow-1 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                        </div>`);
+
+    $(e.target).replaceWith($loader);
+    $("#btn-cancel").prop("disabled", true);
+
+    $form.submit();
   });
 };
 

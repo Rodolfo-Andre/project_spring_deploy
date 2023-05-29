@@ -105,7 +105,7 @@ const addEventToTable = () => {
 											</div>		
 										</form>`,
               footer: `<input id="update" form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
-										<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
+										<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-danger">CANCELAR</button>`,
             };
 
             showModal(contentModal);
@@ -114,17 +114,33 @@ const addEventToTable = () => {
       }
 
       if ($listBtnDelete.filter(e.currentTarget).length) {
-        const contentModal = {
+        let contentModal = {
           header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR LA CATEGORIA DE PLATO - ${id}?</h4>`,
           body: `<form id="form-delete" action="/configuracion/categoria-plato/eliminar" method="POST">
 							<input type="hidden" name="id" value="${id}"/>
 						</form>`,
           footer: `<input form="form-delete" type="submit" class="w-50 text-white btn btn-danger" value="ELIMINAR"/>
-						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
+						<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
         };
 
-        showModal(contentModal);
+        $.get(
+          `/configuracion/categoria-plato/obtener-tamano-plato-por-categoria/${id}`,
+          (quantityOfDishesFound) => {
+            if (quantityOfDishesFound) {
+              contentModal = {
+                header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
+										<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR LA CATEGORÍA - ${id}</h4>`,
+                body: `<p>No es posible eliminar la categoría debido a que se encontró ${quantityOfDishesFound} ${
+                  quantityOfDishesFound > 1 ? "platos" : "plato"
+                } asignado a dicha categoría.</p>`,
+                footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
+              };
+            }
+
+            showModal(contentModal);
+          }
+        );
       }
     }
   );
@@ -145,7 +161,7 @@ const addEventToButtonAdd = () => {
 							</div>
 						</form>`,
       footer: `<input id="add" form="form-add" type="submit" class="w-50 btn btn-primary" value="AÑADIR"/>
-						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
+						<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-danger">CANCELAR</button>`,
     };
 
     showModal(contentModal);
@@ -179,41 +195,17 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         return;
       }
     }
+
+    const $form = $(e.target.form);
+    const $loader = $(`<div class="flex-grow-1 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                        </div>`);
+
+    $(e.target).replaceWith($loader);
+    $("#btn-cancel").prop("disabled", true);
+
+    $form.submit();
   });
 };
-
-/* if (object == "categoryDish") {
-        let params = {
-          type: "findDishInCategoryDish",
-          id,
-        };
-
-        let props = {
-          url: "categoria-plato?" + new URLSearchParams(params),
-          success: async (json) => {
-            let quantityOfDishesFound = (await json)["quantityOfDishesFound"];
-
-            console.log(quantityOfDishesFound);
-
-            // Regla del Negocio: No se puede eliminar una categoria esté siendo referenciada por uno o más platos
-            if (quantityOfDishesFound) {
-              contentModal = {
-                header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
-										<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR LA CATEGORÍA - ${id}</h4>`,
-                body: `<p>No se puede eliminar la categoría debido a que se encontró ${quantityOfDishesFound} ${
-                  quantityOfDishesFound > 1 ? "platos" : "plato"
-                } en dicha categoría.</p>`,
-                footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
-              };
-            }
-
-            showModal(contentModal);
-          },
-          options: {
-            method: "POST",
-          },
-        };
-
-        useFetch(props);
-      }
- */

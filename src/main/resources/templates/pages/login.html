@@ -23,9 +23,14 @@
               method="POST"
               class="login-form needs-validation"
             >
-              <div class="alert alert-danger" th:if="${param.error}">
+              <div class="alert alert-danger m-0" th:if="${param.error}">
                 Usuario y/o contraseña incorrecta
               </div>
+
+              <div class="alert alert-primary m-0" th:if="${param.logout}">
+                Cierre de sesión satisfactorio
+              </div>
+
               <div>
                 <input
                   class="form-control form-control-lg"

@@ -41,4 +41,15 @@ public class Caja {
   public void setListaAperuta(List<Apertura> listaAperuta) {
     this.listaAperuta = listaAperuta;
   }
+
+  public static String generarIdCaja(List<Caja> listaCaja) {
+    if (listaCaja.isEmpty())
+      return "C-001";
+
+    String ultimoId = listaCaja.get(listaCaja.size() - 1).getId();
+
+    int numero = Integer.parseInt(String.join("", ultimoId.split("C-")));
+
+    return "C-" + String.format("%03d", numero + 1);
+  }
 }
