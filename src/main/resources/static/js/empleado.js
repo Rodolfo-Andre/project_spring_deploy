@@ -78,7 +78,37 @@ const addEventToTable = () => {
       }
 
       if ($listBtnInfo.filter(e.currentTarget).length) {
-        // Código para el botón "info"
+        $.get(`/configuracion/empleado/obtener/${id}`, (data) => {
+          const fechaRegistro = new Date(data.fechaRegistro);
+          const formattedFechaRegistro = `${fechaRegistro.getFullYear()}-${fechaRegistro.getMonth() + 1}-${fechaRegistro.getDate()}`;
+
+          if (data) {
+            const contentModal = {
+              header: `<i class="icon text-center text-link bi bi-info-circle-fill"></i>
+										 <h4 class="modal-title text-center" id="modal-prototype-label">Empleado - ${data.id}</h4>`,
+              body: `<div class="text-center">
+											<div><strong>Nombre del empleado: </strong>${data.nombre}</div>
+                      <div><strong>Apellido del empleado: </strong>${
+                        data.apellido
+                      }</div>
+                      <div><strong>Telefono del empleado: </strong>${
+                        data.telefono
+                      }</div>
+                      <div><strong>Dni del empleado: </strong>${data.dni}</div>
+                      <div><strong>Fecha de registro del empleado: </strong>${formattedFechaRegistro}</div>
+                      <div style="text-transform: capitalize"><strong>Cargo del empleado: </strong>${data.cargo.nombre
+                        .replace("ROLE_", "")
+                        .toLowerCase()}</div>
+                      <div><strong>Correo del empleado: </strong>${
+                        data.usuario.correo
+                      }</div>
+										</div>`,
+              footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-primary">CERRAR</button>`,
+            };
+
+            showModal(contentModal);
+          }
+        });
       }
 
       if ($listBtnUpdate.filter(e.currentTarget).length) {
@@ -262,19 +292,19 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
   $($d).on("click", "#add, #update", async (e) => {
     e.preventDefault();
 
-    const $btnConfirmAdd = $("#add")[0];
-    const $btnConfirmUpdate = $("#update")[0];
+    const $btnConfirmAdd = $("#add")[0],
+   $btnConfirmUpdate = $("#update")[0];
 
     if ($btnConfirmAdd == e.target || $btnConfirmUpdate == e.target) {
-      const $inputName = $d.getElementById("name");
-      const $inputApellido = $d.getElementById("apellido");
-      const $inputCorreo = $d.getElementById("correo");
-      const $inputTelefono = $d.getElementById("telefono");
-      const $divEmailInvalid = $d.getElementById("correo-invalid");
-      const $divTelephoneInvalid = $d.getElementById("telefono-invalid");
-      const $inputDni = $d.getElementById("dni");
-      const $divDniInvalid = $d.getElementById("dni-invalid");
-      const $form = $d.getElementById("form-add") || $d.getElementById("form-update");
+      const $inputName = $d.getElementById("name"),
+       $inputApellido = $d.getElementById("apellido"),
+       $inputCorreo = $d.getElementById("correo"),
+      $inputTelefono = $d.getElementById("telefono"),
+       $divEmailInvalid = $d.getElementById("correo-invalid"),
+      $divTelephoneInvalid = $d.getElementById("telefono-invalid"),
+       $inputDni = $d.getElementById("dni"),
+      $divDniInvalid = $d.getElementById("dni-invalid"),
+      $form = $d.getElementById("form-add") || $d.getElementById("form-update");
 
       let isInvalid = false;
 
@@ -318,7 +348,7 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         console.log("Correo", data.isFound);
 
         if (data.isFound) {
-          $divEmailInvalid.textContent = `No se permiten Correo duplicados. Se encontró un registro con el Telefono ${$inputCorreo.value}. Introduce un nuevo Correo.`;
+          $divEmailInvalid.textContent = `No se permiten Correo duplicados. Se encontró un registro con el Corre: ${$inputCorreo.value}. Introduce un nuevo Correo.`;
           if (!$inputCorreo.classList.contains("is-invalid")) {
             $inputCorreo.classList.add("is-invalid");
           }
@@ -351,7 +381,7 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         console.log("telefono", data.isFound);
 
         if (data.isFound) {
-          $divTelephoneInvalid.textContent = `No se permiten Télefonos duplicados. Se encontró un registro con el Telefono ${$inputTelefono.value}. Introduce un nuevo Telefono.`;
+          $divTelephoneInvalid.textContent = `No se permiten Télefonos duplicados. Se encontró un registro con el Telefono: ${$inputTelefono.value}. Introduce un nuevo Telefono.`;
           if (!$inputTelefono.classList.contains("is-invalid")) {
             $inputTelefono.classList.add("is-invalid");
           }
@@ -384,7 +414,7 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
 
         if (data.isFound) {
           console.log(data.isFound);
-          $divDniInvalid.textContent = `No se permiten DNI duplicados. Se encontró un registro con el DNI ${$inputDni.value}. Introduce un nuevo DNI.`;
+          $divDniInvalid.textContent = `No se permiten DNI duplicados. Se encontró un registro con el DNI: ${$inputDni.value}. Introduce un nuevo DNI.`;
           if (!$inputDni.classList.contains("is-invalid")) {
             $inputDni.classList.add("is-invalid");
           }
@@ -399,8 +429,9 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
       if (!isInvalid) {
         $form.submit();
       }
+      
     }
   });
 };
-
+s
 
