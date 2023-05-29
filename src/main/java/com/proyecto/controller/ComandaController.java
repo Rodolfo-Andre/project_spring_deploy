@@ -210,7 +210,7 @@ public class ComandaController {
         DetalleComanda detalleComanda = new DetalleComanda();
         Plato plato = platoService.obtenerPorId(platoC.getId());
         detalleComanda.setPlato(plato);
-
+        //SSA
         detalleComanda.setObservacion(platoC.getObservacion());
         detalleComanda.setCantidadPedido(platoC.getCantidad());
         detalleComanda.setPrecioUnitario(plato.getPrecioPlato());

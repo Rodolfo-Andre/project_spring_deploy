@@ -26,6 +26,7 @@ const ViewCore = function () {
     generateComanda: function(data) {
   let html = "";
   let me = this;
+
   data.forEach((element) => {
         if (element.estado == "Ocupado") {
           console.log("Hola");
@@ -34,7 +35,6 @@ const ViewCore = function () {
             .then((response) => response.json())
             .then((comanda) => {
               if (comanda) {
-                console.log(comanda.precioTotal);
                 html += `
                 <div  class="card col-md-3 col-sm-2 col-lg-4 m-3 
                 border-4 border-danger js-container-comanda" 
@@ -49,6 +49,9 @@ const ViewCore = function () {
                   </h5>
                    <h5 class="card-title text-center ">
                    Fecha: ${comanda.fechaEmision}
+                  </h5>
+                   <h5 class="card-title text-center ">
+                   Estado: ${comanda.estadoComanda.estado}
                   </h5>
                   <h5 class="card-title text-center">
                    Precio comanda: ${comanda.precioTotal}
