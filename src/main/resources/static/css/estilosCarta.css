@@ -1,5 +1,5 @@
 .titulo {
-  font-family: "Bungee", cursive;
+  font-family: 'Bungee', cursive;
 }
 .estiloCaja {
   border-bottom: dashed;
@@ -15,7 +15,7 @@
 }
 
 .body {
-  background: #fed400;
+ 	background-color: rgb(255, 232, 198);
 
   margin: 0;
   display: flex;
@@ -23,6 +23,6 @@
   /* fallback for old browsers */
 }
 .tituloCarta {
-  font-family: "Pacifico", cursive;
+  font-family: 'Pacifico', cursive;
   text-transform: uppercase;
 }
