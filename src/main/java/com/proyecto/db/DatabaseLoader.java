@@ -83,7 +83,7 @@ public class DatabaseLoader implements CommandLineRunner {
       empleadoAdministrador.setNombre("Admin");
       empleadoAdministrador.setApellido("Admin");
       empleadoAdministrador.setDni("77777777");
-      empleadoAdministrador.setTelefono("999999999");
+      empleadoAdministrador.setTelefono("923123123");
       empleadoAdministrador.setUsuario(usuarioAdministrador);
       empleadoAdministrador.setCargo(administrador);
 
@@ -103,7 +103,7 @@ public class DatabaseLoader implements CommandLineRunner {
       empleadoMesero.setNombre("Mesero");
       empleadoMesero.setApellido("Mesero");
       empleadoMesero.setDni("66666666");
-      empleadoMesero.setTelefono("888888888");
+      empleadoMesero.setTelefono("985737523");
       empleadoMesero.setUsuario(usuarioMesero);
       empleadoMesero.setCargo(mesero);
 
@@ -123,7 +123,7 @@ public class DatabaseLoader implements CommandLineRunner {
       empleadoCajero.setNombre("Cajero");
       empleadoCajero.setApellido("Cajero");
       empleadoCajero.setDni("55555555");
-      empleadoCajero.setTelefono("777777777");
+      empleadoCajero.setTelefono("985743657");
       empleadoCajero.setUsuario(usuarioCajero);
       empleadoCajero.setCargo(cajero);
 
@@ -143,7 +143,7 @@ public class DatabaseLoader implements CommandLineRunner {
       empleadoCocinero.setNombre("Cocinero");
       empleadoCocinero.setApellido("Cocinero");
       empleadoCocinero.setDni("44444444");
-      empleadoCocinero.setTelefono("666666666");
+      empleadoCocinero.setTelefono("995845948");
       empleadoCocinero.setUsuario(usuarioCocinero);
       empleadoCocinero.setCargo(cocinero);
 
@@ -163,7 +163,7 @@ public class DatabaseLoader implements CommandLineRunner {
       empleadoGerente.setNombre("Gerente");
       empleadoGerente.setApellido("Gerente");
       empleadoGerente.setDni("33333333");
-      empleadoGerente.setTelefono("555555555");
+      empleadoGerente.setTelefono("985684839");
       empleadoGerente.setUsuario(usuarioGerente);
       empleadoGerente.setCargo(gerente);
 

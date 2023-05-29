@@ -31,4 +31,17 @@ public class PlatoService {
   public void eliminar(String id) {
     platoRepository.deleteById(id);
   }
+
+  public int obtenerTamanoDetalleComandaDePlato(String id) {
+    Plato plato = platoRepository.findById(id).orElse(null);
+    int tamanoDetalleComanda = 0;
+
+    if (plato == null) {
+      return 0;
+    }
+
+    tamanoDetalleComanda = plato.getListaDetalleComanda().size();
+
+    return tamanoDetalleComanda;
+  }
 }

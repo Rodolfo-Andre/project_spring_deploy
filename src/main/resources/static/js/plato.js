@@ -174,7 +174,7 @@ const addEventToTable = () => {
       }
 
       if ($listBtnDelete.filter(e.currentTarget).length) {
-        const contentModal = {
+        let contentModal = {
           header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR EL PLATO - ${id}?</h4>`,
           body: `<form id="form-delete" action="/configuracion/plato/eliminar" method="POST">
@@ -184,7 +184,23 @@ const addEventToTable = () => {
 						<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
         };
 
-        showModal(contentModal);
+        $.get(
+          `/configuracion/plato/obtener-tamano-detalle-comanda-por-plato/${id}`,
+          (quantityOfDetailCommandFound) => {
+            if (quantityOfDetailCommandFound) {
+              contentModal = {
+                header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
+										<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR EL PLATO - ${id}</h4>`,
+                body: `<p>No es posible eliminar el plato debido a que se encontró ${quantityOfDetailCommandFound} ${
+                  quantityOfDetailCommandFound > 1 ? "comandas" : "comanda"
+                } asignado a dicho plato.</p>`,
+                footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
+              };
+            }
+
+            showModal(contentModal);
+          }
+        );
       }
     }
   );
@@ -376,33 +392,3 @@ const checkFile = ($inputFile, imgId, files) => {
   $img.setAttribute("src", URL.createObjectURL(files[0]));
   return files;
 };
-
-/* if (object == "dish") {
-        let params = {
-          type: "findDishInComanda",
-          id,
-        };
-
-        let props = {
-          url: "categoria-plato?" + new URLSearchParams(params),
-          success: async (json) => {
-            let { foundDishInComanda } = await json;
-
-            if (foundDishInComanda) {
-              contentModal = {
-                header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
-										<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR EL PLATO - ${id}</h4>`,
-                body: `<p>No se puede eliminar el plato porque se encontró comandas que utilizan este plato.</p>`,
-                footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
-              };
-            }
-
-            showModal(contentModal);
-          },
-          options: {
-            method: "POST",
-          },
-        };
-
-        useFetch(props);
-      } */

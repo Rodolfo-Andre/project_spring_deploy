@@ -27,6 +27,7 @@ const ViewCore = function () {
       this.getCategoriaPlato();
 
       //values modal
+      this.txtPrecioTotal.val(0);
 
       if (this.txtEstadoMesa.val() == "Ocupado") {
         await this.getSingle(this.getUrlParameter());
@@ -84,7 +85,7 @@ const ViewCore = function () {
         ev.preventDefault();
         const contentModal = {
           header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
-						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR La Comanda - ${parseInt(
+						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR LA COMANDA - ${parseInt(
               me.txtNumeroComanda.val()
             )}?</h4>`,
           body: `<form id="form-delete" action="/configuracion/comanda/eliminar" method="POST">
@@ -147,7 +148,9 @@ const ViewCore = function () {
       let listPlatos = [];
       let plato = {};
       const contentModal = {
-        header: `<i class="icon text-center text-primary bi bi-plus-circle-fill"></i>
+        header: `<i class="icon text-center text-primary bi ${
+          dataModal ? "bi-pencil-square text-warning" : "bi-plus-circle-fill"
+        }"></i>
                             <h4 class="modal-title text-center" id="modal-prototype-label">
                             ${dataModal ? "Editar Plato" : "Agregar Plato"}
                             </h4>
@@ -166,7 +169,12 @@ const ViewCore = function () {
                         class="form-select" name="categoria" style="text-transform: capitalize">
                         <option value="">Seleccione</option>
                         ${categorias.map((categoria) => {
-                          return `<option value="${categoria.id}">${categoria.nombre}</option>`;
+                          return `<option value="${categoria.id}" ${
+                            dataModal &&
+                            dataModal.categoriaPlato.id === categoria.id
+                              ? "selected"
+                              : ""
+                          }>${categoria.nombre}</option>`;
                         })}
                     </select>
                      </div>
@@ -209,7 +217,9 @@ const ViewCore = function () {
     </div>
     
                             </form>`,
-        footer: `<button id="add"  class="w-50 btn btn-primary"  > 
+        footer: `<button id="add"  class="w-50 btn ${
+          dataModal ? "btn-warning text-white" : "btn-primary"
+        }"  > 
          ${dataModal ? "EDITAR" : "AGREGAR"}
         </button>
         <button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
@@ -223,14 +233,21 @@ const ViewCore = function () {
         listPlatos = platos;
 
         $("#plato")
-          .prop("disabled", false)
+          .prop("disabled", dataModal)
           .append(`<option value="">Seleccione</option>`);
         platos.map((plato) => {
           $("#plato").append(
-            `<option value="${plato.id}">${plato.nombre}</option>`
+            `<option value="${plato.id}" ${
+              dataModal && dataModal.id === plato.id ? "selected" : ""
+            }>${plato.nombre}</option>`
           );
         });
       });
+
+      if (dataModal) {
+        $("#categoria").trigger("change");
+      }
+
       $("#plato").change(async function (e) {
         const platoId = $("#plato").val();
         plato = listPlatos.find((plato) => plato.id == platoId);
@@ -277,7 +294,11 @@ const ViewCore = function () {
 
         $("#cantidadDePedido").val("");
         const errors = Object.keys(data).filter((key) => {
-          return data[key] == "" || data[key] == null || data[key] == undefined && key != "observacion";
+          return (
+            data[key] == "" ||
+            data[key] == null ||
+            (data[key] == undefined && key != "observacion")
+          );
         });
         if (errors.length > 0) {
           $("#error-platos")

@@ -1,4 +1,3 @@
-
 import { showModal } from "./modal.js";
 
 const $d = document;
@@ -26,7 +25,7 @@ const initializeTable = () => {
       null,
       null,
       null,
-      
+
       { orderable: false, searchable: false, width: 50 },
       { orderable: false, searchable: false, width: 50 },
       { orderable: false, searchable: false, width: 50 },
@@ -80,7 +79,9 @@ const addEventToTable = () => {
       if ($listBtnInfo.filter(e.currentTarget).length) {
         $.get(`/configuracion/empleado/obtener/${id}`, (data) => {
           const fechaRegistro = new Date(data.fechaRegistro);
-          const formattedFechaRegistro = `${fechaRegistro.getFullYear()}-${fechaRegistro.getMonth() + 1}-${fechaRegistro.getDate()}`;
+          const formattedFechaRegistro = `${fechaRegistro.getFullYear()}-${
+            fechaRegistro.getMonth() + 1
+          }-${fechaRegistro.getDate()}`;
 
           if (data) {
             const contentModal = {
@@ -115,10 +116,11 @@ const addEventToTable = () => {
         $.get(`/configuracion/cargo/obtener`, (data) => {
           const listOptions = data.map(
             (cargo) =>
-              `<option value="${cargo.id}" style="text-transform: capitalize">${cargo.nombre.replace(
-                "ROLE_",
-                ""
-              ).toLowerCase()}</option>`
+              `<option value="${
+                cargo.id
+              }" style="text-transform: capitalize">${cargo.nombre
+                .replace("ROLE_", "")
+                .toLowerCase()}</option>`
           );
           const options = listOptions.join(" ");
 
@@ -189,8 +191,6 @@ const addEventToTable = () => {
           });
         });
       }
-
-
 
       if ($listBtnDelete.filter(e.currentTarget).length) {
         const contentModal = {
@@ -293,22 +293,27 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
     e.preventDefault();
 
     const $btnConfirmAdd = $("#add")[0],
-   $btnConfirmUpdate = $("#update")[0];
+      $btnConfirmUpdate = $("#update")[0];
 
     if ($btnConfirmAdd == e.target || $btnConfirmUpdate == e.target) {
       const $inputName = $d.getElementById("name"),
-       $inputApellido = $d.getElementById("apellido"),
-       $inputCorreo = $d.getElementById("correo"),
-      $inputTelefono = $d.getElementById("telefono"),
-       $divEmailInvalid = $d.getElementById("correo-invalid"),
-      $divTelephoneInvalid = $d.getElementById("telefono-invalid"),
-       $inputDni = $d.getElementById("dni"),
-      $divDniInvalid = $d.getElementById("dni-invalid"),
-      $form = $d.getElementById("form-add") || $d.getElementById("form-update");
+        $inputApellido = $d.getElementById("apellido"),
+        $inputCorreo = $d.getElementById("correo"),
+        $inputTelefono = $d.getElementById("telefono"),
+        $divEmailInvalid = $d.getElementById("correo-invalid"),
+        $divTelephoneInvalid = $d.getElementById("telefono-invalid"),
+        $inputDni = $d.getElementById("dni"),
+        $divDniInvalid = $d.getElementById("dni-invalid"),
+        $form =
+          $d.getElementById("form-add") || $d.getElementById("form-update");
 
       let isInvalid = false;
 
-      if (!$inputName.value.match("^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [A-ZÑÁÉÍÓÚ][a-zñáéíóú]+)*$")) {
+      if (
+        !$inputName.value.match(
+          "^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [A-ZÑÁÉÍÓÚ][a-zñáéíóú]+)*$"
+        )
+      ) {
         if (!$inputName.classList.contains("is-invalid"))
           $inputName.classList.add("is-invalid");
         isInvalid = true;
@@ -317,7 +322,11 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
           $inputName.classList.remove("is-invalid");
       }
 
-      if (!$inputApellido.value.match("^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [A-ZÑÁÉÍÓÚ][a-zñáéíóú]+)*$")) {
+      if (
+        !$inputApellido.value.match(
+          "^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [A-ZÑÁÉÍÓÚ][a-zñáéíóú]+)*$"
+        )
+      ) {
         if (!$inputApellido.classList.contains("is-invalid"))
           $inputApellido.classList.add("is-invalid");
         isInvalid = true;
@@ -326,7 +335,11 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
           $inputApellido.classList.remove("is-invalid");
       }
 
-      if (!$inputCorreo.value.match('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$')) {
+      if (
+        !$inputCorreo.value.match(
+          "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+        )
+      ) {
         if ($divEmailInvalid.textContent != "Introduce un correo válido.") {
           $divEmailInvalid.textContent = "Introduce un correo válido.";
         }
@@ -344,7 +357,9 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
           console.log(codemployed);
         }
 
-        const data = await $.get(`/configuracion/empleado/verificar-correo/${$inputCorreo.value}/${codemployed}`);
+        const data = await $.get(
+          `/configuracion/empleado/verificar-correo/${$inputCorreo.value}/${codemployed}`
+        );
         console.log("Correo", data.isFound);
 
         if (data.isFound) {
@@ -360,9 +375,13 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         }
       }
 
-      if (!$inputTelefono.value.match('^9[0-9]{8}$')) {
-        if ($divTelephoneInvalid.textContent != "Introduce un número válido. Solo acepta 9 dígitos y comienza con 9.") {
-          $divTelephoneInvalid.textContent = "Introduce un número válido. Solo acepta 9 dígitos y comienza con 9.";
+      if (!$inputTelefono.value.match("^9[0-9]{8}$")) {
+        if (
+          $divTelephoneInvalid.textContent !=
+          "Introduce un número válido. Solo acepta 9 dígitos y comienza con 9."
+        ) {
+          $divTelephoneInvalid.textContent =
+            "Introduce un número válido. Solo acepta 9 dígitos y comienza con 9.";
         }
 
         if (!$inputTelefono.classList.contains("is-invalid")) {
@@ -377,7 +396,9 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
           console.log(codemployed);
         }
 
-        const data = await $.get(`/configuracion/empleado/verificar-telefono/${$inputTelefono.value}/${codemployed}`);
+        const data = await $.get(
+          `/configuracion/empleado/verificar-telefono/${$inputTelefono.value}/${codemployed}`
+        );
         console.log("telefono", data.isFound);
 
         if (data.isFound) {
@@ -393,9 +414,13 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         }
       }
 
-      if (!$inputDni.value.match('^[0-9]{8}$')) {
-        if ($divDniInvalid.textContent != "Introduce un dni válido que contenga 8 dígitos.") {
-          $divDniInvalid.textContent = "Introduce un dni válido que contenga 8 dígitos.";
+      if (!$inputDni.value.match("^[0-9]{8}$")) {
+        if (
+          $divDniInvalid.textContent !=
+          "Introduce un dni válido que contenga 8 dígitos."
+        ) {
+          $divDniInvalid.textContent =
+            "Introduce un dni válido que contenga 8 dígitos.";
         }
         if (!$inputDni.classList.contains("is-invalid")) {
           $inputDni.classList.add("is-invalid");
@@ -409,7 +434,9 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
           console.log(codemployed);
         }
 
-        const data = await $.get(`/configuracion/empleado/verificar-dni/${$inputDni.value}/${codemployed}`);
+        const data = await $.get(
+          `/configuracion/empleado/verificar-dni/${$inputDni.value}/${codemployed}`
+        );
         console.log("Dni", data.isFound);
 
         if (data.isFound) {
@@ -429,9 +456,6 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
       if (!isInvalid) {
         $form.submit();
       }
-      
     }
   });
 };
-s
-

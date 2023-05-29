@@ -47,6 +47,7 @@ public class EmpleadoController {
       RedirectAttributes redirect) {
     try {
       Empleado e = new Empleado();
+      String contrasenia = Empleado.generarContrasenia(apellido);
       e.setNombre(nombre);
       e.setApellido(apellido);
       e.setDni(dni);
@@ -58,10 +59,13 @@ public class EmpleadoController {
       e.setCargo(c);
 
       Usuario u = new Usuario();
-      u.setContrasena(passwordEncoder.encode(Empleado.generarContrasenia(apellido)));
+
+      u.setContrasena(passwordEncoder.encode(contrasenia));
       u.setCorreo(correo);
 
       e.setUsuario(u);
+
+      System.out.println("LA CONTRASEÑA GENERADA ES: " + contrasenia);
 
       empleadoService.registrar(e);
       redirect.addFlashAttribute("mensaje", "Empleado registrado correctamente");

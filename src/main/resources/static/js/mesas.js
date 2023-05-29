@@ -116,7 +116,7 @@ const addEventToTable = () => {
       }
 
       if ($listBtnDelete.filter(e.currentTarget).length) {
-        const contentModal = {
+        let contentModal = {
           header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR LA MESA - ${id}?</h4>`,
           body: `<form id="form-delete" action="/configuracion/mesa/eliminar" method="POST">
@@ -126,7 +126,23 @@ const addEventToTable = () => {
 						<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
         };
 
-        showModal(contentModal);
+        $.get(
+          `/configuracion/mesa/obtener-tamano-comanda-por-mesa/${id}`,
+          (quantityOfCommandFound) => {
+            if (quantityOfCommandFound) {
+              contentModal = {
+                header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
+										<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR LA MESA - ${id}</h4>`,
+                body: `<p>No es posible eliminar la mesa debido a que se encontró ${quantityOfCommandFound} ${
+                  quantityOfCommandFound > 1 ? "comandas" : "comanda"
+                } asignado a dicha mesa.</p>`,
+                footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
+              };
+            }
+
+            showModal(contentModal);
+          }
+        );
       }
     }
   );
@@ -195,52 +211,3 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
     $form.submit();
   });
 };
-
-/*
-    if ($listBtnDelete.includes(e.target)) {
-      let $btnDelete = e.target,
-        $inputId = $btnDelete.parentNode.parentNode.querySelector(
-          ".data > input[name='id']"
-        );
-
-      let id = $inputId.value;
-
-      let contentModal = {
-        header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
-						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR LA MESA - ${id}?</h4>`,
-        body: `<form id="form-delete" action="mesas" method="POST">
-							<input type="hidden" name="type" value="deleteInfoObject"/>
-							<input type="hidden" name="id" value="${id}"/>
-						</form>`,
-        footer: `<input form="form-delete" type="submit" class="w-50 text-white btn btn-danger" value="ELIMINAR"/>
-						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
-      };
-
-      let params = {
-        type: "findTableInComanda",
-        id,
-      };
-
-      let props = {
-        url: "mesas?" + new URLSearchParams(params),
-        success: async (json) => {
-          let { foundTableInComanda } = await json;
-
-          if (foundTableInComanda) {
-            contentModal = {
-              header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
-									<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR LA MESA - ${id}</h4>`,
-              body: `<p>No se puede eliminar la mesa porque se encontró comandas que utilizan esta mesa.</p>`,
-              footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
-            };
-          }
-
-          showModal(contentModal);
-        },
-        options: {
-          method: "POST",
-        },
-      };
-
-      useFetch(props);
-    }*/

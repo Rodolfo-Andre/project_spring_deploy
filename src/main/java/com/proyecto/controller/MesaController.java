@@ -85,4 +85,10 @@ public class MesaController {
 
     return "redirect:/configuracion/mesa";
   }
+
+  @GetMapping(value = "/obtener-tamano-comanda-por-mesa/{id}")
+  @ResponseBody
+  public int obtenerTamanoComandaDeMesa(@PathVariable int id) {
+    return mesaService.obtenerTamanoComandaDeMesa(id);
+  }
 }

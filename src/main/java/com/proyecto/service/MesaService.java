@@ -30,4 +30,17 @@ public class MesaService {
   public void eliminar(Integer id) {
     mesaRepository.deleteById(id);
   }
+
+  public int obtenerTamanoComandaDeMesa(Integer id) {
+    Mesa mesa = mesaRepository.findById(id).orElse(null);
+    int tamanoComanda = 0;
+
+    if (mesa == null) {
+      return 0;
+    }
+
+    tamanoComanda = mesa.getListaComanda().size();
+
+    return tamanoComanda;
+  }
 }

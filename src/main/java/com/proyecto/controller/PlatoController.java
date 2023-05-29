@@ -114,4 +114,10 @@ public class PlatoController {
 
     return "redirect:/configuracion/plato";
   }
+
+  @GetMapping(value = "/obtener-tamano-detalle-comanda-por-plato/{id}")
+  @ResponseBody
+  public int obtenerTamanoDetalleComandaDePlato(@PathVariable String id) {
+    return platoService.obtenerTamanoDetalleComandaDePlato(id);
+  }
 }

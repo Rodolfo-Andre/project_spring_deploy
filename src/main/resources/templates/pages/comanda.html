@@ -1,47 +1,65 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"
-    th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::link})}">
-
-<head>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::link})}"
+>
+  <head>
     <title>Comandas</title>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+    />
+  </head>
 
-<body class="d-flex">
+  <body class="d-flex">
     <th:block th:fragment="cuerpo">
-        <main class="main">
-            <div class="box info">
-                <div class="header-info">
-                    <h2 class="mb-3">Configuracion Comanda</h2>
-                </div>
-                <hr class="separator" />
-                <div class="row  border border-dark border-1 rounded m-2 w-100">
-                    <div class="col-12">
-                        <div class="row p-2 w-100" id="tableComandas">
-
-
-                        </div>
-                    </div>
-                </div>
+      <main class="main">
+        <div class="box info">
+          <div class="header-info">
+            <h2 class="mb-3">Configuracion Comanda</h2>
+          </div>
+          <hr class="separator" />
+          <div class="row border border-dark border-1 rounded m-2">
+            <div class="col-12">
+              <div class="row p-2 w-100" id="tableComandas"></div>
             </div>
-        </main>
+          </div>
+        </div>
+      </main>
 
-        <template th:insert="~{/fragments/modal-template}" id="modal-template">
-        </template>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
-            integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"></script>
-        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+      <template th:insert="~{/fragments/modal-template}" id="modal-template">
+      </template>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"
+      ></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script type="module" src="/js/comanda.js"></script>
+      <script type="module" src="/js/comanda.js"></script>
     </th:block>
-</body>
-
+  </body>
 </html>
