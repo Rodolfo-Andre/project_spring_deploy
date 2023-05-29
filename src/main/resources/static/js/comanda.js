@@ -23,37 +23,80 @@ const ViewCore = function () {
           this.generateComanda(data);
         });
     },
-    generateComanda: function (data) {
-      let html = "";
-      let me = this;
-      data.forEach((element) => {
-        html += `<div 
-        data-id="${element.id}"
-         
-        class="card col-md-3 col-sm-2 col-lg-4  m-3 
-        ${
-          element.estado == "Ocupado"
-            ? "border-4 border-danger"
-            : "border-4 border-success"
-        } 
-        js-container-comanda">
-        <div class="card-body d-flex  flex-column justify-content-center align-items-center">
-        <h5 class="card-title text-center">ID: ${element.id}</h5>
-          <h5 class="card-title text-center text-success">
-           ${element.estado}
-          </h5>
-        </div>
-      </div>`;
+    generateComanda: function(data) {
+  let html = "";
+  let me = this;
+  data.forEach((element) => {
+        if (element.estado == "Ocupado") {
+          console.log("Hola");
+          const url = `/configuracion/comanda/comanda-libre/${element.id}`;
+          fetch(url)
+            .then((response) => response.json())
+            .then((comanda) => {
+              if (comanda) {
+                console.log(comanda.precioTotal);
+                html += `
+                <div  class="card col-md-3 col-sm-2 col-lg-4 m-3 
+                border-4 border-danger js-container-comanda" 
+                data-id="${element.id}">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                  <h5 class="card-title text-center">ID: ${element.id}</h5>
+                  <h5 class="card-title text-center text-danger">
+                   ${element.estado}
+                  </h5>
+                  <h5 class="card-title text-center">
+                   Empleado: ${comanda.empleado.nombre}
+                  </h5>
+                   <h5 class="card-title text-center ">
+                   Fecha: ${comanda.fechaEmision}
+                  </h5>
+                  <h5 class="card-title text-center">
+                   Precio comanda: ${comanda.precioTotal}
+                  </h5>
+                  
+                </div>
+                </div>
+              
+              `;
+              }
+              $("#tableComandas").html(html);
+              $(".js-container-comanda").on("click", function (ev) {
+                const id = $(this).data("id");
+                window.location.href = "/configuracion/comanda/detalle/" + id;
+              });
+            })
+            .catch((error) => {
+              console.error("Error en la solicitud AJAX:", error);
+            });
+        } else {
+          html += `
+          <div class="card col-md-3 col-sm-2 col-lg-4 m-3 
+                border-4 border-success js-container-comanda"
+                data-id="${element.id}"
+                c>
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                  <h5 class="card-title text-center">ID: ${element.id}</h5>
+                  <h5 class="card-title text-center text-success">
+                    ${element.estado}
+                  </h5>
+                  <h5 class="card-title text-center text-success">
+                  </h5>
+                </div>
+              </div>
+        `;
+        }
+
       });
 
-      $("#tableComandas").html(html);
 
-      $(".js-container-comanda").on("click", function (ev) {
-        const id = $(this).data("id");
-        window.location.href = "/configuracion/comanda/detalle/" + id;
+  $("#tableComandas").html(html);
+  $(".js-container-comanda").on("click", function (ev) {
+                const id = $(this).data("id");
+                window.location.href = "/configuracion/comanda/detalle/" + id;
+   });
+  
 
-        // me.showInfoComanda(id);
-      });
+   
     },
     showInfoComanda: function (id) {
       const data = {

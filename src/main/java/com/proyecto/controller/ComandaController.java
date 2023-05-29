@@ -68,12 +68,25 @@ public class ComandaController {
         List<DetalleComanda> detalles = detalleComandaService.findByComandaId(id);
         return detalles;
     }
+    
+    @GetMapping(value = "/comanda-libre/{id}")
+    @ResponseBody
+    public Comanda obtenerComandaLibre(@PathVariable Integer id) {
+        List<Comanda> listaComandas = comandaService.obtenerTodo();
+        Comanda comandaDeseada = listaComandas.stream()
+                .filter(comanda -> comanda.getMesa().getId() == id && comanda.getEstadoComanda().getId() != 1)
+                .findFirst()
+                .orElse(null);
+    
+        return comandaDeseada;
+    }
+    
 
     @GetMapping(value = "/listar")
     @ResponseBody
     public List<Comanda> Listar() {
         List<Comanda> listaComandas = comandaService.obtenerTodo();
-
+        
         // List<Comanda> lista = comandaService.obtenerTodo();
         // return lista;
         return listaComandas;
