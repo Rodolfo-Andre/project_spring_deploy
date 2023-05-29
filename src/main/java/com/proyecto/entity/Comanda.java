@@ -30,7 +30,7 @@ public class Comanda {
   private Empleado empleado;
 
   @OneToMany(mappedBy = "comanda")
-  @JsonIgnore
+  
   private List<DetalleComanda> listaDetalleComanda;
 
   @OneToOne(mappedBy = "comanda")

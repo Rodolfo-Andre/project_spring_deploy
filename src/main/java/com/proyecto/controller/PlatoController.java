@@ -1,5 +1,7 @@
 package com.proyecto.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,12 @@ public class PlatoController {
   @ResponseBody
   public Plato buscarPorId(@PathVariable String id) {
     return platoService.obtenerPorId(id);
+  }
+
+  @GetMapping(value = "/obtener")
+  @ResponseBody
+  public List<Plato> listar() {
+    return platoService.obtenerTodo();
   }
 
   @PostMapping(value = "/grabar")

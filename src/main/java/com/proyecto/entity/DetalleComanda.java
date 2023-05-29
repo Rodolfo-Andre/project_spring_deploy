@@ -1,5 +1,7 @@
 package com.proyecto.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -23,6 +25,7 @@ public class DetalleComanda {
   private Plato plato;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "COMANDA_ID")
   private Comanda comanda;
 
