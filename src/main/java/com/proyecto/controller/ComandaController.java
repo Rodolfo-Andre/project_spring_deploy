@@ -173,6 +173,7 @@ public class ComandaController {
     private ResponseEntity<Map<String, String>> actualizarComandaExistente(BaseDataInput baseData) {
         Comanda comanda = comandaService.obtenerPorId(baseData.getId());
         comanda.setPrecioTotal(baseData.getPrecioTotal());
+        comanda.setCantidadAsientos(baseData.getCantidadPersonas());
 
         for (DetalleComanda dComanda : comanda.getListaDetalleComanda()) {
             detalleComandaService.eliminar(dComanda.getId());
@@ -196,7 +197,7 @@ public class ComandaController {
         DetalleComanda detalleComanda = new DetalleComanda();
         Plato plato = platoService.obtenerPorId(platoC.getId());
         detalleComanda.setPlato(plato);
-        
+
         detalleComanda.setObservacion(platoC.getObservacion());
         detalleComanda.setCantidadPedido(platoC.getCantidad());
         detalleComanda.setPrecioUnitario(plato.getPrecioPlato());
@@ -231,13 +232,18 @@ public class ComandaController {
                 return "redirect:/configuracion/comanda";
             }
 
+            for (DetalleComanda dComanda : comanda.getListaDetalleComanda()) {
+
+                detalleComandaService.eliminar(dComanda.getId());
+
+            }
+
             comandaService.eliminar(comanda.getId());
-            
-            
+
             Mesa mesa = comanda.getMesa();
             mesa.setEstado("Libre");
             mesaService.actualizar(mesa);
-            
+
             redirect.addFlashAttribute("mensaje", "Comanda eliminado correctamente");
             redirect.addFlashAttribute("tipo", "success");
         } catch (Exception e) {

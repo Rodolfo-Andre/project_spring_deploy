@@ -32,7 +32,6 @@ public class Comanda {
   private Empleado empleado;
 
   @OneToMany(mappedBy = "comanda")
-
   private List<DetalleComanda> listaDetalleComanda;
 
   @OneToOne(mappedBy = "comanda")

@@ -20,7 +20,7 @@ const ViewCore = function () {
         .then((data) => {
           console.log(data);
 
-           this.generateComanda(data);
+          this.generateComanda(data);
         });
     },
     generateComanda: function (data) {
@@ -50,7 +50,7 @@ const ViewCore = function () {
 
       $(".js-container-comanda").on("click", function (ev) {
         const id = $(this).data("id");
-        window.location.href =  "/configuracion/comanda/detalle/" + id ;
+        window.location.href = "/configuracion/comanda/detalle/" + id;
 
         // me.showInfoComanda(id);
       });

@@ -277,7 +277,7 @@ const ViewCore = function () {
 
         $("#cantidadDePedido").val("");
         const errors = Object.keys(data).filter((key) => {
-          return data[key] == "" || data[key] == null || data[key] == undefined;
+          return data[key] == "" || data[key] == null || data[key] == undefined && key != "observacion";
         });
         if (errors.length > 0) {
           $("#error-platos")
@@ -356,7 +356,6 @@ const ViewCore = function () {
         cantidad: plato.cantidad,
         observacion: plato.observacion,
       }));
-      console.log(listIdPlatos);
 
       const baseUrl = this.contextUrl + this.apis.save;
       const baseData = {

@@ -80,17 +80,28 @@
                             </div>
                         </div>
                         <div class="row w-100 gap-4 px-4 py-1 d-flex mx-auto">
+
+                            <button th:if="${mesa.getEstado() == 'Ocupado'}" type="button"
+                                style="background-color: #6F42C1 !important;" class="btn btn-primary  col-md-3"
+                                id="btn-facturar-comanda">
+                                <i class="bi bi-save"></i>
+                                Facturar
+                            </button>
                             <button th:if="${mesa.getEstado() == 'Ocupado'}" type="button"
                                 class="btn btn-primary  col-md-3" id="btn-actualizar-comanda">
                                 <i class="bi bi-save"></i>
                                 Actualizar Comanda
                             </button>
 
+
                             <button th:if="${mesa.getEstado() != 'Ocupado'}" type="button"
                                 class="btn btn-primary  col-md-3" id="btn-guardar-comanda">
                                 <i class="bi bi-save"></i>
                                 Generar Comanda
                             </button>
+
+
+
 
 
                             <button type="button" class="btn btn-primary col-md-3" id="btn-add-plato">
