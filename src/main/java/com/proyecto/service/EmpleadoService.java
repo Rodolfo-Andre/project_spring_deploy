@@ -35,4 +35,12 @@ public class EmpleadoService {
 
     }
 
+    public Empleado obtenerPorTelefono(String telefono) {
+        return empleadoRepository.findByTelefono(telefono);
+    }
+
+    public Empleado obtenerPorDni(String dni) {
+        return empleadoRepository.findByDni(dni);
+    }
+
 }
