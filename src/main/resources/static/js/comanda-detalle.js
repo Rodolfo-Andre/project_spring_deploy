@@ -37,7 +37,6 @@ const ViewCore = function () {
     attachEvents: function () {
       let me = this;
       this.btnAddPlato.on("click", function (ev) {
-     
         me.modalPlato();
       });
 
@@ -47,16 +46,16 @@ const ViewCore = function () {
         const condicion =
           me.listaDeEnvioPlatos.length <= 0 ||
           me.txtCantidadPersonas.val() == 0;
-        me.containerError.empty()
+        me.containerError.empty();
 
         if (condicion) {
-		const errorSave = me.showError();
-		
-          me.containerError.append(errorSave)
+          const errorSave = me.showError();
+
+          me.containerError.append(errorSave);
           return;
         }
 
-        me.containerError.empty()
+        me.containerError.empty();
 
         me.saveComanda();
       });
@@ -67,15 +66,15 @@ const ViewCore = function () {
         const condicion =
           me.listaDeEnvioPlatos.length <= 0 ||
           me.txtCantidadPersonas.val() == 0;
-        me.containerError.empty()
+        me.containerError.empty();
         if (condicion) {
-         	const errorSave = me.showError();
-		
-          me.containerError.append(errorSave)
+          const errorSave = me.showError();
+
+          me.containerError.append(errorSave);
           return;
         }
 
-              me.containerError.empty()
+        me.containerError.empty();
 
         me.saveComanda();
       });
@@ -234,8 +233,7 @@ const ViewCore = function () {
         $("#plato")
           .prop("disabled", dataModal)
           .append(`<option value="">Seleccione</option>`);
-          
-          
+
         platos.map((plato) => {
           $("#plato").append(
             `<option value="${plato.id}" ${
@@ -290,7 +288,6 @@ const ViewCore = function () {
           cantidad: cantidad,
           categoriaPlato: plato.categoriaPlato,
           precio: plato.precioPlato,
-  
         };
 
         $("#cantidadDePedido").val("");
@@ -314,10 +311,9 @@ const ViewCore = function () {
             .css("display", "block");
           return;
         }
-        
-        data.observacion = observacion,
 
-        $("#error-platos").text("").css("display", "none");
+        (data.observacion = observacion),
+          $("#error-platos").text("").css("display", "none");
         me.initTable(data);
         me.showMessage(
           "Plato añadido correctamente",
@@ -455,30 +451,35 @@ const ViewCore = function () {
       }
 
       if (me.listaDeEnvioPlatos.length > 0) {
-        me.listaDeEnvioPlatos.forEach((plato) => {
-          $("#tbBodyPlatos").append(`<tr
-        data-id="${plato.id}"
-        >
-        <td>${plato.id}</td>
-        <td>
-        <img src="${plato.imagen}" alt="" width="50" height="50">
-          </td>
-          <td>${plato.nombre}</td>
-          <td>${plato.cantidad}</td>
-          <td>${plato.categoriaPlato.nombre}</td>
-          <td>${plato.precio * plato.cantidad}</td>
-          <td> 
-          <button class="btn btn-warning btn-sm js-btn-edit">
-          <i class="bi bi-pencil-fill"></i>
-          </button>
-          </td>
+        const cantidadDeColumnas = $("#tablaDetalleComanda > thead > tr").find(
+          "th"
+        ).length;
 
-          <td>
-              <button class="btn btn-danger btn-sm js-btn-delete">
-              <i class="bi bi-trash-fill"></i>    
+        const controles = `
+            <td> 
+              <button class="btn btn-warning btn-sm js-btn-edit">
+                <i class="bi bi-pencil-fill"></i>
               </button>
-              </td>
-              </tr>`);
+            </td>
+            <td>
+                <button class="btn btn-danger btn-sm js-btn-delete">
+                  <i class="bi bi-trash-fill"></i>    
+                </button>
+            </td>`;
+
+        me.listaDeEnvioPlatos.forEach((plato) => {
+          $("#tbBodyPlatos").append(`
+          <tr data-id="${plato.id}">
+            <td>${plato.id}</td>
+            <td>
+              <img src="${plato.imagen}" alt="" width="50" height="50">
+            </td>
+            <td>${plato.nombre}</td>
+            <td>${plato.cantidad}</td>
+            <td>${plato.categoriaPlato.nombre}</td>
+            <td>${plato.precio * plato.cantidad}</td>
+            ${cantidadDeColumnas > 6 && controles}
+          </tr>`);
         });
       }
       const total = me.listaDeEnvioPlatos.reduce((total, plato) => {
@@ -510,18 +511,16 @@ const ViewCore = function () {
         );
       });
     },
-     showError:function(){
-		
-		return ` <div 
+    showError: function () {
+      return ` <div 
                                 class="alert alert-danger alert-dismissible fade show col-12 col-md-8 col-lg-6 "
                                 role="alert" id="alerta-error">
                                 <strong>¡Error!</strong> <span id="mensaje-error">
                                 Debe agregar platos y/o cantidad de personas</span>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
-   </div>`
-	 }
-    
+   </div>`;
+    },
   };
 };
 

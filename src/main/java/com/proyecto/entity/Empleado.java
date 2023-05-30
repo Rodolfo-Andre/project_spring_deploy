@@ -2,13 +2,13 @@ package com.proyecto.entity;
 
 import java.util.*;
 import org.springframework.data.annotation.CreatedDate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import com.proyecto.utils.Utilidades;
-
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "EMPLEADO")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Empleado {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,20 +29,19 @@ public class Empleado {
 
   @ManyToOne
   @JoinColumn(name = "CARGO_ID")
- 
   private Cargo cargo;
 
   @OneToMany(mappedBy = "empleado")
   @JsonIgnore
-  List<Comanda> listaComanda;
+  private List<Comanda> listaComanda;
 
   @OneToMany(mappedBy = "empleado")
   @JsonIgnore
-  List<Apertura> listaApertura;
+  private List<Apertura> listaApertura;
 
   @OneToMany(mappedBy = "empleado")
   @JsonIgnore
-  List<Comprobante> listaComprobante;
+  private List<Comprobante> listaComprobante;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "USUARIO_ID")
@@ -131,14 +130,14 @@ public class Empleado {
   public void setUsuario(Usuario usuario) {
     this.usuario = usuario;
   }
-  
-  //Generar Contraseña
-  public static String generarContrasenia(String apellido) {  	
-		int nroCaracterExtraer = 2;
-		int nroRamdom = Utilidades.generarNumeroRandom(1, apellido.length() - nroCaracterExtraer);
-		String caracterApe = apellido.substring(nroRamdom, nroRamdom + nroCaracterExtraer);
-		String mayusculaCaracterApe = caracterApe.substring(0, 1).toUpperCase() +  caracterApe.substring(1);
-		
-      return mayusculaCaracterApe + "$" + Utilidades.generarNumeroRandom(1000, 5000) ;
-  }	
+
+  // Generar Contraseña
+  public static String generarContrasenia(String apellido) {
+    int nroCaracterExtraer = 2;
+    int nroRamdom = Utilidades.generarNumeroRandom(1, apellido.length() - nroCaracterExtraer);
+    String caracterApe = apellido.substring(nroRamdom, nroRamdom + nroCaracterExtraer);
+    String mayusculaCaracterApe = caracterApe.substring(0, 1).toUpperCase() + caracterApe.substring(1);
+
+    return mayusculaCaracterApe + "$" + Utilidades.generarNumeroRandom(1000, 5000);
+  }
 }

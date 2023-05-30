@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.proyecto.entity.Mesa;
+import com.proyecto.entity.UsuarioDetallesCustom;
+import com.proyecto.interfaces.UsuarioActual;
 import com.proyecto.service.MesaService;
 
 @Controller
@@ -24,7 +26,10 @@ public class MesaController {
 
   @GetMapping(value = "/obtener")
   @ResponseBody
-  public List<Mesa> getMesas() {
+  public List<Mesa> getMesas(@UsuarioActual UsuarioDetallesCustom usuario) {
+    if (usuario.getUsuario().getEmpleado().getCargo().getNombre().equals("ROLE_COCINERO")) {
+      return mesaService.obtenerPorEstado("Ocupado");
+    }
     return mesaService.obtenerTodo();
   }
 

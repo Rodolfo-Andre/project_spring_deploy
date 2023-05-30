@@ -23,13 +23,12 @@ const ViewCore = function () {
           this.generateComanda(data);
         });
     },
-    generateComanda: function(data) {
-  let html = "";
-  let me = this;
+    generateComanda: function (data) {
+      let html = "";
+      let me = this;
 
-  data.forEach((element) => {
+      data.forEach((element) => {
         if (element.estado == "Ocupado") {
-          console.log("Hola");
           const url = `/configuracion/comanda/comanda-libre/${element.id}`;
           fetch(url)
             .then((response) => response.json())
@@ -62,7 +61,9 @@ const ViewCore = function () {
               
               `;
               }
+
               $("#tableComandas").html(html);
+
               $(".js-container-comanda").on("click", function (ev) {
                 const id = $(this).data("id");
                 window.location.href = "/configuracion/comanda/detalle/" + id;
@@ -88,18 +89,13 @@ const ViewCore = function () {
               </div>
         `;
         }
-
       });
 
-
-  $("#tableComandas").html(html);
-  $(".js-container-comanda").on("click", function (ev) {
-                const id = $(this).data("id");
-                window.location.href = "/configuracion/comanda/detalle/" + id;
-   });
-  
-
-   
+      $("#tableComandas").html(html);
+      $(".js-container-comanda").on("click", function (ev) {
+        const id = $(this).data("id");
+        window.location.href = "/configuracion/comanda/detalle/" + id;
+      });
     },
     showInfoComanda: function (id) {
       const data = {

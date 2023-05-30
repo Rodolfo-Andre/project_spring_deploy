@@ -4,58 +4,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BaseDataInput {
+  private int id;
+  private int numeroMesa;
+  private int cantidadPersonas;
+  private double precioTotal;
+  private List<PlatoComanda> listaPlatos;
+  public int idUsuario;
 
-    private int id;
-    private int numeroMesa;
-    private int cantidadPersonas;
-    private double precioTotal;
-    private List<PlatoComanda> listaPlatos;
-    public int idUsuario;
+  public BaseDataInput() {
+    this.listaPlatos = new ArrayList<>();
+  }
 
-    public BaseDataInput() {
+  public int getNumeroMesa() {
+    return this.numeroMesa;
+  }
 
-        this.listaPlatos = new ArrayList<PlatoComanda>();
+  public int getCantidadPersonas() {
+    return this.cantidadPersonas;
+  }
 
-    }
+  public double getPrecioTotal() {
+    return this.precioTotal;
+  }
 
-    public int getNumeroMesa() {
-        return this.numeroMesa;
-    }
+  public List<PlatoComanda> getListaPlatos() {
+    return this.listaPlatos;
+  }
 
-    public int getCantidadPersonas() {
-        return this.cantidadPersonas;
-    }
+  public void setNumeroMesa(int numeroMesa) {
+    this.numeroMesa = numeroMesa;
+  }
 
-    public double getPrecioTotal() {
-        return this.precioTotal;
-    }
+  public void setCantidadPersonas(int cantidadPersonas) {
+    this.cantidadPersonas = cantidadPersonas;
+  }
 
-    public List<PlatoComanda> getListaPlatos() {
-        return this.listaPlatos;
-    }
+  public void setPrecioTotal(double precioTotal) {
+    this.precioTotal = precioTotal;
+  }
 
-    public void setNumeroMesa(int numeroMesa) {
-        this.numeroMesa = numeroMesa;
-    }
+  public void setListaPlatos(List<PlatoComanda> listaPlatos) {
+    this.listaPlatos = listaPlatos;
+  }
 
-    public void setCantidadPersonas(int cantidadPersonas) {
-        this.cantidadPersonas = cantidadPersonas;
-    }
+  public int getId() {
+    return this.id;
+  }
 
-    public void setPrecioTotal(double precioTotal) {
-        this.precioTotal = precioTotal;
-    }
-
-    public void setListaPlatos(List<PlatoComanda> listaPlatos) {
-        this.listaPlatos = listaPlatos;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+  public void setId(int id) {
+    this.id = id;
+  }
 }

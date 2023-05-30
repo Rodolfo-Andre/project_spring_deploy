@@ -24,8 +24,13 @@ public class WebSecurityConfiguration {
         .authorizeHttpRequests(a ->
 
         a.requestMatchers("/login/**").permitAll()
-            .requestMatchers("/configuracion/comanda/**")
-            .hasAnyRole("ADMINISTRADOR", "MESERO", "COCINERO", "CAJERO")
+            .requestMatchers("/configuracion/mesa/obtener",
+                "/configuracion/plato/obtener",
+                "/configuracion/categoria-plato/obtener")
+            .hasAnyRole("MESERO", "COCINERO", "CAJERO", "ADMINISTRADOR")
+            .requestMatchers("/configuracion/comanda/**").hasAnyRole(
+                "ADMINISTRADOR", "MESERO", "COCINERO",
+                "CAJERO")
             .requestMatchers("/configuracion/**").hasRole("ADMINISTRADOR")
             .requestMatchers("/**").authenticated())
         .formLogin(t -> t.loginPage("/login")

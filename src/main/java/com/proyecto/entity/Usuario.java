@@ -1,11 +1,11 @@
 package com.proyecto.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "USUARIO")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Usuario {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,6 @@ public class Usuario {
   private int codigo;
 
   @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
- @JsonIgnore
   private Empleado empleado;
 
   public Integer getId() {

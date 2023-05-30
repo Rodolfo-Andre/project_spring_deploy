@@ -19,6 +19,10 @@ public class MesaService {
     return mesaRepository.findById(m).orElse(null);
   }
 
+  public List<Mesa> obtenerPorEstado(String e) {
+    return mesaRepository.findByEstado(e);
+  }
+
   public void agregar(Mesa m) {
     mesaRepository.save(m);
   }

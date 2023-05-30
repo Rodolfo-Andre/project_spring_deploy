@@ -1,9 +1,11 @@
 package com.proyecto.entity;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "DETALLE_COMPROBANTE")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DetalleComprobante {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

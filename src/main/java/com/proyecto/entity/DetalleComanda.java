@@ -1,11 +1,11 @@
 package com.proyecto.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "DETALLE_COMANDA")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DetalleComanda {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,6 @@ public class DetalleComanda {
   private Plato plato;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "COMANDA_ID")
   private Comanda comanda;
 
@@ -72,7 +71,6 @@ public class DetalleComanda {
   public String getObservacion() {
     return this.observacion;
   }
-
 
   public void setObservacion(String observacion) {
     this.observacion = observacion;

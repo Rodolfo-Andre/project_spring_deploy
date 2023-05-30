@@ -52,11 +52,12 @@
                                         class="form-control" id="txt-numero-mesa" placeholder="Numero de mesa">
                                 </div>
                                 <div class="mb-3">
+                                  <div></div>
                                     <label for="txt-cantidad-persona" class="form-label fw-bold">
                                         Cantidad de Personas
                                     </label>
                                     <input type="number" class="form-control" id="txt-cantidad-persona"
-                                        name="txt-cantidad-persona" placeholder="Cantidad">
+                                        name="txt-cantidad-persona" placeholder="Cantidad" th:attr="disabled=${#authentication.principal.usuario.empleado.cargo.nombre.equals('ROLE_COCINERO')}">
                                     <input type="hidden" class="form-control" id="txt-cantidad-maxima">
 
                                     <input id="txt-id-usuario" th:value="${#authentication.principal.usuario.id}"
@@ -84,29 +85,25 @@
                             </div>
                         </div>
                         <div class="row w-100 gap-4 px-4 py-1 d-flex mx-auto">
-
-                            <button th:if="${mesa.getEstado() == 'Ocupado'}" type="button"
+                          <th:block sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')">
+<button th:if="${mesa.getEstado() == 'Ocupado'}" type="button"
                                 style="background-color: #6F42C1 !important;" class="btn btn-primary  col-md-3"
                                 id="btn-facturar-comanda">
                                 <i class="bi bi-save"></i>
                                 Facturar
                             </button>
+                            
                             <button th:if="${mesa.getEstado() == 'Ocupado'}" type="button"
                                 class="btn btn-primary  col-md-3" id="btn-actualizar-comanda">
                                 <i class="bi bi-save"></i>
                                 Actualizar Comanda
                             </button>
 
-
                             <button th:if="${mesa.getEstado() != 'Ocupado'}" type="button"
                                 class="btn btn-primary  col-md-3" id="btn-guardar-comanda">
                                 <i class="bi bi-save"></i>
                                 Generar Comanda
                             </button>
-
-
-
-
 
                             <button type="button" class="btn btn-primary col-md-3" id="btn-add-plato">
                                 Añadir Plato
@@ -118,7 +115,8 @@
                                 Eliminar Comanda
                                 <i class="bi bi-trash"></i>
                             </button>
-
+                          </th:block>
+                            
                             <a href="http://localhost:8091/configuracion/comanda"
                                 class="btn btn-secondary  col-md-3">Regresar</a>
                         </div>
@@ -130,7 +128,7 @@
                         </div>
 
                         <div class="col-12">
-                            <table id="tablaEmpleado" class="table display" style="width: 100%"
+                            <table id="tablaDetalleComanda" class="table display" style="width: 100%"
                                 aria-describedby="Tabla de Métodos de Pagos">
                                 <thead class="align-middle">
                                     <th>Código</th>
@@ -139,8 +137,10 @@
                                     <th>Cantidad</th>
                                     <th>Categoria</th>
                                     <th>Precio Total</th>
-                                    <th>Editar</th>
-                                    <th>Eliminar</th>
+                                    <th:block sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')">
+                                      <th>Editar</th>
+                                      <th>Eliminar</th>
+                                    </th:block>
                                 </thead>
                                 <tbody id="tbBodyPlatos">
                                 </tbody>

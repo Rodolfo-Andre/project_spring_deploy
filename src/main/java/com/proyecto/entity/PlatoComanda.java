@@ -1,43 +1,39 @@
 package com.proyecto.entity;
 
 public class PlatoComanda {
+  private String id;
+  private int cantidad;
+  private String observacion;
 
-    private String id;
+  public PlatoComanda() {
+  }
 
-    private int cantidad;
+  public PlatoComanda(String id, int cantidad) {
+    this.id = id;
+    this.cantidad = cantidad;
+  }
 
-    private String observacion;
+  public String getId() {
+    return this.id;
+  }
 
-    public PlatoComanda() {
-    }
+  public int getCantidad() {
+    return this.cantidad;
+  }
 
-    public PlatoComanda(String id, int cantidad) {
-        this.id = id;
-        this.cantidad = cantidad;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public String getId() {
-        return this.id;
-    }
+  public void setCantidad(int cantidad) {
+    this.cantidad = cantidad;
+  }
 
-    public int getCantidad() {
-        return this.cantidad;
-    }
+  public String getObservacion() {
+    return this.observacion;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public String getObservacion() {
-        return this.observacion;
-    }
-
-    public void setObservacion(String Observacion) {
-        this.observacion = Observacion;
-    }
-
+  public void setObservacion(String observacion) {
+    this.observacion = observacion;
+  }
 }

@@ -2,10 +2,11 @@ package com.proyecto.entity;
 
 import jakarta.persistence.*;
 import java.util.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table(name = "CAJA")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Caja {
   @Id
   private String id;
