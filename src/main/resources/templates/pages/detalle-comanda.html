@@ -7,7 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+        <link rel="stylesheet" href="/css/style.css" />
 </head>
+
+<style>
+	
+	
+
+</style>
 
 <body class="d-flex">
     <th:block th:fragment="cuerpo">
@@ -23,17 +30,14 @@
                     <form id="form-comanda">
                         <input type="hidden" id="txt-estado-mesa" th:value="${mesa.getEstado()}">
                         <div class="row   d-flex justify-content-center ">
-                            <div style="display: none;"
-                                class="alert alert-danger alert-dismissible fade show col-12 col-md-8 col-lg-6 "
-                                role="alert" id="alerta-error">
-                                <strong>¡Error!</strong> <span id="mensaje-error"></span>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
+								
+								<div id="container-error" class="d-flex justify-content-center">
+									
+								</div>                      
 
                         </div>
                         <div class="row w-100  px-4 py-1 mx-auto">
-                            <div class="col-6">
+                            <div class="col-sm-12 col-md-6">
                                 <div class="mb-3">
                                     <label for="txt-numero-comanda" class="form-label fw-bold">Numero de Comanda</label>
                                     <input disabled th:value="${idComanda == null ? comanda.getId() : idComanda}"
@@ -60,7 +64,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-6 border-start">
+                            <div class="col-sm-12 col-md-6  border-custom">
                                 <div class="mb-3">
                                     <label for="txt-estado-comanda" class="form-label">Estado de la Comanda</label>
                                     <input disabled type="text" class="form-control" id="txt-estado-comanda"

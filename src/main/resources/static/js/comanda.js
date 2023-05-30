@@ -36,7 +36,7 @@ const ViewCore = function () {
             .then((comanda) => {
               if (comanda) {
                 html += `
-                <div  class="card col-md-3 col-sm-2 col-lg-4 m-3 
+                <div  class="card col-12 col-xl-5 m-3 
                 border-4 border-danger js-container-comanda" 
                 data-id="${element.id}">
                 <div class="card-body d-flex flex-column justify-content-center align-items-center">
@@ -73,7 +73,7 @@ const ViewCore = function () {
             });
         } else {
           html += `
-          <div class="card col-md-3 col-sm-2 col-lg-4 m-3 
+          <div class="card col-12 col-xl-5 m-3 
                 border-4 border-success js-container-comanda"
                 data-id="${element.id}"
                 c>

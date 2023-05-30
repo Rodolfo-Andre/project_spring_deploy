@@ -20,7 +20,7 @@ const ViewCore = function () {
       this.txtPrecioTotal = $("#txt-total");
       this.txtCantidadMaxima = $("#txt-cantidad-maxima");
       this.btnGenerar = $("#btn-guardar-comanda");
-      this.containerError = $("#alerta-error");
+      this.containerError = $("#container-error");
       this.btnAddPlato = $("#btn-add-plato");
       this.btnActualizar = $("#btn-actualizar-comanda");
       this.listaDeEnvioPlatos = [];
@@ -37,7 +37,7 @@ const ViewCore = function () {
     attachEvents: function () {
       let me = this;
       this.btnAddPlato.on("click", function (ev) {
-        console.log("click");
+     
         me.modalPlato();
       });
 
@@ -47,16 +47,16 @@ const ViewCore = function () {
         const condicion =
           me.listaDeEnvioPlatos.length <= 0 ||
           me.txtCantidadPersonas.val() == 0;
+        me.containerError.empty()
 
         if (condicion) {
-          me.containerError
-            .css("display", "block")
-            .find("#mensaje-error")
-            .text("Debe agregar platos y/o cantidad de personas");
+		const errorSave = me.showError();
+		
+          me.containerError.append(errorSave)
           return;
         }
 
-        me.containerError.css("display", "none");
+        me.containerError.empty()
 
         me.saveComanda();
       });
@@ -67,16 +67,15 @@ const ViewCore = function () {
         const condicion =
           me.listaDeEnvioPlatos.length <= 0 ||
           me.txtCantidadPersonas.val() == 0;
-
+        me.containerError.empty()
         if (condicion) {
-          me.containerError
-            .css("display", "block")
-            .find("#mensaje-error")
-            .text("Debe agregar platos y/o cantidad de personas");
+         	const errorSave = me.showError();
+		
+          me.containerError.append(errorSave)
           return;
         }
 
-        me.containerError.css("display", "none");
+              me.containerError.empty()
 
         me.saveComanda();
       });
@@ -235,6 +234,8 @@ const ViewCore = function () {
         $("#plato")
           .prop("disabled", dataModal)
           .append(`<option value="">Seleccione</option>`);
+          
+          
         platos.map((plato) => {
           $("#plato").append(
             `<option value="${plato.id}" ${
@@ -289,7 +290,7 @@ const ViewCore = function () {
           cantidad: cantidad,
           categoriaPlato: plato.categoriaPlato,
           precio: plato.precioPlato,
-          observacion: observacion,
+  
         };
 
         $("#cantidadDePedido").val("");
@@ -313,6 +314,8 @@ const ViewCore = function () {
             .css("display", "block");
           return;
         }
+        
+        data.observacion = observacion,
 
         $("#error-platos").text("").css("display", "none");
         me.initTable(data);
@@ -507,6 +510,18 @@ const ViewCore = function () {
         );
       });
     },
+     showError:function(){
+		
+		return ` <div 
+                                class="alert alert-danger alert-dismissible fade show col-12 col-md-8 col-lg-6 "
+                                role="alert" id="alerta-error">
+                                <strong>¡Error!</strong> <span id="mensaje-error">
+                                Debe agregar platos y/o cantidad de personas</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+   </div>`
+	 }
+    
   };
 };
 
