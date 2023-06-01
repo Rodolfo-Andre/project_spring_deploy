@@ -15,6 +15,10 @@ public class Caja {
   @JoinColumn(name = "ESTABLECIMIENTO_ID")
   private Establecimiento establecimiento;
 
+  @OneToMany(mappedBy = "caja")
+  @JsonIgnore
+  private List<Comprobante> listaComprobante;
+
   public String getId() {
     return id;
   }
@@ -29,6 +33,14 @@ public class Caja {
 
   public void setEstablecimiento(Establecimiento establecimiento) {
     this.establecimiento = establecimiento;
+  }
+
+  public List<Comprobante> getListaComprobante() {
+    return listaComprobante;
+  }
+
+  public void setListaComprobante(List<Comprobante> listaComprobante) {
+    this.listaComprobante = listaComprobante;
   }
 
   public static String generarIdCaja(List<Caja> listaCaja) {

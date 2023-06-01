@@ -12,9 +12,6 @@ public class Comprobante {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "NOMBRE_CLIENTE")
-  private String nombreCliente;
-
   @Column(name = "FECHA_EMISION")
   private Date fechaEmision;
 
@@ -47,20 +44,16 @@ public class Comprobante {
   @JoinColumn(name = "COMANDA_ID")
   private Comanda comanda;
 
+  @ManyToOne
+  @JoinColumn(name = "CAJA_ID")
+  private Caja caja;
+
   public Integer getId() {
     return id;
   }
 
   public void setId(Integer id) {
     this.id = id;
-  }
-
-  public String getNombreCliente() {
-    return nombreCliente;
-  }
-
-  public void setNombreCliente(String nombreCliente) {
-    this.nombreCliente = nombreCliente;
   }
 
   public Date getFechaEmision() {
@@ -141,5 +134,13 @@ public class Comprobante {
 
   public void setComanda(Comanda comanda) {
     this.comanda = comanda;
+  }
+
+  public Caja getCaja() {
+    return caja;
+  }
+
+  public void setCaja(Caja caja) {
+    this.caja = caja;
   }
 }

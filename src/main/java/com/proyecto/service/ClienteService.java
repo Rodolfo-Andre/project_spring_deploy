@@ -19,11 +19,19 @@ public class ClienteService {
     return clienteRepository.findById(t).orElse(null);
   }
 
+  public Cliente obtenerPrimero() {
+    return clienteRepository.findAll().get(0);
+  }
+
   public Cliente obtenerPorDni(String d) {
     return clienteRepository.findByDni(d);
   }
 
   public void agregar(Cliente t) {
     clienteRepository.save(t);
+  }
+
+  public long obtenerTamano() {
+    return clienteRepository.count();
   }
 }

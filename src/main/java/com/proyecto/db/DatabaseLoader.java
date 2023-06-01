@@ -2,7 +2,7 @@ package com.proyecto.db;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import com.proyecto.entity.*;
 import com.proyecto.service.*;
@@ -23,6 +23,10 @@ public class DatabaseLoader implements CommandLineRunner {
   private TipoComprobanteService tipoComprobanteService;
   @Autowired
   private EstablecimientoService establecimientoService;
+  @Autowired
+  private ClienteService clienteService;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @Override
   public void run(String... args) throws Exception {
@@ -71,9 +75,16 @@ public class DatabaseLoader implements CommandLineRunner {
       tipoComprobanteService.agregar(new TipoComprobante("Boleta"));
     }
 
-    if (usuarioService.obtenerTamano() == 0) {
-      BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    if (clienteService.obtenerTamano() == 0) {
+      Cliente cliente = new Cliente();
+      cliente.setNombre("Cliente");
+      cliente.setApellido("");
+      cliente.setDni("");
 
+      clienteService.agregar(cliente);
+    }
+
+    if (usuarioService.obtenerTamano() == 0) {
       Cargo administrador = cargoService.obtenerPorNombre("ROLE_ADMINISTRADOR");
 
       Usuario usuarioAdministrador = new Usuario();
