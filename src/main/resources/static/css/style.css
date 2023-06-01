@@ -172,3 +172,21 @@ a {
 		border-left: 1px solid #333;
 	}
 }	
+
+
+.container-cards::-webkit-scrollbar {
+  width: 6px;
+}
+
+.container-cards::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+.container-cards::-webkit-scrollbar-thumb {
+  background-color: #dcdcdc;
+  border-radius: 3px;
+}
+
+.container-cards::-webkit-scrollbar-thumb:hover {
+  background-color: #c0c0c0;
+}
