@@ -61,8 +61,9 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     if (estadoComandaService.obtenerTamano() == 0) {
-      estadoComandaService.agregar(new EstadoComanda("Pagada"));
-      estadoComandaService.agregar(new EstadoComanda("Sin pagar"));
+      estadoComandaService.agregar(new EstadoComanda("Generado"));
+      estadoComandaService.agregar(new EstadoComanda("Preparado"));
+      estadoComandaService.agregar(new EstadoComanda("Pagado"));
     }
 
     if (tipoComprobanteService.obtenerTamano() == 0) {

@@ -21,6 +21,16 @@ public class Comprobante {
   @Column(name = "PRECIO_TOTAL_PEDIDO")
   private double precioTotalPedido;
 
+  private double igv;
+
+  private double gravada;
+
+  private double descuento;
+
+  @ManyToOne
+  @JoinColumn(name = "CLIENTE_ID")
+  private Cliente cliente;
+
   @ManyToOne
   @JoinColumn(name = "ESTABLECIMIENTO_ID")
   private Establecimiento establecimiento;
@@ -36,10 +46,6 @@ public class Comprobante {
   @OneToOne
   @JoinColumn(name = "COMANDA_ID")
   private Comanda comanda;
-
-  @ManyToOne
-  @JoinColumn(name = "APERTURA_ID")
-  private Apertura apertura;
 
   public Integer getId() {
     return id;
@@ -73,6 +79,38 @@ public class Comprobante {
     this.precioTotalPedido = precioTotalPedido;
   }
 
+  public double getIgv() {
+    return igv;
+  }
+
+  public void setIgv(double igv) {
+    this.igv = igv;
+  }
+
+  public double getGravada() {
+    return gravada;
+  }
+
+  public void setGravada(double gravada) {
+    this.gravada = gravada;
+  }
+
+  public double getDescuento() {
+    return descuento;
+  }
+
+  public void setDescuento(double descuento) {
+    this.descuento = descuento;
+  }
+
+  public Cliente getCliente() {
+    return cliente;
+  }
+
+  public void setCliente(Cliente cliente) {
+    this.cliente = cliente;
+  }
+
   public Establecimiento getEstablecimiento() {
     return establecimiento;
   }
@@ -103,13 +141,5 @@ public class Comprobante {
 
   public void setComanda(Comanda comanda) {
     this.comanda = comanda;
-  }
-
-  public Apertura getApertura() {
-    return apertura;
-  }
-
-  public void setApertura(Apertura apertura) {
-    this.apertura = apertura;
   }
 }

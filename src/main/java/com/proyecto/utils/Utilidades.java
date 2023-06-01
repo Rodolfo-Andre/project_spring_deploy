@@ -1,7 +1,14 @@
 package com.proyecto.utils;
 
+import java.util.Random;
+
 public class Utilidades {
-	public static int generarNumeroRandom(int min, int max) {		
-		return (int) (Math.round(Math.random() * (max - min)) + min);
-	}
+  private Utilidades() {
+  }
+
+  public static final double IGV = 0.18;
+
+  public static int generarNumeroRandom(int min, int max) {
+    return new Random().nextInt(min, max);
+  }
 }

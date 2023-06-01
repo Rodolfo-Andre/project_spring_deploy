@@ -15,10 +15,6 @@ public class Caja {
   @JoinColumn(name = "ESTABLECIMIENTO_ID")
   private Establecimiento establecimiento;
 
-  @OneToMany(mappedBy = "caja")
-  @JsonIgnore
-  private List<Apertura> listaAperuta;
-
   public String getId() {
     return id;
   }
@@ -33,14 +29,6 @@ public class Caja {
 
   public void setEstablecimiento(Establecimiento establecimiento) {
     this.establecimiento = establecimiento;
-  }
-
-  public List<Apertura> getListaAperuta() {
-    return listaAperuta;
-  }
-
-  public void setListaAperuta(List<Apertura> listaAperuta) {
-    this.listaAperuta = listaAperuta;
   }
 
   public static String generarIdCaja(List<Caja> listaCaja) {
