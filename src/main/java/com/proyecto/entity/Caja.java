@@ -17,7 +17,7 @@ public class Caja {
 
   @OneToMany(mappedBy = "caja")
   @JsonIgnore
-  private List<Apertura> listaAperuta;
+  private List<Comprobante> listaComprobante;
 
   public String getId() {
     return id;
@@ -35,12 +35,12 @@ public class Caja {
     this.establecimiento = establecimiento;
   }
 
-  public List<Apertura> getListaAperuta() {
-    return listaAperuta;
+  public List<Comprobante> getListaComprobante() {
+    return listaComprobante;
   }
 
-  public void setListaAperuta(List<Apertura> listaAperuta) {
-    this.listaAperuta = listaAperuta;
+  public void setListaComprobante(List<Comprobante> listaComprobante) {
+    this.listaComprobante = listaComprobante;
   }
 
   public static String generarIdCaja(List<Caja> listaCaja) {

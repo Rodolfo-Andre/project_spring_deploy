@@ -12,14 +12,21 @@ public class Comprobante {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "NOMBRE_CLIENTE")
-  private String nombreCliente;
-
   @Column(name = "FECHA_EMISION")
   private Date fechaEmision;
 
   @Column(name = "PRECIO_TOTAL_PEDIDO")
   private double precioTotalPedido;
+
+  private double igv;
+
+  private double gravada;
+
+  private double descuento;
+
+  @ManyToOne
+  @JoinColumn(name = "CLIENTE_ID")
+  private Cliente cliente;
 
   @ManyToOne
   @JoinColumn(name = "ESTABLECIMIENTO_ID")
@@ -38,8 +45,8 @@ public class Comprobante {
   private Comanda comanda;
 
   @ManyToOne
-  @JoinColumn(name = "APERTURA_ID")
-  private Apertura apertura;
+  @JoinColumn(name = "CAJA_ID")
+  private Caja caja;
 
   public Integer getId() {
     return id;
@@ -47,14 +54,6 @@ public class Comprobante {
 
   public void setId(Integer id) {
     this.id = id;
-  }
-
-  public String getNombreCliente() {
-    return nombreCliente;
-  }
-
-  public void setNombreCliente(String nombreCliente) {
-    this.nombreCliente = nombreCliente;
   }
 
   public Date getFechaEmision() {
@@ -71,6 +70,38 @@ public class Comprobante {
 
   public void setPrecioTotalPedido(double precioTotalPedido) {
     this.precioTotalPedido = precioTotalPedido;
+  }
+
+  public double getIgv() {
+    return igv;
+  }
+
+  public void setIgv(double igv) {
+    this.igv = igv;
+  }
+
+  public double getGravada() {
+    return gravada;
+  }
+
+  public void setGravada(double gravada) {
+    this.gravada = gravada;
+  }
+
+  public double getDescuento() {
+    return descuento;
+  }
+
+  public void setDescuento(double descuento) {
+    this.descuento = descuento;
+  }
+
+  public Cliente getCliente() {
+    return cliente;
+  }
+
+  public void setCliente(Cliente cliente) {
+    this.cliente = cliente;
   }
 
   public Establecimiento getEstablecimiento() {
@@ -105,11 +136,11 @@ public class Comprobante {
     this.comanda = comanda;
   }
 
-  public Apertura getApertura() {
-    return apertura;
+  public Caja getCaja() {
+    return caja;
   }
 
-  public void setApertura(Apertura apertura) {
-    this.apertura = apertura;
+  public void setCaja(Caja caja) {
+    this.caja = caja;
   }
 }

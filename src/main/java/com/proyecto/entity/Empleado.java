@@ -37,10 +37,6 @@ public class Empleado {
 
   @OneToMany(mappedBy = "empleado")
   @JsonIgnore
-  private List<Apertura> listaApertura;
-
-  @OneToMany(mappedBy = "empleado")
-  @JsonIgnore
   private List<Comprobante> listaComprobante;
 
   @OneToOne(cascade = CascadeType.ALL)
@@ -91,6 +87,10 @@ public class Empleado {
     return fechaRegistro;
   }
 
+  public void setFechaRegistro(Date fechaRegistro) {
+    this.fechaRegistro = fechaRegistro;
+  }
+
   public Cargo getCargo() {
     return cargo;
   }
@@ -105,14 +105,6 @@ public class Empleado {
 
   public void setListaComanda(List<Comanda> listaComanda) {
     this.listaComanda = listaComanda;
-  }
-
-  public List<Apertura> getListaApertura() {
-    return listaApertura;
-  }
-
-  public void setListaApertura(List<Apertura> listaApertura) {
-    this.listaApertura = listaApertura;
   }
 
   public List<Comprobante> getListaComprobante() {
