@@ -151,7 +151,7 @@ public class ComandaController {
         comanda.setMesa(mesa);
 
         EstadoComanda estadoComanda = new EstadoComanda();
-        estadoComanda.setId(2);
+        estadoComanda.setId(1);
         comanda.setEstadoComanda(estadoComanda);
 
         Empleado empleado = empleadoService.findEmpleadoByIdUsario(baseData.idUsuario);

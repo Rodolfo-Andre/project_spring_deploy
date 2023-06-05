@@ -1,5 +1,7 @@
 package com.proyecto.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,12 @@ public class CajaController {
   public String index(Model model) {
     model.addAttribute("listaCaja", cajaservice.obtenerTodo());
     return "pages/caja";
+  }
+
+  @GetMapping(value = "/obtener")
+  @ResponseBody
+  public List<Caja> obtener() {
+    return cajaservice.obtenerTodo();
   }
 
   @PostMapping(value = "/grabar")

@@ -1,5 +1,7 @@
 package com.proyecto.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,12 @@ public class MetodoPagoController {
   @ResponseBody
   public MetodoPago buscarPorId(@PathVariable Integer id) {
     return metodoPagoService.obtenerPorId(id);
+  }
+
+  @GetMapping(value = "/obtener")
+  @ResponseBody
+  public List<MetodoPago> obtenerTodos() {
+    return metodoPagoService.obtenerTodo();
   }
 
   @PostMapping(value = "/grabar")
@@ -77,4 +85,5 @@ public class MetodoPagoController {
 
     return "redirect:/configuracion/metodo-pago";
   }
+
 }

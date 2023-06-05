@@ -1,4 +1,5 @@
 import { showModal } from "./modal.js";
+import { ViewCoreFactura } from "./factura.js";
 
 const ViewCore = function () {
   this.Core = {
@@ -8,6 +9,8 @@ const ViewCore = function () {
       save: "/registrar",
     },
     init: async function () {
+      this.viewFactura = new ViewCoreFactura();
+      await this.viewFactura.Core.init();
       let me = this;
       this.txtNumeroComanda = $("#txt-numero-comanda");
       this.IdUsuario = $("#txt-id-usuario");
@@ -24,6 +27,9 @@ const ViewCore = function () {
       this.btnAddPlato = $("#btn-add-plato");
       this.btnActualizar = $("#btn-actualizar-comanda");
       this.listaDeEnvioPlatos = [];
+
+      this.modalFactura = $("#modalFactura");
+      this.btnFacturar = $("#btn-facturar-comanda");
       this.getCategoriaPlato();
 
       //values modal
@@ -94,6 +100,13 @@ const ViewCore = function () {
         };
 
         showModal(contentModal);
+      });
+
+      this.btnFacturar.on("click", function (ev) {
+        ev.preventDefault();
+        me.modalFactura.modal("show");
+
+        me.viewFactura.Core.setPedidos(me.listaDeEnvioPlatos);
       });
     },
     getValues: function () {
@@ -331,7 +344,6 @@ const ViewCore = function () {
 
     getSingle: async function (id) {
       let me = this;
-
       try {
         const url = "/configuracion/comanda/obtener/" + id;
         const response = await fetch(url);
@@ -341,6 +353,10 @@ const ViewCore = function () {
         me.txtPrecioTotal.val(data.precioTotal);
         me.txtEstadoComanda.val(data.estadoComanda.estado);
         const listado = [];
+
+        if (data.estadoComanda.estado == "Preparado") {
+          me.btnFacturar.css("display", "block");
+        }
 
         data.listaDetalleComanda.forEach((plato) => {
           listado.push({
@@ -474,10 +490,16 @@ const ViewCore = function () {
             <td>
               <img src="${plato.imagen}" alt="" width="50" height="50">
             </td>
-            <td>${plato.nombre}</td>
-            <td>${plato.cantidad}</td>
+            <td
+            class="js-nombre"
+            >${plato.nombre}</td>
+            <td
+            class="js-cantidad"
+            >${plato.cantidad}</td>
             <td>${plato.categoriaPlato.nombre}</td>
-            <td>${plato.precio * plato.cantidad}</td>
+            <td
+            class="js-total"
+            >${plato.precio * plato.cantidad}</td>
             ${cantidadDeColumnas > 6 && controles}
           </tr>`);
         });

@@ -9,7 +9,7 @@ import com.proyecto.entity.Comanda;
 public interface ComandaRepository extends JpaRepository<Comanda, Integer> {
 
     
-    @Query("SELECT c FROM Comanda c  inner join Mesa m on c.mesa.id = m.id  inner join EstadoComanda ec on c.estadoComanda.id = ec.id where m.id = :mesaId and ec.estado = 'Sin pagar' and m.estado = 'Ocupado'")
+    @Query("SELECT c FROM Comanda c  inner join Mesa m on c.mesa.id = m.id  inner join EstadoComanda ec on c.estadoComanda.id = ec.id where m.id = :mesaId")
     Comanda findByMesaId(@Param("mesaId") int mesaId);
 
 

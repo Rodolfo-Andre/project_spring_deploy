@@ -65,7 +65,7 @@
                                 <div class="mb-3">
                                     <label for="txt-estado-comanda" class="form-label">Estado de la Comanda</label>
                                     <input disabled type="text" class="form-control" id="txt-estado-comanda"
-                                        value="Sin Pagar" placeholder="Estado comanda" name="txt-estado-comanda">
+                                        value="Generado" placeholder="Estado comanda" name="txt-estado-comanda">
                                 </div>
                                 <div class="mb-3">
                                     <label for="txt-empleado" class="form-label">Empleado</label>
@@ -82,9 +82,8 @@
                         </div>
                         <div class="row w-100 gap-4 px-4 py-1 d-flex mx-auto">
                             <th:block sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')">
-                                <button th:if="${mesa.getEstado() == 'Ocupado'}" type="button"
-                                    style="background-color: #6F42C1 !important;" class="btn btn-primary  col-md-3"
-                                    id="btn-facturar-comanda">
+                                <button type="button" style="background-color: #6F42C1 !important; display: none;"
+                                    class="btn btn-primary  col-md-3" id="btn-facturar-comanda">
                                     <i class="bi bi-save"></i>
                                     Facturar
                                 </button>
@@ -147,8 +146,8 @@
 
             </div>
 
-            <div s class="modal fade   " id="exampleModalCenter" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalCenterTitle" data-bs-backdrop="static" aria-hidden="true">
+            <div s class="modal fade   " id="modalFactura" tabindex="-1" role="dialog"
+                aria-labelledby="modalFacturaTitle" data-bs-backdrop="static" aria-hidden="true">
                 <div class="modal-dialog  modal-xl">
                     <div class="modal-content">
                         <div class="modal-header d-flex flex-row  justify-content-between gap-2">
@@ -157,93 +156,120 @@
                             </h5>
 
                             <div>
+
                                 <span class="badge bg-primary h5 p-2">
                                     <span class="bi bi-file-earmark-text">
-                                        Orden: 345
+                                        Orden: <span id="txt-orden"></span>
                                     </span>
                                 </span>
                                 <span class="badge bg-primary h5 p-2">
                                     <span class="bi bi-dash-square-fill">
-                                        Menu: 345
+                                        Menu: <span id="txt-mesa"></span>
                                     </span>
                                 </span>
+
+
                             </div>
+
+
                         </div>
                         <div class="modal-body border-top border-bottom py-1">
+                            <div style="display: none;" class="row js-container-errors">
+                                <div class="col-12">
+                                    <div class="alert alert-danger  fade show" role="alert">
+                                        <strong>¡Error!</strong>
+                                        <span id="txt-error"></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-12 col-lg-7 border-end ">
-                                    <div class="mb-3 col-12 col-md-5">
-                                        <label for="tp=factura" class="form-label">
-                                            Tipo de Factura
-                                        </label>
-                                        <select class="form-select" id="tp=factura">
-                                            <option selected>Seleccione</option>
-                                        </select>
+                                    <div class="row">
+                                        <div class="mb-3 col-12 col-md-6">
+                                            <label for="cbo-tipo-factura" class="form-label">
+                                                Tipo de Factura
+                                            </label>
+                                            <select class="form-select" id="cbo-tipo-factura">
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-12 col-md-6">
+                                            <label for="cbo-caja" class="form-label">
+                                                Caja
+                                            </label>
+                                            <select class="form-select" id="cbo-caja">
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 col-12 col-md-6  "></div>
+                                        <div class="mb-3 col-12 col-md-6  ">
+                                            <label for="input-descuento" class="form-label">
+                                                Descuento
+                                            </label>
+                                            <input min="1" type="number" class="form-control" id="input-descuento"
+                                                value="0" name="input-descuento">
+                                        </div>
                                     </div>
+                                    <div class="row flex-row  justify-content-end px-2">
+                                        <button type="button" class="btn btn-primary col-sm-5 col-lg-4 col-12"
+                                            id="btn-descuento">
+                                            Agregar Descuento
+                                        </button>
+                                    </div>
+
                                     <hr>
                                     <h6 class="modal-title text-center text-uppercase text-primary fw-bold   mt-3">
                                         Datos Factura
                                     </h6>
                                     <div class="row mt-4">
                                         <div class="mb-3 col-md-6 col-12">
-                                            <label for="exampleFormControlInput1" class="form-label">
+                                            <label for="cbo-pago" class="form-label">
                                                 Metodo de Pago
                                             </label>
-                                            <select class="form-select" id="tp=pago">
-                                                <option selected>Seleccione</option>
+                                            <select class="form-select" id="cbo-pago">
                                             </select>
                                         </div>
                                         <div class="mb-3 col-md-6 col-12">
-                                            <label for="exampleFormControlInput1" class="form-label">
+                                            <label for="txt-monto" class="form-label">
                                                 Monto
                                             </label>
-                                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                                placeholder="fecha" name="txt-fecha">
+                                            <input type="text" class="form-control" id="txt-monto"
+                                                placeholder="Ingrese un monto" name="txt-monto">
                                         </div>
                                         <div class="mb-3 col-12 ">
-                                            <button type="button" class="btn btn-primary mt-1 w-100">Agregar</button>
+                                            <button type="button" id="btn-agregar-pago"
+                                                class="btn btn-primary mt-1 w-100">Agregar</button>
                                         </div>
                                     </div>
-
 
                                     <hr>
                                     <h6 class="modal-title text-center text-uppercase text-primary fw-bold mb-3 mt-3">
                                         Datos del Cliente
                                     </h6>
                                     <div class="row mb-2">
-                                        <div class="mb-3 col-md-6 col-12">
-                                            <label for="tp=factura" class="form-label">
-                                                Tipo de Documento
-                                            </label>
-                                            <select class="form-select" id="tp=factura">
-                                                <option selected>Seleccione</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 col-md-6 col-12">
-                                            <label for="exampleFormControlInput1" class="form-label">
+                                        <div class="mb-3 col-md-12 col-12">
+                                            <label for="txt-numero-documento" class="form-label">
                                                 Número de Documento
                                             </label>
-                                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                                placeholder="name@example.com">
+                                            <input type="number" min="1" max="99999999" class="form-control"
+                                                id="txt-numero-documento" placeholder="Ingrese el número de documento">
                                         </div>
                                     </div>
                                     <div class="row ">
                                         <div class="mb-3 col-md-6 col-12">
-                                            <label for="exampleFormControlInput1" class="form-label">
+                                            <label for="txt-nombre-cliente" class="form-label">
                                                 Nombre
                                             </label>
-                                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                                placeholder="name@example.com">
+                                            <input disabled type="text" class="form-control" id="txt-nombre-cliente"
+                                                placeholder="ingrese el nombre">
                                         </div>
                                         <div class="mb-3 col-md-6 col-12">
-                                            <label for="exampleFormControlInput1" class="form-label">
+                                            <label for="txt-apellido-cliente" class="form-label">
                                                 Apellido
                                             </label>
-                                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                                placeholder="name@example.com">
+                                            <input disabled type="text" class="form-control" id="txt-apellido-cliente"
+                                                placeholder="ingrese el apellido">
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="col-12 col-lg-5 px-4">
                                     <h6 class="modal-title text-center text-uppercase text-primary fw-bold mb-3 mt-3">
@@ -258,34 +284,7 @@
                                             MONTO
                                         </span>
                                     </div>
-                                    <div class="row pt-2">
-
-                                        <div class="row mb-3">
-                                            <span class="text-start text-dark   col-6 ">
-                                                1x Hamburguesa
-                                            </span>
-                                            <span class="text-end  text-dark   col-6">
-                                                14.000
-                                            </span>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <span class="text-start text-dark   col-6 ">
-                                                1x Hamburguesa
-                                            </span>
-                                            <span class="text-end  text-dark   col-6">
-                                                14.000
-                                            </span>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <span class="text-start text-dark   col-6 ">
-                                                1x Hamburguesa
-                                            </span>
-                                            <span class="text-end  text-dark   col-6">
-                                                14.000
-                                            </span>
-                                        </div>
+                                    <div class="row pt-2 js-container-pedidos">
 
                                     </div>
                                     <hr>
@@ -295,9 +294,15 @@
                                             Subtotal:
                                         </div>
 
-                                        <div class="col-3 text-end">
-                                            42.000
+                                        <div class="col-3 text-end " id="txt-subtotal">0.0</div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-9 text-center fw-bold">
+                                            IGV:
                                         </div>
+
+                                        <div class="col-3 text-end" id="txt-igv">0.0</div>
                                     </div>
                                     <hr>
                                     <div class="row">
@@ -305,9 +310,7 @@
                                             Descuento:
                                         </div>
 
-                                        <div class="col-3 text-end">
-                                            42.000
-                                        </div>
+                                        <div class="col-3 text-end" id="txt-descuento">0.0</div>
                                     </div>
                                     <hr>
                                     <div class="row">
@@ -316,73 +319,47 @@
                                         </div>
 
                                         <div class="col-3 text-end h5 ">
-                                            42.000
+                                            <span id="txt-total-factura">0.0</span>
                                         </div>
                                     </div>
 
-                                    <div class="row  border-top border-1 border-dark">
+                                    <div class="row  border-top border-1 border-dark  ">
                                     </div>
+                                    <div class="row">
+                                        <span
+                                            class="text-start  text-dark fw-bold  col-6 d-flex justify-content-start align-items-center">
+                                            <span class="fw-bold">Falta:</span>
+                                            <span id="txt-faltante">0.0</span>
+                                        </span>
 
+
+                                        <span
+                                            class="text-end  text-dark fw-bold  col-6 d-flex justify-content-end align-items-center">
+                                            <span class="fw-bold">Pago:</span>
+                                            <span id="txt-pago">0.0</span>
+
+                                        </span>
+
+                                    </div>
                                     <div style="max-height: 200px; overflow-y: scroll; overflow-x: hidden;"
-                                        class="row mt-3 p-3 container-cards">
-                                        <div class="card w-100 mb-2">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-center">Paypal</h5>
-                                                <div class="row d-flex align-items-center">
-                                                    <div class="col-6">
-                                                        <p class="card-text">Monto: $200.00</p>
-                                                    </div>
-                                                    <div class="col-6 text-end">
-                                                        <img src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw"
-                                                            width="40" height="40">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card w-100 mb-2">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-center">Paypal</h5>
-                                                <div class="row d-flex align-items-center">
-                                                    <div class="col-6">
-                                                        <p class="card-text">Monto: $200.00</p>
-                                                    </div>
-                                                    <div class="col-6 text-end">
-                                                        <img src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw"
-                                                            width="40" height="40">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card w-100 mb-2">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-center">Paypal</h5>
-                                                <div class="row d-flex align-items-center">
-                                                    <div class="col-6">
-                                                        <p class="card-text">Monto: $200.00</p>
-                                                    </div>
-                                                    <div class="col-6 text-end">
-                                                        <img src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw"
-                                                            width="40" height="40">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        class="row mt-3 p-3 js-container-cards-pago">
+
                                     </div>
 
                                 </div>
-                            </div>
 
-                        </div>
-                        <div class="modal-footer ">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary p-3">
-                                <i class="bi bi-printer"></i>
-                                Facturar
-                            </button>
+                            </div>
+                            <div class="modal-footer ">
+                                <button type="button" id="btn-cerrar" class="btn btn-danger"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                                <button id="btn-facturar" type="button" class="btn btn-primary p-3">
+                                    <i class="bi bi-printer"></i>
+                                    Facturar
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
         </main>
 
@@ -400,15 +377,9 @@
         <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
         <script type="module" src="/js/comanda-detalle.js"></script>
-        <script type="text/javascript">
-            // Espera a que se cargue el documento
-            $(document).ready(function () {
-                // Muestra el modal
-                $('#exampleModalCenter').modal('show');
-            });
-        </script>
+        <script type="module" src="/js/factura.js"></script>
+
 
     </th:block>
 </body>

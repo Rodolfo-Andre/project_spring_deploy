@@ -18,10 +18,10 @@ public class Comprobante {
   @Column(name = "PRECIO_TOTAL_PEDIDO")
   private double precioTotalPedido;
 
+  @Column(name = "IGV_TOTAL")
   private double igv;
 
-  private double gravada;
-
+  @Column(name = "DESCUENTO_TOTAL")
   private double descuento;
 
   @ManyToOne
@@ -80,13 +80,6 @@ public class Comprobante {
     this.igv = igv;
   }
 
-  public double getGravada() {
-    return gravada;
-  }
-
-  public void setGravada(double gravada) {
-    this.gravada = gravada;
-  }
 
   public double getDescuento() {
     return descuento;
