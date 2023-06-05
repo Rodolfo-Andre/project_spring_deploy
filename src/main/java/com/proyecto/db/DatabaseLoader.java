@@ -50,7 +50,7 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     if (metodoPagoService.obtenerTamano() == 0) {
-      metodoPagoService.agregar(new MetodoPago("Pago en efectivo"));
+      metodoPagoService.agregar(new MetodoPago("En efectivo"));
       metodoPagoService.agregar(new MetodoPago("BCP"));
       metodoPagoService.agregar(new MetodoPago("BBVA"));
       metodoPagoService.agregar(new MetodoPago("Scotiabank"));

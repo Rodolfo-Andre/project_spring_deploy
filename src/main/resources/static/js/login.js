@@ -9,8 +9,21 @@ $d.addEventListener("DOMContentLoaded", () => {
 
 const addEventToDocument = () => {
   const $btnRecoverPassword = $d.querySelector(".recover-password"),
-    $btnLogin = $d.getElementById("validate-login");
+    $btnLogin = $d.getElementById("validate-login"),
+    $btnTogglePassword = $d.querySelector(".btn-toggle-password");
+
   let email = "";
+
+  $btnTogglePassword.addEventListener("click", () => {
+    const $inputPassword = $d.getElementById("password"),
+      $imagePassword = $d.querySelector(".image-password");
+
+    $imagePassword.classList.toggle("show-password");
+
+    $inputPassword.type = $imagePassword.classList.contains("show-password")
+      ? "text"
+      : "password";
+  });
 
   $d.addEventListener("click", (e) => {
     const $btnVerifyEmail = $d.querySelector("[data-send]"),
@@ -65,9 +78,7 @@ const handleRecoverPassword = () => {
 
 const handleLogin = (e) => {
   const $inputEmail = $d.getElementById("email"),
-    $inputPassword = $d.getElementById("password"),
-    $emailInvalid = $d.getElementById("email-invalid"),
-    $passwordInvalid = $d.getElementById("password-invalid");
+    $emailInvalid = $d.getElementById("email-invalid");
 
   let isInvalid = false;
 
@@ -81,16 +92,6 @@ const handleLogin = (e) => {
   } else {
     if ($inputEmail.classList.contains("is-invalid"))
       $inputEmail.classList.remove("is-invalid");
-  }
-
-  if (!$inputPassword.value || $inputPassword.value.match(/^\s*$/)) {
-    if (!$inputPassword.classList.contains("is-invalid"))
-      $inputPassword.classList.add("is-invalid");
-    $passwordInvalid.textContent = "Ingrese una contraseña correcta";
-    isInvalid = true;
-  } else {
-    if ($inputPassword.classList.contains("is-invalid"))
-      $inputPassword.classList.remove("is-invalid");
   }
 
   if (isInvalid) {
