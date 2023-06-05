@@ -65,3 +65,32 @@
   color: var(--bs-dark);
   opacity: 0.75;
 }
+
+.container-password {
+  position: relative;
+}
+
+.container-password-toggle {
+  position: absolute;
+  top: 50%;
+  transform: translate(50%, -50%);
+  right: 10%;
+}
+
+.password.is-invalid {
+  background-image: none;
+}
+
+.image-password {
+  width: 16px;
+  height: 16px;
+  background-image: url("/images/visibilidad_desactivada.png");
+}
+
+.btn-toggle-password {
+  border: none;
+}
+
+.show-password {
+  background-image: url("/images/visibilidad_activada.png");
+}

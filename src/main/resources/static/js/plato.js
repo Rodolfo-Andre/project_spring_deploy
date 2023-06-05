@@ -376,7 +376,7 @@ const checkFile = ($inputFile, imgId, files) => {
       timerProgressBar: true,
     }).fire({
       icon: "error",
-      title: "Por favor seleccione una imagen con peso menor a 1MB",
+      title: "Por favor seleccione una imagen con un peso menor a 1MB",
     });
 
     if (isFileNotNull) {

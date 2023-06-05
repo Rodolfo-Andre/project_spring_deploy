@@ -47,9 +47,9 @@
                 ></div>
               </div>
 
-              <div>
+              <div class="container-password">
                 <input
-                  class="form-control form-control-lg"
+                  class="password form-control form-control-lg"
                   type="password"
                   id="password"
                   name="password"
@@ -57,10 +57,12 @@
                   placeholder="Contraseña*"
                   th:classappend="${param.error} ? 'is-invalid'"
                 />
-                <div
-                  id="password-invalid"
-                  class="text-start invalid-feedback"
-                ></div>
+
+                <div class="container-password-toggle">
+                  <button type="button" class="btn btn-toggle-password">
+                    <div class="image-password"></div>
+                  </button>
+                </div>
               </div>
 
               <a class="recover-password">¿Olvidaste tu contraseña?</a>
