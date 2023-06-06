@@ -42,11 +42,11 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     if (cargoService.obtenerTamano() == 0) {
-      cargoService.agregar(new Cargo("ADMINISTRADOR"));
-      cargoService.agregar(new Cargo("MESERO"));
-      cargoService.agregar(new Cargo("CAJERO"));
-      cargoService.agregar(new Cargo("COCINERO"));
-      cargoService.agregar(new Cargo("GERENTE"));
+      cargoService.agregar(new Cargo("ROLE_ADMINISTRADOR"));
+      cargoService.agregar(new Cargo("ROLE_MESERO"));
+      cargoService.agregar(new Cargo("ROLE_CAJERO"));
+      cargoService.agregar(new Cargo("ROLE_COCINERO"));
+      cargoService.agregar(new Cargo("ROLE_GERENTE"));
     }
 
     if (metodoPagoService.obtenerTamano() == 0) {
@@ -85,7 +85,7 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     if (usuarioService.obtenerTamano() == 0) {
-      Cargo administrador = cargoService.obtenerPorNombre("ADMINISTRADOR");
+      Cargo administrador = cargoService.obtenerPorNombre("ROLE_ADMINISTRADOR");
 
       Usuario usuarioAdministrador = new Usuario();
       usuarioAdministrador.setCorreo("admin@admin.com");
@@ -105,7 +105,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
       /* ------------------------------------------------------------- */
 
-      Cargo mesero = cargoService.obtenerPorNombre("MESERO");
+      Cargo mesero = cargoService.obtenerPorNombre("ROLE_MESERO");
 
       Usuario usuarioMesero = new Usuario();
       usuarioMesero.setCorreo("mesero@mesero.com");
@@ -125,7 +125,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
       /* ------------------------------------------------------------- */
 
-      Cargo cajero = cargoService.obtenerPorNombre("CAJERO");
+      Cargo cajero = cargoService.obtenerPorNombre("ROLE_CAJERO");
 
       Usuario usuarioCajero = new Usuario();
       usuarioCajero.setCorreo("cajero@cajero.com");
@@ -145,7 +145,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
       /* ------------------------------------------------------------- */
 
-      Cargo cocinero = cargoService.obtenerPorNombre("COCINERO");
+      Cargo cocinero = cargoService.obtenerPorNombre("ROLE_COCINERO");
 
       Usuario usuarioCocinero = new Usuario();
       usuarioCocinero.setCorreo("cocinero@cocinero.com");
@@ -165,7 +165,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
       /* ------------------------------------------------------------- */
 
-      Cargo gerente = cargoService.obtenerPorNombre("GERENTE");
+      Cargo gerente = cargoService.obtenerPorNombre("ROLE_GERENTE");
 
       Usuario usuarioGerente = new Usuario();
       usuarioGerente.setCorreo("gerente@gerente.com");
