@@ -39,8 +39,8 @@ public class ReporteController {
 	public void reporte(HttpServletResponse response) {
 		try {
 			//FALTA ACTUALIZAR ESTO CUANDO ESTÉ LA VISTA DE CAJA_REGISTRADORA
-			Comprobante comprobante = comprobanteService.findById(2);
 			
+			Comprobante comprobante = comprobanteService.findById(1);
 			List<DetalleComanda> lista = comprobante.getComanda().getListaDetalleComanda();
 			File file = ResourceUtils.getFile("classpath:CDP_ciclo5.jrxml");
 			JasperReport jasper = JasperCompileManager.compileReport(file.getAbsolutePath());
@@ -64,7 +64,12 @@ public class ReporteController {
 			parameters.put("igv", comprobante.getIgv());
 			parameters.put("descuento", comprobante.getDescuento());
 			parameters.put("precioTotalPedido", comprobante.getPrecioTotalPedido());
-			
+			parameters.put("logoPrincipal", "classpath:/static/images/logo.jpg");
+			parameters.put("logoDireccion", "classpath:/static/images/direccion.jpg");
+			parameters.put("logoRuc", "classpath:/static/images/ruc.png");
+			parameters.put("logoTelefono", "classpath:/static/images/telefono.jpg");
+			parameters.put("logoUsuario", "classpath:/static/images/usuario.png");
+
 		
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parameters, ds);
 			response.setContentType("application/pdf");

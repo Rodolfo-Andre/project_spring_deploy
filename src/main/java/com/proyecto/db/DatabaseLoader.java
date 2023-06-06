@@ -85,7 +85,7 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     if (usuarioService.obtenerTamano() == 0) {
-      Cargo administrador = cargoService.obtenerPorNombre("ROLE_ADMINISTRADOR");
+      Cargo administrador = cargoService.obtenerPorNombre("ADMINISTRADOR");
 
       Usuario usuarioAdministrador = new Usuario();
       usuarioAdministrador.setCorreo("admin@admin.com");
@@ -105,7 +105,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
       /* ------------------------------------------------------------- */
 
-      Cargo mesero = cargoService.obtenerPorNombre("ROLE_MESERO");
+      Cargo mesero = cargoService.obtenerPorNombre("MESERO");
 
       Usuario usuarioMesero = new Usuario();
       usuarioMesero.setCorreo("mesero@mesero.com");
@@ -125,7 +125,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
       /* ------------------------------------------------------------- */
 
-      Cargo cajero = cargoService.obtenerPorNombre("ROLE_CAJERO");
+      Cargo cajero = cargoService.obtenerPorNombre("CAJERO");
 
       Usuario usuarioCajero = new Usuario();
       usuarioCajero.setCorreo("cajero@cajero.com");
@@ -145,7 +145,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
       /* ------------------------------------------------------------- */
 
-      Cargo cocinero = cargoService.obtenerPorNombre("ROLE_COCINERO");
+      Cargo cocinero = cargoService.obtenerPorNombre("COCINERO");
 
       Usuario usuarioCocinero = new Usuario();
       usuarioCocinero.setCorreo("cocinero@cocinero.com");
@@ -165,7 +165,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
       /* ------------------------------------------------------------- */
 
-      Cargo gerente = cargoService.obtenerPorNombre("ROLE_GERENTE");
+      Cargo gerente = cargoService.obtenerPorNombre("GERENTE");
 
       Usuario usuarioGerente = new Usuario();
       usuarioGerente.setCorreo("gerente@gerente.com");
