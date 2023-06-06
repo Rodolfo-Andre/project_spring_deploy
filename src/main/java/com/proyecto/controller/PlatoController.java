@@ -120,4 +120,11 @@ public class PlatoController {
   public int obtenerTamanoDetalleComandaDePlato(@PathVariable String id) {
     return platoService.obtenerTamanoDetalleComandaDePlato(id);
   }
+
+  @GetMapping(value = "/obtener-by-categoria/{id}")
+  @ResponseBody
+  public List<Plato> obtenerPlatoPorCategoria(@PathVariable String id) {
+    List<Plato> listaPlato = platoService.obtenerPlatoByCategoriId(id);
+    return listaPlato;
+  }
 }

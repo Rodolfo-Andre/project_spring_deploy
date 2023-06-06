@@ -68,25 +68,24 @@ public class ComandaController {
         List<DetalleComanda> detalles = detalleComandaService.findByComandaId(id);
         return detalles;
     }
-    
+
     @GetMapping(value = "/comanda-libre/{id}")
     @ResponseBody
     public Comanda obtenerComandaLibre(@PathVariable Integer id) {
         List<Comanda> listaComandas = comandaService.obtenerTodo();
         Comanda comandaDeseada = listaComandas.stream()
-                .filter(comanda -> comanda.getMesa().getId() == id && comanda.getEstadoComanda().getId() != 1)
+                .filter(comanda -> comanda.getMesa().getId() == id)
                 .findFirst()
                 .orElse(null);
-    
+
         return comandaDeseada;
     }
-    
 
     @GetMapping(value = "/listar")
     @ResponseBody
     public List<Comanda> Listar() {
         List<Comanda> listaComandas = comandaService.obtenerTodo();
-        
+
         // List<Comanda> lista = comandaService.obtenerTodo();
         // return lista;
         return listaComandas;
@@ -185,6 +184,14 @@ public class ComandaController {
 
     private ResponseEntity<Map<String, String>> actualizarComandaExistente(BaseDataInput baseData) {
         Comanda comanda = comandaService.obtenerPorId(baseData.getId());
+
+        if (comanda.getEstadoComanda().getId() == 3) {
+
+            String mensaje = "Error! La comanda ya está cerrada";
+            String status = CheckStatus.StatusError;
+            return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
+        }
+
         comanda.setPrecioTotal(baseData.getPrecioTotal());
         comanda.setCantidadAsientos(baseData.getCantidadPersonas());
 
@@ -210,7 +217,7 @@ public class ComandaController {
         DetalleComanda detalleComanda = new DetalleComanda();
         Plato plato = platoService.obtenerPorId(platoC.getId());
         detalleComanda.setPlato(plato);
-        //SSA
+        // SSA
         detalleComanda.setObservacion(platoC.getObservacion());
         detalleComanda.setCantidadPedido(platoC.getCantidad());
         detalleComanda.setPrecioUnitario(plato.getPrecioPlato());
@@ -241,6 +248,12 @@ public class ComandaController {
 
             if (comanda == null) {
                 redirect.addFlashAttribute("mensaje", "Error! La comanda no existe");
+                redirect.addFlashAttribute("tipo", "error");
+                return "redirect:/configuracion/comanda";
+            }
+
+            if (comanda.getEstadoComanda().getId() == 2) {
+                redirect.addFlashAttribute("mensaje", "Error! La comanda ya está Preparada");
                 redirect.addFlashAttribute("tipo", "error");
                 return "redirect:/configuracion/comanda";
             }

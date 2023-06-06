@@ -34,4 +34,8 @@ public class ClienteService {
   public long obtenerTamano() {
     return clienteRepository.count();
   }
+
+  public void actualizar(Cliente t) {
+    clienteRepository.save(t);
+  }
 }

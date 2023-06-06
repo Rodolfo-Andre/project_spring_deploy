@@ -17,6 +17,7 @@ const ViewCore = function () {
       this.txtEstadoMesa = $("#txt-estado-mesa");
       this.txtNumeroMesa = $("#txt-numero-mesa");
       this.txtCantidadPersonas = $("#txt-cantidad-persona");
+      this.mesaCantidadPersonas = $("#txt-numero-personas");
       this.txtEstadoComanda = $("#txt-estado-comanda");
       this.txtEmpleado = $("#txt-empleado");
       this.btnDelete = $("#btn-del-plato");
@@ -55,9 +56,28 @@ const ViewCore = function () {
         me.containerError.empty();
 
         if (condicion) {
-          const errorSave = me.showError();
+          const errorSave = me.showError(
+            "Debe agregar platos y/o cantidad de personas"
+          );
 
           me.containerError.append(errorSave);
+          return;
+        }
+
+        const condicion2 =
+          parseInt(me.txtCantidadPersonas.val()) >
+          parseInt(me.mesaCantidadPersonas.val());
+
+        me.containerError.empty();
+        if (condicion2) {
+          const message =
+            "La cantidad de personas no puede ser mayor a la cantidad de asientos de la mesa , Numero de asientos de la mesa : " +
+            me.mesaCantidadPersonas.val();
+
+          const errorSave = me.showError(message);
+
+          me.containerError.append(errorSave);
+
           return;
         }
 
@@ -74,7 +94,9 @@ const ViewCore = function () {
           me.txtCantidadPersonas.val() == 0;
         me.containerError.empty();
         if (condicion) {
-          const errorSave = me.showError();
+          const errorSave = me.showError(
+            "Debe agregar platos y/o cantidad de personas"
+          );
 
           me.containerError.append(errorSave);
           return;
@@ -134,18 +156,16 @@ const ViewCore = function () {
       });
     },
     getPlato: async function (categoriaId) {
-      const url = "/configuracion/plato/obtener";
+      const url = `/configuracion/plato/obtener-by-categoria/${categoriaId}`;
       return new Promise((resolve, reject) => {
         $.ajax({
           url: url,
           type: "GET",
           dataType: "json",
           success: function (response) {
-            const platos = response.filter((plato) => {
-              return plato.categoriaPlato.id == categoriaId;
-            });
-
-            resolve(platos);
+            console.log(response);
+            
+            resolve(response);
           },
           error: function (error) {
             reject(error);
@@ -209,7 +229,7 @@ const ViewCore = function () {
                                     <div class="col-sm-7">
                                         <input 
                                         value="${
-                                          dataModal ? dataModal.cantidad : ""
+                                          dataModal ? dataModal.cantidad : 0
                                         }"
                                          id="cantidadDePedido"
                                         class="form-control" type="number" id="name" name="cantidad" />
@@ -240,6 +260,8 @@ const ViewCore = function () {
       $("#categoria").change(async function (e) {
         const categoria = $("#categoria").val();
         const platos = await me.getPlato(categoria);
+        console.log(platos);
+
         $("#plato").html("");
         listPlatos = platos;
 
@@ -267,12 +289,13 @@ const ViewCore = function () {
 
       $("#add").click(function (e) {
         e.preventDefault();
+
         const platoId = $("#plato").val();
-        const cantidad = $("#cantidadDePedido").val();
+        const cantidad = parseInt($("#cantidadDePedido").val());
         const observacion = $("#txt-observacion").val();
 
         if (dataModal) {
-          dataModal.cantidad = cantidad;
+          dataModal.cantidad = parseInt(cantidad);
           dataModal.observacion = observacion;
           me.initTable(dataModal);
           me.showMessage(
@@ -348,11 +371,14 @@ const ViewCore = function () {
         const url = "/configuracion/comanda/obtener/" + id;
         const response = await fetch(url);
         const data = await response.json();
+        console.log(data);
+
         me.txtCantidadPersonas.val(data.cantidadAsientos);
         me.txtEmpleado.val(data.empleado.nombre + " " + data.empleado.apellido);
         me.txtPrecioTotal.val(data.precioTotal);
         me.txtEstadoComanda.val(data.estadoComanda.estado);
         const listado = [];
+        console.log(data);
 
         if (data.estadoComanda.estado == "Preparado") {
           me.btnFacturar.css("display", "block");
@@ -407,6 +433,9 @@ const ViewCore = function () {
       };
 
       try {
+        me.btnGenerar.prop("disabled", true);
+        me.btnActualizar.prop("disabled", true);
+
         const response = await fetch(baseUrl, {
           method: "POST",
           headers: {
@@ -429,6 +458,9 @@ const ViewCore = function () {
         const message = error.message ?? "Error al registrar la comanda";
 
         this.showMessage(message, "error", "Comanda");
+      } finally {
+        me.btnGenerar.prop("disabled", false);
+        me.btnActualizar.prop("disabled", false);
       }
     },
     showMessage: function (message, icon, title, ...options) {
@@ -459,7 +491,7 @@ const ViewCore = function () {
           (plato) => plato.id == data.id
         );
         if (plato != undefined) {
-          plato.cantidad = parseInt(plato.cantidad) + parseInt(data.cantidad);
+          plato.cantidad = parseInt(plato.cantidad);
           plato.observacion = data.observacion;
         } else {
           me.listaDeEnvioPlatos.push(data);
@@ -533,12 +565,12 @@ const ViewCore = function () {
         );
       });
     },
-    showError: function () {
+    showError: function (mesage) {
       return ` <div 
                                 class="alert alert-danger alert-dismissible fade show col-12 col-md-8 col-lg-6 "
                                 role="alert" id="alerta-error">
                                 <strong>¡Error!</strong> <span id="mensaje-error">
-                                Debe agregar platos y/o cantidad de personas</span>
+                                ${mesage}</span>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
    </div>`;

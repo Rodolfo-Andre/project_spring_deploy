@@ -32,6 +32,7 @@ export const ViewCoreFactura = function () {
       this.total = 0;
       this.pago = 0;
       this.faltante = 0;
+      this.subTotalVal = 0;
       this.txtpago = $("#txt-pago");
       this.faltantetxt = $("#txt-faltante");
 
@@ -69,7 +70,7 @@ export const ViewCoreFactura = function () {
         this.agregarMetodoPago();
       });
 
-      this.numeroDocumento.on("keyup", (ev) => {
+      this.numeroDocumento.on("keyup", async (ev) => {
         const { value } = ev.target;
         if (value.length < 8) {
           me.addError(
@@ -80,7 +81,7 @@ export const ViewCoreFactura = function () {
 
         if (value.length == 8) {
           me.clearErrors();
-          me.findCliente();
+          await me.findCliente();
         }
       });
 
@@ -92,7 +93,14 @@ export const ViewCoreFactura = function () {
       });
 
       this.btnDescuento.on("click", () => {
-        const val = this.descuento.val();
+        const val = parseInt(this.descuento.val());
+        console.log(val);
+        console.log(typeof val);
+
+        if (typeof val != "number" || isNaN(val)) {
+          this.addError("Ingrese un descuento válido");
+          return;
+        }
 
         if (val < 0) {
           this.addError("El descuento no puede ser menor a 0");
@@ -211,27 +219,41 @@ export const ViewCoreFactura = function () {
       this.calcularTotal();
     },
 
-    findCliente: function () {
+    findCliente: async function () {
       const numeroDocumento = this.numeroDocumento.val();
 
       const url =
         this.contextUrl + "comprobante/obtener-cliente/" + numeroDocumento;
 
-      $.ajax({
-        url: url,
-        method: "GET",
-        dataType: "json",
-        contentType: "application/json",
-      })
-        .done((data) => {
-          console.log(data);
-          this.nombreCliente.val(data.nombre);
-          this.apellidoCliente.val(data.apellido);
-        })
-        .fail((error) => {
-          this.nombreCliente.val("").attr("disabled", false);
-          this.apellidoCliente.val("").attr("disabled", false);
-        });
+      try {
+        const response = await fetch(url);
+
+        const data = await response.json();
+
+        this.nombreCliente.val(data.nombre);
+        this.apellidoCliente.val(data.apellido);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.nombreCliente.val("").attr("disabled", false);
+        this.apellidoCliente.val("").attr("disabled", false);
+      }
+
+      // $.ajax({
+      //   url: url,
+      //   method: "GET",
+      //   dataType: "json",
+      //   contentType: "application/json",
+      // })
+      //   .done((data) => {
+      //     console.log(data);
+      //     this.nombreCliente.val(data.nombre);
+      //     this.apellidoCliente.val(data.apellido);
+      //   })
+      //   .fail((error) => {
+      //     this.nombreCliente.val("").attr("disabled", false);
+      //     this.apellidoCliente.val("").attr("disabled", false);
+      //   });
     },
 
     getTipoFactura: function () {
@@ -332,7 +354,7 @@ export const ViewCoreFactura = function () {
 
         subTotal += cantidad * precio;
       });
-
+      this.subTotalVal = subTotal;
       total = subTotal;
 
       this.listaPagos.forEach((pago) => {
@@ -381,6 +403,7 @@ export const ViewCoreFactura = function () {
         };
       });
 
+      this.btnFacturar.attr("disabled", true);
       const url = this.contextUrl + "comprobante/registrar";
 
       const data = {
@@ -396,10 +419,11 @@ export const ViewCoreFactura = function () {
         listaPagos: newListaPagos,
         descuento: this.descuento.val(),
         idCaja: this.cboCaja.val(),
-        igv : this.igvValue,
+        igv: this.igvValue,
+        subTotal: this.subTotalVal,
       };
-      console.log(data);
 
+      console.log(data);
       $.ajax({
         type: "POST",
         url: url,
@@ -408,9 +432,28 @@ export const ViewCoreFactura = function () {
       })
         .done((response) => {
           console.log(response);
+
+          Swal.fire({
+            title: "Comprobante registrado",
+            text: "El comprobante se registró correctamente",
+            icon: "success",
+            confirmButtonText: "Aceptar",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = this.contextUrl + "comanda";
+            }
+          });
         })
         .fail((error) => {
-          console.log(error);
+          Swal.fire({
+            title: "Error",
+            text: "Ocurrió un error al registrar el comprobante",
+            icon: "error",
+            confirmButtonText: "Aceptar",
+          });
+        })
+        .always(() => {
+          this.btnFacturar.attr("disabled", false);
         });
     },
 

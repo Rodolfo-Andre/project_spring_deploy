@@ -43,6 +43,9 @@
                                     <label for="txt-numero-mesa" class="form-label fw-bold">
                                         Numero de Mesa
                                     </label>
+                                    <input disabled th:value="${mesa.getCantidadAsientos()}" type="hidden"
+                                        name="txt-numero-personas" id="txt-numero-personas">
+
                                     <input disabled th:value="${mesa.getId()}" type="number" name="txt-numero-mesa"
                                         class="form-control" id="txt-numero-mesa" placeholder="Numero de mesa">
                                 </div>
@@ -82,7 +85,11 @@
                         </div>
                         <div class="row w-100 gap-4 px-4 py-1 d-flex mx-auto">
                             <th:block sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')">
-                                <button type="button" style="background-color: #6F42C1 !important; display: none;"
+
+
+                                <button 
+                                th:if="${comanda !=null && comanda.getEstadoComanda().getId() == 2}"
+                                type="button" style="background-color: #6F42C1 !important; "
                                     class="btn btn-primary  col-md-3" id="btn-facturar-comanda">
                                     <i class="bi bi-save"></i>
                                     Facturar

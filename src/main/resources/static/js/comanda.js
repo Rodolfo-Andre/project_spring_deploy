@@ -33,6 +33,8 @@ const ViewCore = function () {
           fetch(url)
             .then((response) => response.json())
             .then((comanda) => {
+              console.log(comanda);
+              
               if (comanda) {
                 html += `
                 <div  class="card col-12 col-xl-5 m-3 

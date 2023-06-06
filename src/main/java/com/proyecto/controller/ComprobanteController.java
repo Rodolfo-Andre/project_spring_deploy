@@ -6,6 +6,7 @@ import com.proyecto.entity.Comanda;
 import com.proyecto.entity.Comprobante;
 import com.proyecto.entity.DetalleComprobante;
 import com.proyecto.entity.Establecimiento;
+import com.proyecto.entity.EstadoComanda;
 import com.proyecto.entity.MetodoPago;
 import com.proyecto.entity.TipoComprobante;
 import com.proyecto.entity.inputs.ComprobanteInput;
@@ -17,6 +18,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +59,21 @@ public class ComprobanteController {
 
     }
 
+    @GetMapping(value = "/obtener-comprobante/{id}")
+    @ResponseBody
+    public Comprobante getComandaById(
+            @PathVariable("id") Integer id
+
+    ) {
+        return comprobanteService.findById(id);
+    }
+
+    @GetMapping(value = "")
+    public String index(Model model) {
+        model.addAttribute("listar", comprobanteService.getAll());
+        return "pages/caja-registradora";
+    }
+
     @GetMapping(value = "/obtener-cliente/{dni}")
     @ResponseBody
     public Cliente getClienteByDni(
@@ -89,32 +106,42 @@ public class ComprobanteController {
             cliente.setNombre(input.cliente.getNombre());
             cliente.setApellido(input.cliente.getApellido());
 
+            clienteService.agregar(cliente);
+
         }
 
         Comprobante comprobante = new Comprobante();
         Date fecha = new Date();
 
-        comprobante.setCliente(cliente);
         comprobante.setComanda(comanda);
         comprobante.setDescuento(input.descuento);
+        comprobante.setSubTotal(input.subTotal);
+        comprobante.setIgv(input.igv);
         comprobante.setPrecioTotalPedido(input.precioTotalPedido);
         comprobante.setTipoComprobante(tipoComprobanteService.obtenerPorId(input.idTipoComprobante));
 
         comprobante.setEmpleado(empleadoService.findEmpleadoByIdUsario(input.idEmpleado));
-        Establecimiento establecimiento = new Establecimiento();
-        establecimiento.setId("ES-01");
-        comprobante.setEstablecimiento(establecimiento);
         comprobante.setFechaEmision(fecha);
 
         Caja caja = new Caja();
         caja.setId(input.idCaja);
         comprobante.setCaja(caja);
 
-        comprobanteService.registrar(comprobante);
+        comprobante.setCliente(cliente);
+
+        Comprobante comprobanteGuardado = comprobanteService.registrar(comprobante);
 
         Comanda comandaUpdate = comandaService.obtenerPorId(input.idComanda);
-        // comandaUpdate.setEstado("PAGADO");
+
+        EstadoComanda estadoComanda = new EstadoComanda();
+        estadoComanda.setId(3);// PREPARADO
+        comandaUpdate.setEstadoComanda(estadoComanda);
+
+        comanda.setComprobante(comprobanteGuardado);
+
         comandaService.actualizar(comandaUpdate);
+
+        clienteService.actualizar(cliente);
 
         for (int i = 0; i < input.listaPagos.size(); i++) {
             DetalleComprobante detalleComprobante = new DetalleComprobante();
@@ -125,7 +152,6 @@ public class ComprobanteController {
             metodoPago.setId(input.listaPagos.get(i).idTipoPago);
 
             detalleComprobante.setMetodoPago(metodoPago);
-
             comprobanteService.registrarDetalle(detalleComprobante);
 
         }

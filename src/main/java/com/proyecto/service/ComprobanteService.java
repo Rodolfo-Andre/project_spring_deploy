@@ -19,8 +19,8 @@ public class ComprobanteService {
     @Autowired
     private DetalleComprobanteRepository detalleComprobanteRepository;
 
-    public void registrar(Comprobante d) {
-        repository.save(d);
+    public Comprobante registrar(Comprobante d) {
+        return repository.save(d);
     }
 
     public void actualizar(Comprobante d) {

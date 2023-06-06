@@ -19,9 +19,7 @@ public class Establecimiento {
 
   private String ruc;
 
-  @OneToMany(mappedBy = "establecimiento")
-  @JsonIgnore
-  private List<Comprobante> listaComprobante;
+
 
   @OneToMany(mappedBy = "establecimiento")
   @JsonIgnore
@@ -67,13 +65,7 @@ public class Establecimiento {
     this.ruc = ruc;
   }
 
-  public List<Comprobante> getListaComprobante() {
-    return listaComprobante;
-  }
 
-  public void setListaComprobante(List<Comprobante> listaComprobante) {
-    this.listaComprobante = listaComprobante;
-  }
 
   public List<Caja> getListaCaja() {
     return listaCaja;

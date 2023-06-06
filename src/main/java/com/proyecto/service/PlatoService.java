@@ -44,4 +44,8 @@ public class PlatoService {
 
     return tamanoDetalleComanda;
   }
+
+  public List<Plato> obtenerPlatoByCategoriId(String idCategoria) {
+    return platoRepository.findPlatoByCategoriaId(idCategoria);
+  }
 }
