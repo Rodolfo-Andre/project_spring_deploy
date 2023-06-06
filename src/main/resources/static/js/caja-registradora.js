@@ -23,9 +23,7 @@ const initializeTable = () => {
       null,
       null,
       null,
-      null,
-      null,
-      null,
+    
 
       { orderable: false, searchable: false, width: 50 },
     ],
@@ -34,7 +32,7 @@ const initializeTable = () => {
       $("#tablaEmpleado thead tr th").each(function (i) {
         const title = $(this).text();
 
-        if (!["Información", "Modificar", "Eliminar"].includes(title)) {
+        if (!["Información", "Modificar", "Eliminar", "PDF"].includes(title)) {
           $(this).html(
             `
             <div class="d-flex gap-3 flex-column align-items-start">

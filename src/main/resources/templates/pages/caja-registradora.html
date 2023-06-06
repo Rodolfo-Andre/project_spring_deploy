@@ -16,12 +16,7 @@
                 <div class="header-info">
                     <h2 class="mb-3">Caja Registradora</h2>
 
-                    <div class="row justify-content-end px-2">
-                        <button id="btn-add" class="btn btn-primary col-12 col-sm-2  p-0 text-uppercase fw-bold">
-                            Imprimir
-                            <i class="fs-4 bi bi-printer-fill"></i>
-                        </button>
-                    </div>
+                    
                 </div>
 
                 <hr class="separator" />
@@ -33,37 +28,37 @@
                             <th>Código</th>
                             <th>Cliente</th>
                             <th>Fecha Emision</th>
-                            <th>SubTotal</th>
-                            <th>IGV</th>
-                            <th>Descuento</th>
+                         
+                           
                             <th>Total</th>
                             <th>Tipo Comprobante</th>
-                            <th>Comanda</th>
+                           
                             <th>Caja</th>
                             <th>Información</th>
+                            <th>PDF</th>
                         </thead>
                         <tbody>
                             <tr th:each="comprobante : ${listar}" class="align-middle">
                                 <td th:text="${comprobante.id}"></td>
                                 <td th:text="${comprobante.cliente.nombre}"></td>
                                 <td th:text="${#dates.format(comprobante.fechaEmision, 'yyyy-MM-dd')}"></td>
-                                <td th:text="${comprobante.subTotal}"></td>
-                                <td th:text="${comprobante.igv}"></td>
-                                <td th:text="${comprobante.descuento}"></td>
+                            
+                                
                                 <td th:text="${comprobante.precioTotalPedido}"></td>
                                 <td th:text="${comprobante.tipoComprobante.tipo}"></td>
-                                <td th:text="${comprobante.comanda.id}"></td>
+                               
                                 <td th:text="${comprobante.caja.id}"></td>
-                                <!-- <td>
-                    <span
-                      th:text="${empleado.cargo.nombre.replace('ROLE_', '').toLowerCase()}"
-                      style="text-transform: capitalize"
-                    >
-                    </span>
-                  </td> -->
+                                
+            
                                 <td class="text-center">
                                     <i class="icon-action icon-info bi bi-info-circle-fill"></i>
                                 </td>
+                                <td>
+									<form method="GET" th:action="@{/reportes/reporte-cdp}" target="_blank">
+										<input type="hidden" name="id" th:value="${ comprobante.id }"/>
+										<input class="btn-danger btn" type="submit" value="PDF"/>
+									</form>
+								</td>
                             </tr>
                         </tbody>
                     </table>

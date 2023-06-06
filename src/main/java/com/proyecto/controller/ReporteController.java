@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.proyecto.entity.Comprobante;
 import com.proyecto.entity.DetalleComanda;
@@ -36,11 +36,11 @@ public class ReporteController {
 	
 	
 	@GetMapping(value = "/reporte-cdp")
-	public void reporte(HttpServletResponse response) {
+	public void reporte(HttpServletResponse response, @RequestParam("id") int id) {
 		try {
 			//FALTA ACTUALIZAR ESTO CUANDO ESTÉ LA VISTA DE CAJA_REGISTRADORA
 			
-			Comprobante comprobante = comprobanteService.findById(1);
+			Comprobante comprobante = comprobanteService.findById(id);
 			List<DetalleComanda> lista = comprobante.getComanda().getListaDetalleComanda();
 			File file = ResourceUtils.getFile("classpath:CDP_ciclo5.jrxml");
 			JasperReport jasper = JasperCompileManager.compileReport(file.getAbsolutePath());
