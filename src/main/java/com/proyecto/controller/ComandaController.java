@@ -74,7 +74,7 @@ public class ComandaController {
     public Comanda obtenerComandaLibre(@PathVariable Integer id) {
         List<Comanda> listaComandas = comandaService.obtenerTodo();
         Comanda comandaDeseada = listaComandas.stream()
-                .filter(comanda -> comanda.getMesa().getId() == id && comanda.getEstadoComanda().getId() != 1)
+                .filter(comanda -> comanda.getMesa().getId() == id)
                 .findFirst()
                 .orElse(null);
     

@@ -42,11 +42,11 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     if (cargoService.obtenerTamano() == 0) {
-      cargoService.agregar(new Cargo("ROLE_ADMINISTRADOR"));
-      cargoService.agregar(new Cargo("ROLE_MESERO"));
-      cargoService.agregar(new Cargo("ROLE_CAJERO"));
-      cargoService.agregar(new Cargo("ROLE_COCINERO"));
-      cargoService.agregar(new Cargo("ROLE_GERENTE"));
+      cargoService.agregar(new Cargo("ADMINISTRADOR"));
+      cargoService.agregar(new Cargo("MESERO"));
+      cargoService.agregar(new Cargo("CAJERO"));
+      cargoService.agregar(new Cargo("COCINERO"));
+      cargoService.agregar(new Cargo("GERENTE"));
     }
 
     if (metodoPagoService.obtenerTamano() == 0) {

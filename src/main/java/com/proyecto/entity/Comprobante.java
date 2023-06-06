@@ -47,8 +47,31 @@ public class Comprobante {
   @ManyToOne
   @JoinColumn(name = "CAJA_ID")
   private Caja caja;
+  
+  @OneToMany(mappedBy = "comprobante")
+  private List<DetalleComprobante> listaDetalleComprobante;
+  
+  @Column(name = "SUB_TOTAL")
+  private double subTotal;
+  
 
-  public Integer getId() {
+  public double getSubTotal() {
+	return subTotal;
+}
+
+public void setSubTotal(double subTotal) {
+	this.subTotal = subTotal;
+}
+
+public List<DetalleComprobante> getListaDetalleComprobante() {
+	return listaDetalleComprobante;
+}
+
+public void setListaDetalleComprobante(List<DetalleComprobante> listaDetalleComprobante) {
+	this.listaDetalleComprobante = listaDetalleComprobante;
+}
+
+public Integer getId() {
     return id;
   }
 

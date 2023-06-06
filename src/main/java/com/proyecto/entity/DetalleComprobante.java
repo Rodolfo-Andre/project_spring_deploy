@@ -14,7 +14,7 @@ public class DetalleComprobante {
   @Column(name = "MONTO_PAGO")
   private double montoPago;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "COMPROBANTE_ID")
   private Comprobante comprobante;
 

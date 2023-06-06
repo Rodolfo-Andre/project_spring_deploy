@@ -42,5 +42,8 @@ public class ComprobanteService {
     public DetalleComprobante registrarDetalle(DetalleComprobante d) {
         return detalleComprobanteRepository.save(d);
     }
+    
+    
+    
 
 }
