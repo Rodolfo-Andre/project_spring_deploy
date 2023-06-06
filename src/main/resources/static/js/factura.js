@@ -311,7 +311,10 @@ export const ViewCoreFactura = function () {
 
       const montoTotal = this.pago + parseFloat(pago.monto);
 
-      if (montoTotal > this.total) {
+      const calcularMonto =parseFloat(montoTotal).toFixed(2)
+      const calcularTOTAL = parseFloat(this.total).toFixed(2)
+
+      if (calcularMonto > calcularTOTAL) {
         this.addError("El monto no puede ser mayor al total");
         return;
       }
@@ -431,7 +434,6 @@ export const ViewCoreFactura = function () {
         contentType: "application/json",
       })
         .done((response) => {
-
           Swal.fire({
             title: "Comprobante registrado",
             text: "El comprobante se registró correctamente",
@@ -494,7 +496,7 @@ export const ViewCoreFactura = function () {
         return `
             <div class="row mb-3 js-item-pedidos">
             <span class="text-start text-dark   col-6 ">
-             {pedido.nombre}
+             ${pedido.nombre}
             </span>
             <span class="text-end  text-dark   col-6">
             S/.${pedido.precio * pedido.cantidad}
