@@ -431,7 +431,6 @@ export const ViewCoreFactura = function () {
         contentType: "application/json",
       })
         .done((response) => {
-          console.log(response);
 
           Swal.fire({
             title: "Comprobante registrado",
@@ -469,7 +468,7 @@ export const ViewCoreFactura = function () {
                 </h5>
                 <div class="row d-flex align-items-center">
                     <div class="col-6">
-                        <p class="card-text">Monto: $${pago.monto}</p>
+                        <p class="card-text">Monto: S/.${pago.monto}</p>
                     </div>
                     <div class="col-6 text-end">
                         <img src="${pago.imagen}"
@@ -495,10 +494,10 @@ export const ViewCoreFactura = function () {
         return `
             <div class="row mb-3 js-item-pedidos">
             <span class="text-start text-dark   col-6 ">
-            ${pedido.nombre}
+             {pedido.nombre}
             </span>
             <span class="text-end  text-dark   col-6">
-            $${pedido.precio * pedido.cantidad}
+            S/.${pedido.precio * pedido.cantidad}
             </span>
         </div>`;
       },
@@ -506,7 +505,7 @@ export const ViewCoreFactura = function () {
 
     getImage: function (name) {
       let arrayImage = [
-        "pagoefectivo",
+        "efectivo",
         "plin",
         "interbank",
         "scotiabank",
