@@ -1,4 +1,5 @@
 import { showModal } from "./modal.js";
+
 const ViewCore = function () {
   this.Core = {
     contextUrl: "/configuracion/mesa",
@@ -8,10 +9,6 @@ const ViewCore = function () {
     init: function () {
       this.getComandas();
       this.bntAddComanda = $("#btn-add");
-      this.attachEvents();
-    },
-    attachEvents: function () {
-      let me = this;
     },
     getComandas: function () {
       const url = this.contextUrl + this.apis.listar;
@@ -20,12 +17,19 @@ const ViewCore = function () {
         .then((data) => {
           console.log(data);
 
+          if (!data.length) {
+            $("#tableComandas").html(
+              `<span class="text-center">Sin Mesas</span>`
+            );
+            this.showNoTablesModal();
+            return;
+          }
+
           this.generateComanda(data);
         });
     },
     generateComanda: function (data) {
       let html = "";
-      let me = this;
 
       data.forEach((element) => {
         if (element.estado == "Ocupado") {
@@ -34,33 +38,35 @@ const ViewCore = function () {
             .then((response) => response.json())
             .then((comanda) => {
               console.log(comanda);
-              
+
               if (comanda) {
                 html += `
-                <div  class="card col-12 col-xl-5 m-3 
-                border-4 border-danger js-container-comanda" 
-                data-id="${element.id}">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                  <h5 class="card-title text-center">ID: ${element.id}</h5>
-                  <h5 class="card-title text-center text-danger">
-                   ${element.estado}
-                  </h5>
-                  <h5 class="card-title text-center">
-                   Empleado: ${comanda.empleado.nombre}
-                  </h5>
-                   <h5 class="card-title text-center ">
-                   Fecha: ${comanda.fechaEmision}
-                  </h5>
-                   <h5 class="card-title text-center ">
-                   Estado: ${comanda.estadoComanda.estado}
-                  </h5>
-                  <h5 class="card-title text-center">
-                   Precio comanda: ${comanda.precioTotal}
-                  </h5>
-                  
+                <div class="card col-12 col-xl-5 m-3 border-4 border-danger js-container-comanda" 
+                  data-id="${element.id}">
+                  <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <h5 class="card-title text-center">ID: ${element.id}</h5>
+                    
+                    <h5 class="card-title text-center text-danger">
+                    ${element.estado}
+                    </h5>
+                    
+                    <h5 class="card-title text-center">
+                    Empleado: ${comanda.empleado.nombre}
+                    </h5>
+                    
+                    <h5 class="card-title text-center ">
+                    Fecha: ${comanda.fechaEmision}
+                    </h5>
+                    
+                    <h5 class="card-title text-center ">
+                    Estado: ${comanda.estadoComanda.estado}
+                    </h5>
+                   
+                    <h5 class="card-title text-center">
+                    Precio comanda: ${comanda.precioTotal}
+                    </h5> 
+                  </div>
                 </div>
-                </div>
-              
               `;
               }
 
@@ -128,6 +134,16 @@ const ViewCore = function () {
 
       const modalInfo = this.templateComanda().modalInfoComanda(data);
       showModal(modalInfo);
+    },
+    showNoTablesModal: function () {
+      const contentModal = {
+        header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>	
+                    <h4 class="modal-title text-center" id="modal-prototype-label">NO HAY MESAS</h4>`,
+        body: `<p>No es posible generar comandas porque no exiten mesas</p>`,
+        footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
+      };
+
+      showModal(contentModal);
     },
     deleteComanda: function (id) {
       const url = this.contextUrl + this.apis.delete;

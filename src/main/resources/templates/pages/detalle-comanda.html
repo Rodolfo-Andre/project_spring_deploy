@@ -85,10 +85,8 @@
                         </div>
                         <div class="row w-100 gap-4 px-4 py-1 d-flex mx-auto">
                             <th:block sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')">
-
-
                                 <button 
-                                th:if="${comanda !=null && comanda.getEstadoComanda().getId() == 2}"
+                                th:if="${comanda !=null}"
                                 type="button" style="background-color: #6F42C1 !important; "
                                     class="btn btn-primary  col-md-3" id="btn-facturar-comanda">
                                     <i class="bi bi-save"></i>

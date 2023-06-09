@@ -11,7 +11,6 @@ const ViewCore = function () {
     init: async function () {
       this.viewFactura = new ViewCoreFactura();
       await this.viewFactura.Core.init();
-      let me = this;
       this.txtNumeroComanda = $("#txt-numero-comanda");
       this.IdUsuario = $("#txt-id-usuario");
       this.txtEstadoMesa = $("#txt-estado-mesa");
@@ -164,7 +163,7 @@ const ViewCore = function () {
           dataType: "json",
           success: function (response) {
             console.log(response);
-            
+
             resolve(response);
           },
           error: function (error) {
@@ -419,18 +418,19 @@ const ViewCore = function () {
         observacion: plato.observacion,
       }));
 
+      console.log(me.txtNumeroComanda);
+
       const baseUrl = this.contextUrl + this.apis.save;
       const baseData = {
-        id:
-          this.txtEstadoMesa.val() == "Ocupado"
-            ? parseInt(me.txtNumeroComanda.val())
-            : null,
+        id: me.txtNumeroComanda.val(),
         numeroMesa: parseInt(this.txtNumeroMesa.val()) ?? 0,
         precioTotal: parseFloat(this.txtPrecioTotal.val()) ?? 0,
         cantidadPersonas: parseInt(this.txtCantidadPersonas.val()),
         listaPlatos: listIdPlatos,
         idUsuario: me.IdUsuario.val(),
       };
+
+      console.log(baseData);
 
       try {
         me.btnGenerar.prop("disabled", true);

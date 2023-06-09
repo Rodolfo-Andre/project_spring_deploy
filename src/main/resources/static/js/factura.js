@@ -63,7 +63,6 @@ export const ViewCoreFactura = function () {
       this.getCajas();
       this.initEvents();
     },
-
     initEvents: function () {
       let me = this;
       this.btnAgregarPago.on("click", () => {
@@ -175,7 +174,6 @@ export const ViewCoreFactura = function () {
         });
       });
     },
-
     getCajas: function () {
       const url = this.contextUrl + "caja/obtener";
 
@@ -195,7 +193,6 @@ export const ViewCoreFactura = function () {
         });
       });
     },
-
     setPedidos: function (pedidos) {
       let me = this;
       this.listaPedidos = pedidos;
@@ -218,7 +215,6 @@ export const ViewCoreFactura = function () {
 
       this.calcularTotal();
     },
-
     findCliente: async function () {
       const numeroDocumento = this.numeroDocumento.val();
 
@@ -255,7 +251,6 @@ export const ViewCoreFactura = function () {
       //     this.apellidoCliente.val("").attr("disabled", false);
       //   });
     },
-
     getTipoFactura: function () {
       const url = this.contextUrl + "comprobante/obtener-tipo-comprobante";
       this.cboTipoFactura.empty();
@@ -273,7 +268,6 @@ export const ViewCoreFactura = function () {
         });
       });
     },
-
     agregarMetodoPago: function () {
       const { id, metodo } = {
         id: this.cboPago.val(),
@@ -311,8 +305,8 @@ export const ViewCoreFactura = function () {
 
       const montoTotal = this.pago + parseFloat(pago.monto);
 
-      const calcularMonto =parseFloat(montoTotal).toFixed(2)
-      const calcularTOTAL = parseFloat(this.total).toFixed(2)
+      const calcularMonto = parseFloat(montoTotal).toFixed(2);
+      const calcularTOTAL = parseFloat(this.total).toFixed(2);
 
       if (calcularMonto > calcularTOTAL) {
         this.addError("El monto no puede ser mayor al total");
@@ -337,13 +331,11 @@ export const ViewCoreFactura = function () {
 
       this.calcularTotal();
     },
-
     eliminarMetodoPago: function (id) {
       this.listaPagos = this.listaPagos.filter((pago) => pago.id != id);
       $(`#${id}`).remove();
       this.calcularTotal();
     },
-
     calcularTotal: function () {
       this.pago = 0;
       this.total = 0;
@@ -388,7 +380,6 @@ export const ViewCoreFactura = function () {
       this.txtTotal.text(total.toFixed(2));
       this.igv.text(igv.toFixed(2));
     },
-
     addError: function (error) {
       this.containerError.css("display", "block");
       this.textError.text(error);
@@ -397,7 +388,6 @@ export const ViewCoreFactura = function () {
       this.containerError.css("display", "none");
       this.textError.text("");
     },
-
     facturar: function () {
       const newListaPagos = this.listaPagos.map((pago) => {
         return {
