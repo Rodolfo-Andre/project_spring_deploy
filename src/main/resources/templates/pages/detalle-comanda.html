@@ -86,7 +86,7 @@
                         <div class="row w-100 gap-4 px-4 py-1 d-flex mx-auto">
                             <th:block sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')">
                                 <button 
-                                th:if="${comanda !=null}"
+                                th:if="${comanda != null && comanda.getEstadoComanda().getEstado() == 'Preparado'}"
                                 type="button" style="background-color: #6F42C1 !important; "
                                     class="btn btn-primary  col-md-3" id="btn-facturar-comanda">
                                     <i class="bi bi-save"></i>
@@ -116,6 +116,11 @@
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </th:block>
+
+                            <button sec:authorize="hasAnyRole('COCINERO')" th:if="${mesa.getEstado() == 'Ocupado' && comanda.getEstadoComanda().getEstado() == 'Generado'}" type="button" class="btn btn-primary col-md-3" id="btn-actualizar-estado-comanda">
+                              <i class="bi bi-save"></i>
+                              Actualizar Comanda
+                            </button>
 
                             <a href="http://localhost:8091/configuracion/comanda"
                                 class="btn btn-secondary  col-md-3">Regresar</a>
@@ -380,12 +385,8 @@
         <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
         <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"></script>
         <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script type="module" src="/js/comanda-detalle.js"></script>
-        <script type="module" src="/js/factura.js"></script>
-
-
     </th:block>
 </body>
 

@@ -26,6 +26,7 @@ const ViewCore = function () {
       this.containerError = $("#container-error");
       this.btnAddPlato = $("#btn-add-plato");
       this.btnActualizar = $("#btn-actualizar-comanda");
+      this.btnActualizarEstado = $("#btn-actualizar-estado-comanda");
       this.listaDeEnvioPlatos = [];
 
       this.modalFactura = $("#modalFactura");
@@ -104,6 +105,12 @@ const ViewCore = function () {
         me.containerError.empty();
 
         me.saveComanda();
+      });
+
+      this.btnActualizarEstado.on("click", function (ev) {
+        ev.preventDefault();
+
+        me.updateComandaStatus();
       });
 
       this.btnDelete.on("click", function (ev) {
@@ -363,7 +370,6 @@ const ViewCore = function () {
       let me = this;
       me.initTable(data);
     },
-
     getSingle: async function (id) {
       let me = this;
       try {
@@ -463,6 +469,34 @@ const ViewCore = function () {
         me.btnActualizar.prop("disabled", false);
       }
     },
+    updateComandaStatus: async function () {
+      const url =
+        this.contextUrl + `/preparar-comanda/${this.txtNumeroComanda.val()}`;
+
+      try {
+        this.btnActualizarEstado.prop("disabled", true);
+
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+        });
+
+        const { message, status } = await response.json();
+
+        this.showMessage(message, status, "Comanda").then((response) => {
+          if (response.isConfirmed) {
+            window.location.href = this.contextUrl;
+          }
+        });
+      } catch (error) {
+        const message = error.message ?? "Error al actualizar la comanda";
+        this.showMessage(message, "error", "Comanda");
+      } finally {
+        this.btnActualizarEstado.prop("disabled", false);
+      }
+    },
     showMessage: function (message, icon, title, ...options) {
       return Swal.fire({
         title: title,
@@ -478,7 +512,6 @@ const ViewCore = function () {
 
       return valor;
     },
-
     initTable: function (data = null) {
       let me = this;
 

@@ -138,7 +138,7 @@ const ViewCore = function () {
       const contentModal = {
         header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>	
                     <h4 class="modal-title text-center" id="modal-prototype-label">NO HAY MESAS</h4>`,
-        body: `<p>No es posible generar comandas porque no exiten mesas</p>`,
+        body: `<p>No se puede realizar ninguna acción porque no exiten mesas</p>`,
         footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
       };
 

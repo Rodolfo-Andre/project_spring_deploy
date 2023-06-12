@@ -5,12 +5,14 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.proyecto.entity.*;
+import com.proyecto.interfaces.UsuarioActual;
 import com.proyecto.service.*;
 
 @Controller
@@ -69,11 +71,17 @@ public class ComandaController {
   }
 
   @GetMapping(value = "/detalle/{id}")
-  public String detalleComanda(@PathVariable(value = "id", required = false) int id, Model model) {
+  public String detalleComanda(@PathVariable(value = "id", required = false) int id, Model model,
+      @UsuarioActual UsuarioDetallesCustom usuario) {
     Mesa mesa = mesaService.obtenerPorId(id);
 
     if (mesa == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Mesa no encontrada");
+    }
+
+    if (mesa.getEstado().equals("Libre") && !List.of("ROLE_ADMINISTRADOR", "ROLE_MESERO", "ROLE_CAJERO")
+        .contains(usuario.getUsuario().getEmpleado().getCargo().getNombre())) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comanda no encontrada");
     }
 
     model.addAttribute("mesa", mesa);
@@ -290,5 +298,41 @@ public class ComandaController {
     }
 
     return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
+  }
+
+  @PostMapping(value = "/preparar-comanda/{id}")
+  public ResponseEntity<Map<String, String>> prepararComanda(@PathVariable int id) {
+    String mensaje = "Comanda actualizada correctamente";
+    String status = "success";
+
+    try {
+      Comanda comanda = comandaService.obtenerPorId(id);
+
+      if (comanda == null) {
+        mensaje = "Error! La comanda no existe";
+        status = "error";
+
+        return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
+      }
+
+      if (comanda.getEstadoComanda().getEstado().equals("Pagado")) {
+        mensaje = "Error! La comanda ya está pagada";
+        status = "error";
+
+        return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
+      }
+
+      EstadoComanda estadoComanda = new EstadoComanda();
+      estadoComanda.setId(2);
+
+      comanda.setEstadoComanda(estadoComanda);
+      comandaService.actualizar(comanda);
+    } catch (Exception e) {
+      e.printStackTrace();
+      mensaje = "Error al actualizar comanda";
+      status = "error";
+    }
+
+    return ResponseEntity.ok().body(Map.of("message", mensaje, "status", status));
   }
 }
