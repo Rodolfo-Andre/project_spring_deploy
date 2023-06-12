@@ -41,30 +41,31 @@ const ViewCore = function () {
 
               if (comanda) {
                 html += `
-                <div class="card col-12 col-xl-5 m-3 border-4 border-danger js-container-comanda" 
-                  data-id="${element.id}">
-                  <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <h5 class="card-title text-center">ID: ${element.id}</h5>
+                <div class="col">
+                  <div class="card h-100 border-4 border-danger js-container-comanda" data-id="${element.id}">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                      <h5 class="card-title text-center">ID: ${element.id}</h5>
+                      
+                      <h5 class="card-title text-center text-danger">
+                      ${element.estado}
+                      </h5>
+                      
+                      <h5 class="card-title text-center">
+                      Empleado: ${comanda.empleado.nombre}
+                      </h5>
+                      
+                      <h5 class="card-title text-center ">
+                      Fecha: ${comanda.fechaEmision}
+                      </h5>
+                      
+                      <h5 class="card-title text-center ">
+                      Estado: ${comanda.estadoComanda.estado}
+                      </h5>
                     
-                    <h5 class="card-title text-center text-danger">
-                    ${element.estado}
-                    </h5>
-                    
-                    <h5 class="card-title text-center">
-                    Empleado: ${comanda.empleado.nombre}
-                    </h5>
-                    
-                    <h5 class="card-title text-center ">
-                    Fecha: ${comanda.fechaEmision}
-                    </h5>
-                    
-                    <h5 class="card-title text-center ">
-                    Estado: ${comanda.estadoComanda.estado}
-                    </h5>
-                   
-                    <h5 class="card-title text-center">
-                    Precio comanda: ${comanda.precioTotal}
-                    </h5> 
+                      <h5 class="card-title text-center">
+                      Precio comanda: ${comanda.precioTotal}
+                      </h5> 
+                    </div>
                   </div>
                 </div>
               `;
@@ -82,19 +83,17 @@ const ViewCore = function () {
             });
         } else {
           html += `
-          <div class="card col-12 col-xl-5 m-3 
-                border-4 border-success js-container-comanda"
-                data-id="${element.id}"
-                c>
-                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                  <h5 class="card-title text-center">ID: ${element.id}</h5>
-                  <h5 class="card-title text-center text-success">
-                    ${element.estado}
-                  </h5>
-                  <h5 class="card-title text-center text-success">
-                  </h5>
-                </div>
+          <div class="col">
+            <div class="card h-100 border-4 border-success js-container-comanda" data-id="${element.id}" style="min-height: 224px;">
+              <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                <h5 class="card-title text-center">ID: ${element.id}</h5>
+                
+                <h5 class="card-title text-center text-success">
+                  ${element.estado}
+                </h5>
               </div>
+            </div>  
+          </div>
         `;
         }
       });
