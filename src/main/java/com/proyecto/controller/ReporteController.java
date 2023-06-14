@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.entity.Comprobante;
 import com.proyecto.entity.DetalleComanda;
+import com.proyecto.entity.dto.ReportePlatoVendido;
 import com.proyecto.entity.dto.ReporteVentas;
 import com.proyecto.service.ComprobanteService;
+import com.proyecto.service.DetalleComandaService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -33,6 +35,8 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 public class ReporteController {
 	@Autowired
 	ComprobanteService comprobanteService;
+	@Autowired
+	DetalleComandaService detalleService;
 
 	@RequestMapping(value = "")
 	public String lista() {
@@ -102,5 +106,24 @@ public class ReporteController {
 		}
 
 		return gary;
+	}
+	@GetMapping("/reporte-plato")
+	@ResponseBody
+	public List<ReportePlatoVendido> reportePorplatomasvendido() {
+		List<Object[]> datos = detalleService.generarReportePlato();
+		List<ReportePlatoVendido> sebas = new ArrayList<>();
+
+		for (Object[] result : datos) {
+			ReportePlatoVendido g = new ReportePlatoVendido();
+			g.setCodplato((String) result[0]);
+			g.setNomPlato((String) result[1]);
+			g.setNomCat((String) result[2]);
+			g.setTotalsale ((double) result[3]);
+			g.setCantPedido(Integer.parseInt(result[4].toString()));
+
+			sebas.add(g);
+		}
+
+		return sebas;
 	}
 }

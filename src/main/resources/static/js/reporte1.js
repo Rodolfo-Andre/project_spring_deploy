@@ -8,8 +8,8 @@ $($d).ready(() => {
 });
 
 const initializeTable = () => {
-  $.get(`/reportes/reporte-ventas`, (data) => {   
-  
+  $.get(`/reportes/reporte-plato`, (data) => {   
+  console.log(data)
     tabla = $('#tablaReportes').DataTable({
       columnDefs: [
         { orderable: false }
@@ -32,14 +32,54 @@ const initializeTable = () => {
           text: "<i class='fa-regular fa-file-pdf'></i>",
           titleAttr: "Exportar a Pdf",
           className: 'btn btn-danger custom-button',
-        },
+          
+           customize: function(doc) {
+                  doc.styles.tableHeader = {
+                    fillColor: '#E0B31A',
+                    color: '#000000',
+                    fontSize: 10,
+                    bold: true,
+                    alignment: 'center'
+                  };
+                  // Cambiar el estilo del contenido de la tabla
+                  doc.styles.tableBody = {
+                    fillColor: '#ffffff',
+                    color: '#efd9b4',
+                    fontSize: 10,
+                    alignment: 'center'
+                  };
+                  // Cambiar los márgenes
+                  doc.pageMargins = [40, 60, 40, 60]; // [left, top, right, bottom]
+              
+                  // Agregar un encabezado personalizado
+                  doc['header'] = (currentPage, pageCount) => {
+                    return {
+                      text: 'PLATOS MAS VENDIDOS',
+                      alignment: 'center',
+                      fontSize: 14,
+                      margin: [40, 20, 40, 0] // [left, top, right, bottom]
+                    };
+                  };
+                  // Agregar un pie de página personalizado
+                  doc['footer'] = (currentPage, pageCount) => {
+                    return {
+                      text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
+                      alignment: 'center',
+                      fontSize: 10,
+                      margin: [40, 0, 40, 20] // [left, top, right, bottom]
+                    };
+                  };
+                }
+        }
       ],
       data: data,
-      columns: [
-        { title: 'mprobantes', data: 'qComprobante' },
-        { title: 'Cantidad de Platos', data: 'qPlatos' },
-        { title: 'Plato más vendido', data: 'platoMasVendido' }
-      ]
+         columns: [
+            { title: 'Codigo de plato', data: 'codplato' },
+            { title: 'Nombre de plato', data: 'nomPlato' },
+            { title: 'Nombre categoria', data: 'nomCat' },
+            { title: 'Total precio', data: 'totalsale' },
+            { title: 'Cantidad de pedidos', data: 'cantPedido' }
+          ]
     })
   
   
@@ -57,11 +97,11 @@ const addEventListReport = () => {
     if (opcionSeleccionada === 'opcion1') {
       tabla.destroy();
       $('#tablaReportes').empty();
-      $.get(`/reportes/reporte-ventas`, (data) => {
+      $.get(`/reportes/reporte-plato`, (data) => {
         console.log(data)
         tabla=$('#tablaReportes').DataTable({
           columnDefs: [
-            { orderable: false }
+            { orderable: false, target: [0, 1, 2, 3, 4]}
           ],
           language: {
             url: "/language/datatables-es-mx.json",
@@ -81,15 +121,55 @@ const addEventListReport = () => {
               text: "<i class='fa-regular fa-file-pdf'></i>",
               titleAttr: "Exportar a Pdf",
               className: 'btn btn-danger custom-button',
-            },
+              
+               
+            // Agregar un pie de página personalizado
+             customize: function(doc) {
+                  doc.styles.tableHeader = {
+                    fillColor: '#E0B31A',
+                    color: '#000000',
+                    fontSize: 10,
+                    bold: true,
+                    alignment: 'center'
+                  };
+                  // Cambiar el estilo del contenido de la tabla
+                  doc.styles.tableBody = {
+                    fillColor: '#ffffff',
+                    color: '#efd9b4',
+                    fontSize: 10,
+                    alignment: 'center'
+                  };
+                  // Cambiar los márgenes
+                  doc.pageMargins = [40, 60, 40, 60]; // [left, top, right, bottom]
+              
+                  // Agregar un encabezado personalizado
+                  doc['header'] = (currentPage, pageCount) => {
+                    return {
+                      text: 'PLATOS MAS VENDIDOS',
+                      alignment: 'center',
+                      fontSize: 14,
+                      margin: [40, 20, 40, 0] // [left, top, right, bottom]
+                    };
+                  };
+                  // Agregar un pie de página personalizado
+                  doc['footer'] = (currentPage, pageCount) => {
+                    return {
+                      text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
+                      alignment: 'center',
+                      fontSize: 10,
+                      margin: [40, 0, 40, 20] // [left, top, right, bottom]
+                    };
+                  };
+                }
+            }
           ],
           data: data,
           columns: [
-            { title: '1', data: 'fechaEmision' },
-            { title: '2', data: 'qRecaudada' },
-            { title: '3', data: 'qComprobante' },
-            { title: '4', data: 'qPlatos' },
-            { title: '5', data: 'platoMasVendido' }
+            { title: 'Codigo de plato', data: 'codplato' },
+            { title: 'Nombre de plato', data: 'nomPlato' },
+            { title: 'Nombre categoria', data: 'nomCat' },
+            { title: 'Total precio', data: 'totalsale' },
+            { title: 'Cantidad de pedidos', data: 'cantPedido' }
           ]
 
         })
@@ -123,7 +203,47 @@ const addEventListReport = () => {
                 text: "<i class='fa-regular fa-file-pdf'></i>",
                 titleAttr: "Exportar a Pdf",
                 className: 'btn btn-danger custom-button',
-              },
+                
+                 
+            // Agregar un pie de página personalizado
+           customize: function(doc) {
+                  doc.styles.tableHeader = {
+                    fillColor: '#E0B31A',
+                    color: '#000000',
+                    fontSize: 10,
+                    bold: true,
+                    alignment: 'center'
+                  };
+                  // Cambiar el estilo del contenido de la tabla
+                  doc.styles.tableBody = {
+                    fillColor: '#ffffff',
+                    color: '#efd9b4',
+                    fontSize: 10,
+                    alignment: 'center'
+                  };
+                  // Cambiar los márgenes
+                  doc.pageMargins = [40, 60, 40, 60]; // [left, top, right, bottom]
+              
+                  // Agregar un encabezado personalizado
+                  doc['header'] = (currentPage, pageCount) => {
+                    return {
+                      text: 'DIAS CON MAS VENTAS',
+                      alignment: 'center',
+                      fontSize: 14,
+                      margin: [40, 20, 40, 0] // [left, top, right, bottom]
+                    };
+                  };
+                  // Agregar un pie de página personalizado
+                  doc['footer'] = (currentPage, pageCount) => {
+                    return {
+                      text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
+                      alignment: 'center',
+                      fontSize: 10,
+                      margin: [40, 0, 40, 20] // [left, top, right, bottom]
+                    };
+                  };
+                }
+              }
             ],
             data: data,
             columns: [

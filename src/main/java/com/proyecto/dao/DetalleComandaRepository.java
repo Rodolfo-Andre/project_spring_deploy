@@ -22,4 +22,7 @@ public interface DetalleComandaRepository extends JpaRepository<DetalleComanda, 
 
     @Query("SELECT dc FROM DetalleComanda dc inner join Comanda c on dc.comanda.id = c.id inner join Plato p on dc.plato.id = p.id where dc.comanda.id = :comandaId and  dc.plato.id = :platoId")
     public DetalleComanda findDetalleComandaByPlatoIdAndComandaId(String platoId, int comandaId);
+    
+    @Query(value="CALL reporte_platomas_vendido()", nativeQuery = true)
+    List<Object[]> generarReporteplato();
 }

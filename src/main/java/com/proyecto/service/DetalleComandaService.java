@@ -37,4 +37,8 @@ public class DetalleComandaService {
     public DetalleComanda findDetalleComandaByPlatoIdAndComandaId(String platoId, int comandaId) {
         return repository.findDetalleComandaByPlatoIdAndComandaId(platoId, comandaId);
     }
+    
+    public List<Object[]> generarReportePlato(){
+    	return repository.generarReporteplato();
+    }
 }
