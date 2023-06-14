@@ -1,6 +1,7 @@
 package com.proyecto.controller;
 
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,11 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyecto.entity.Comprobante;
 import com.proyecto.entity.DetalleComanda;
+import com.proyecto.entity.dto.ReporteVentas;
 import com.proyecto.service.ComprobanteService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,27 +28,27 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-
-
 @Controller
 @RequestMapping("reportes")
 public class ReporteController {
 	@Autowired
 	ComprobanteService comprobanteService;
-	
-	
-	
+
+	@RequestMapping(value = "")
+	public String lista() {
+		return "pages/reporte";
+	}
+
 	@GetMapping(value = "/reporte-cdp")
 	public void reporte(HttpServletResponse response, @RequestParam("id") int id) {
 		try {
-			//FALTA ACTUALIZAR ESTO CUANDO ESTÉ LA VISTA DE CAJA_REGISTRADORA
-			
+			// FALTA ACTUALIZAR ESTO CUANDO ESTÉ LA VISTA DE CAJA_REGISTRADORA
+
 			Comprobante comprobante = comprobanteService.findById(id);
 			List<DetalleComanda> lista = comprobante.getComanda().getListaDetalleComanda();
 			File file = ResourceUtils.getFile("classpath:CDP_ciclo5.jrxml");
 			JasperReport jasper = JasperCompileManager.compileReport(file.getAbsolutePath());
-			
-			
+
 			JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(lista);
 			Map<String, Object> parameters = new HashMap<>();
 			parameters.put("tipoCDP", comprobante.getTipoComprobante().getTipo());
@@ -70,18 +73,34 @@ public class ReporteController {
 			parameters.put("logoTelefono", "classpath:/static/images/telefono.jpg");
 			parameters.put("logoUsuario", "classpath:/static/images/usuario.png");
 
-		
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parameters, ds);
 			response.setContentType("application/pdf");
 			OutputStream salida = response.getOutputStream();
 			JasperExportManager.exportReportToPdfStream(jasperPrint, salida);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
+	}
 
+	@GetMapping("/reporte-ventas")
+	@ResponseBody
+	public List<ReporteVentas> reportePorDiasMasVendido() {
+		List<Object[]> datos = comprobanteService.generarReporte();
+		List<ReporteVentas> gary = new ArrayList<>();
 
+		for (Object[] result : datos) {
+			ReporteVentas g = new ReporteVentas();
+			g.setFechaEmision((String) result[1]);
+			g.setqRecaudada((double) result[2]);
+			g.setqComprobante(Integer.parseInt(result[3].toString()));
+			g.setqPlatos(Integer.parseInt(result[4].toString()));
+			g.setPlatoMasVendido((String) result[5]);
+
+			gary.add(g);
+		}
+
+		return gary;
 	}
 }

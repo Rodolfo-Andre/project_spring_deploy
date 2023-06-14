@@ -17,6 +17,7 @@ const initializeTable = () => {
     responsive: true,
     fixedHeader: true,
     rowId: "0",
+    
     columns: [
       null,
       null,

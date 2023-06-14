@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::link})}"
+>
+  <head>
+    <title>Reportes</title>
+
+
+
+   <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+    />
+    <link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.bootstrap5.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/reporte.css}">
+
+  </head>
+
+  <body class="d-flex">
+    <th:block th:fragment="cuerpo">
+      <main class="main">
+        <div class="box">
+          <div class="header-info">
+            <h2 class="mb-3">Reportes</h2>
+          </div>
+          <hr class="separator" />
+          <div class="form-group">
+            <label for="miComboBox">Elija que reporte desea ver</label>
+            <select id="miComboBox" class="form-select form-select-sm">
+              <option  value="opcion1" data-sort="1">Opción 1</option>
+              <option  value="opcion2" data-sort="2">Días con más ventas</option>
+            </select>
+          </div>
+          <hr class="separator" />
+          <div class="body-info">
+            <table id="tablaReportes" class="table display" style="width: 100%" aria-describedby="Tabla de Reportes">
+              <thead class="align-middle">
+              </thead>
+              <tbody id="tb_reportes">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <template th:insert="~{/fragments/modal-template}" id="modal-template">
+      </template>
+
+      <!-- Custom JavaScript -->
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"
+      ></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+      <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+      <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.bootstrap5.min.js"></script>
+      <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" 
+      integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow=="
+       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script type="module" src="/js/reporte1.js"></script>
+    </th:block>
+  </body>
+</html>
