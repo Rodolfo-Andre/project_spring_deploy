@@ -25,7 +25,6 @@ const initializeTable = () => {
       null,
       null,
       null,
-
       { orderable: false, searchable: false, width: 50 },
       { orderable: false, searchable: false, width: 50 },
       { orderable: false, searchable: false, width: 50 },

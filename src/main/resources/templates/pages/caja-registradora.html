@@ -1,85 +1,109 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"
-    th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::link})}">
-
-<head>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::link})}"
+>
+  <head>
     <title>Caja Registradora</title>
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+    />
+  </head>
 
-<body class="d-flex">
+  <body class="d-flex">
     <th:block th:fragment="cuerpo">
-        <main class="main">
-            <div class="box info">
-                <div class="header-info">
-                    <h2 class="mb-3">Caja Registradora</h2>
+      <main class="main">
+        <div class="box info">
+          <div class="header-info">
+            <h2 class="mb-3">Caja Registradora</h2>
+          </div>
 
-                    
-                </div>
+          <hr class="separator" />
 
-                <hr class="separator" />
+          <div class="body-info">
+            <table
+              id="tablaEmpleado"
+              class="table display"
+              style="width: 100%"
+              aria-describedby="Tabla de Caja Registradora"
+            >
+              <thead class="align-middle">
+                <th>Código</th>
+                <th>Cliente</th>
+                <th>Fecha Emision</th>
 
-                <div class="body-info">
-                    <table id="tablaEmpleado" class="table display" style="width: 100%"
-                        aria-describedby="Tabla de Métodos de Pagos">
-                        <thead class="align-middle">
-                            <th>Código</th>
-                            <th>Cliente</th>
-                            <th>Fecha Emision</th>
-                         
-                           
-                            <th>Total</th>
-                            <th>Tipo Comprobante</th>
-                           
-                            <th>Caja</th>
-                            <th>Información</th>
-                            <th>PDF</th>
-                        </thead>
-                        <tbody>
-                            <tr th:each="comprobante : ${listar}" class="align-middle">
-                                <td th:text="${comprobante.id}"></td>
-                                <td th:text="${comprobante.cliente.nombre}"></td>
-                                <td th:text="${#dates.format(comprobante.fechaEmision, 'yyyy-MM-dd')}"></td>
-                            
-                                
-                                <td th:text="${comprobante.precioTotalPedido}"></td>
-                                <td th:text="${comprobante.tipoComprobante.tipo}"></td>
-                               
-                                <td th:text="${comprobante.caja.id}"></td>
-                                
-            
-                                <td class="text-center">
-                                    <i class="icon-action icon-info bi bi-info-circle-fill"></i>
-                                </td>
-                                <td>
-									<form method="GET" th:action="@{/reportes/reporte-cdp}" target="_blank">
-										<input type="hidden" name="id" th:value="${ comprobante.id }"/>
-										<input class="btn-danger btn" type="submit" value="PDF"/>
-									</form>
-								</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
+                <th>Total</th>
+                <th>Tipo Comprobante</th>
 
-        <template th:insert="~{/fragments/modal-template}" id="modal-template">
-        </template>
+                <th>Caja</th>
+                <th>Información</th>
+                <th>PDF</th>
+              </thead>
+              <tbody>
+                <tr th:each="comprobante : ${listar}" class="align-middle">
+                  <td th:text="${comprobante.id}"></td>
+                  <td th:text="${comprobante.cliente.nombre}"></td>
+                  <td
+                    th:text="${#dates.format(comprobante.fechaEmision, 'yyyy-MM-dd')}"
+                  ></td>
 
-        <!-- Custom JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
-            integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"></script>
-        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+                  <td th:text="${comprobante.precioTotalPedido}"></td>
+                  <td th:text="${comprobante.tipoComprobante.tipo}"></td>
 
-        <script type="module" src="/js/caja-registradora.js"></script>
+                  <td th:text="${comprobante.caja.id}"></td>
 
+                  <td class="text-center">
+                    <i class="icon-action icon-info bi bi-info-circle-fill"></i>
+                  </td>
+                  <td>
+                    <form
+                      method="GET"
+                      th:action="@{/reportes/reporte-cdp}"
+                      target="_blank"
+                    >
+                      <input
+                        type="hidden"
+                        name="id"
+                        th:value="${ comprobante.id }"
+                      />
+                      <input class="btn-danger btn" type="submit" value="PDF" />
+                    </form>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <template th:insert="~{/fragments/modal-template}" id="modal-template">
+      </template>
+
+      <!-- Custom JavaScript -->
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"
+      ></script>
+
+      <script type="module" src="/js/caja-registradora.js"></script>
     </th:block>
-</body>
-
+  </body>
 </html>

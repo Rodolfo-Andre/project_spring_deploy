@@ -1,21 +1,24 @@
 .titulo {
-  font-family: 'Bungee', cursive;
+  font-family: "Bungee", cursive;
 }
+
 .estiloCaja {
-  border-bottom: dashed;
-  border-bottom-width: 2px;
-  border-color: gray;
+  border: 1px solid rgb(255, 187, 85);
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
+
 .cabeza {
   max-width: 100%;
   max-height: 50%;
 }
+
 .cuerpoPaginaBorde {
   border-style: dashed;
 }
 
 .body {
- 	background-color: rgb(255, 232, 198);
+  background-color: rgb(255, 232, 198);
 
   margin: 0;
   display: flex;
@@ -23,6 +26,6 @@
   /* fallback for old browsers */
 }
 .tituloCarta {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
   text-transform: uppercase;
 }

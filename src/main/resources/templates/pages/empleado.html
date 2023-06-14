@@ -37,11 +37,11 @@
               id="tablaEmpleado"
               class="table display"
               style="width: 100%"
-              aria-describedby="Tabla de Métodos de Pagos"
+              aria-describedby="Tabla de Empleados"
             >
               <thead class="align-middle">
                 <th>Código</th>
-                <th>Nombres y Apellidos</th>  
+                <th>Nombres y Apellidos</th>
                 <th>Telefono</th>
                 <th>Dni</th>
                 <th>Fecha Registro</th>
@@ -54,10 +54,14 @@
               <tbody>
                 <tr th:each="empleado : ${listar}" class="align-middle">
                   <td th:text="${empleado.id}"></td>
-                  <td th:text="${empleado.nombre + ' - ' + empleado.apellido}"></td>
+                  <td
+                    th:text="${empleado.nombre + ' - ' + empleado.apellido}"
+                  ></td>
                   <td th:text="${empleado.telefono}"></td>
                   <td th:text="${empleado.dni}"></td>
-                  <td th:text="${#dates.format(empleado.fechaRegistro, 'yyyy-MM-dd')}"></td>
+                  <td
+                    th:text="${#dates.format(empleado.fechaRegistro, 'yyyy-MM-dd')}"
+                  ></td>
                   <td>
                     <span
                       th:text="${empleado.cargo.nombre.replace('ROLE_', '').toLowerCase()}"
