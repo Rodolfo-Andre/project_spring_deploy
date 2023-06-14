@@ -1,0 +1,13 @@
+package com.proyecto.configuration;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.servlet.config.annotation.*;
+
+@Configuration
+public class JacksonConfiguration implements WebMvcConfigurer {
+  @Override
+  public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+    configurer.defaultContentType(MediaType.APPLICATION_JSON).ignoreAcceptHeader(true);
+  }
+}

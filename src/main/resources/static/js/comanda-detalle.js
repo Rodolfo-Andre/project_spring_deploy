@@ -9,8 +9,23 @@ const ViewCore = function () {
       save: "/registrar",
     },
     init: async function () {
-      this.viewFactura = new ViewCoreFactura();
-      await this.viewFactura.Core.init();
+      const response = await fetch("/usuario", {
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+
+      const { empleado } = await response.json();
+
+      if (
+        ["ROLE_ADMINISTRADOR", "ROLE_MESERO", "ROLE_CAJERO"].includes(
+          empleado.cargo.nombre
+        )
+      ) {
+        this.viewFactura = new ViewCoreFactura();
+        await this.viewFactura.Core.init();
+      }
+
       this.txtNumeroComanda = $("#txt-numero-comanda");
       this.IdUsuario = $("#txt-id-usuario");
       this.txtEstadoMesa = $("#txt-estado-mesa");
