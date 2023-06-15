@@ -512,7 +512,7 @@ export const ViewCoreFactura = function () {
       const regex = new RegExp(nameImage, "gi");
 
       arrayImage.forEach((item) => {
-        if (item.match(regex)) {
+        if (regex.test(item)) {
           image = `/images/metodos-pago/${nameImage}.png`;
         }
       });

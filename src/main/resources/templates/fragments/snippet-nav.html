@@ -42,7 +42,9 @@
         </a>
       </li>
 
-      <li>
+      <li
+        sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO', 'GERENTE')"
+      >
         <a
           href="/configuracion/comprobante"
           class="nav-link link-dark d-flex align-items-center gap-2"
@@ -140,19 +142,14 @@
         </div>
       </li>
 
-      <li>
-
-        <li>
-          <a
+      <li sec:authorize="hasAnyRole('ADMINISTRADOR', 'GERENTE')">
+        <a
           href="/reportes"
           class="nav-link link-dark d-flex align-items-center gap-2"
         >
-        <i class="bi bi-journal-check fs-4"></i>
-            <span class="fs-5 fw-semibold">Generar Reportes</span>
+          <i class="bi bi-journal-check fs-4"></i>
+          <span class="fs-5 fw-semibold">Generar Reportes</span>
         </a>
-  
-        
-        </li>
       </li>
     </ul>
 
@@ -173,7 +170,7 @@
 
       <ul class="dropdown-menu">
         <li>
-          <a href="/configuracion/carta-user" class="dropdown-item">Carta</a>
+          <a href="/carta" class="dropdown-item">Carta</a>
         </li>
         <li>
           <a href="/logout" class="dropdown-item">Cerrar Sesion</a>

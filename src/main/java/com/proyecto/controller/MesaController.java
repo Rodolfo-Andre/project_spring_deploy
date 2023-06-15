@@ -27,7 +27,8 @@ public class MesaController {
   @GetMapping(value = "/obtener")
   @ResponseBody
   public List<Mesa> getMesas(@UsuarioActual UsuarioDetallesCustom usuario) {
-    if (usuario.getUsuario().getEmpleado().getCargo().getNombre().equals("ROLE_COCINERO")) {
+    if (List.of("ROLE_COCINERO", "ROLE_CAJERO")
+        .contains(usuario.getUsuario().getEmpleado().getCargo().getNombre())) {
       return mesaService.obtenerPorEstado("Ocupado");
     }
     return mesaService.obtenerTodo();

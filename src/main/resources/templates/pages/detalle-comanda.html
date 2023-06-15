@@ -1,393 +1,568 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"
-    th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::link})}">
-
-<head>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layouts/base-con-menu :: layout(~{::title}, ~{::cuerpo}, ~{::link})}"
+>
+  <head>
     <title>Comandas</title>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"
+    />
     <link rel="stylesheet" href="/css/style.css" />
-</head>
-
-
-<body class="d-flex">
+  </head>
+  <body class="d-flex">
     <th:block th:fragment="cuerpo">
-        <main class="main">
-            <div class="box info">
-                <div class="header-info">
-                    <h2 th:text="${comanda != null ?  'Actualizar Comanda N° ' + comanda.getId() : 'Nueva Comanda'}"
-                        class="mb-3">
-                        Nueva Comanda</h2>
+      <main class="main">
+        <div class="box info">
+          <div class="header-info">
+            <h2
+              th:text="${comanda != null ?  'Actualizar Comanda N° ' + comanda.getId() : 'Nueva Comanda'}"
+              class="mb-3"
+            >
+              Nueva Comanda
+            </h2>
+          </div>
+
+          <hr class="separator" />
+
+          <div class="body-info">
+            <form id="form-comanda">
+              <input
+                type="hidden"
+                id="txt-estado-mesa"
+                th:value="${mesa.getEstado()}"
+              />
+              <div class="row d-flex justify-content-center">
+                <div
+                  id="container-error"
+                  class="d-flex justify-content-center"
+                ></div>
+              </div>
+
+              <div class="row w-100 px-4 py-1 mx-auto">
+                <div class="col-sm-12 col-md-6">
+                  <div class="mb-3">
+                    <label for="txt-numero-comanda" class="form-label fw-bold"
+                      >Numero de Comanda</label
+                    >
+                    <input
+                      disabled
+                      th:value="${idComanda == null ? comanda.getId() : idComanda}"
+                      type="number"
+                      class="form-control"
+                      name="txt-numero-comanda"
+                      id="txt-numero-comanda"
+                      placeholder="Numero de Comanda"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="txt-numero-mesa" class="form-label fw-bold">
+                      Numero de Mesa
+                    </label>
+                    <input
+                      disabled
+                      th:value="${mesa.getCantidadAsientos()}"
+                      type="hidden"
+                      name="txt-numero-personas"
+                      id="txt-numero-personas"
+                    />
+
+                    <input
+                      disabled
+                      th:value="${mesa.getId()}"
+                      type="number"
+                      name="txt-numero-mesa"
+                      class="form-control"
+                      id="txt-numero-mesa"
+                      placeholder="Numero de mesa"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label
+                      for="txt-cantidad-persona"
+                      class="form-label fw-bold"
+                    >
+                      Cantidad de Personas
+                    </label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="txt-cantidad-persona"
+                      name="txt-cantidad-persona"
+                      placeholder="Cantidad"
+                      th:attr="disabled=${#authentication.principal.usuario.empleado.cargo.nombre.equals('ROLE_COCINERO')}"
+                    />
+                    <input
+                      type="hidden"
+                      class="form-control"
+                      id="txt-cantidad-maxima"
+                    />
+
+                    <input
+                      id="txt-id-usuario"
+                      th:value="${#authentication.principal.usuario.id}"
+                      type="hidden"
+                    />
+                  </div>
                 </div>
-                <hr class="separator" />
-                <div class="body-info">
-                    <form id="form-comanda">
-                        <input type="hidden" id="txt-estado-mesa" th:value="${mesa.getEstado()}">
-                        <div class="row   d-flex justify-content-center ">
-
-                            <div id="container-error" class="d-flex justify-content-center">
-
-                            </div>
-
-                        </div>
-                        <div class="row w-100  px-4 py-1 mx-auto">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="mb-3">
-                                    <label for="txt-numero-comanda" class="form-label fw-bold">Numero de Comanda</label>
-                                    <input disabled th:value="${idComanda == null ? comanda.getId() : idComanda}"
-                                        type="number" class="form-control" name="txt-numero-comanda"
-                                        id="txt-numero-comanda" placeholder="Numero de Comanda">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="txt-numero-mesa" class="form-label fw-bold">
-                                        Numero de Mesa
-                                    </label>
-                                    <input disabled th:value="${mesa.getCantidadAsientos()}" type="hidden"
-                                        name="txt-numero-personas" id="txt-numero-personas">
-
-                                    <input disabled th:value="${mesa.getId()}" type="number" name="txt-numero-mesa"
-                                        class="form-control" id="txt-numero-mesa" placeholder="Numero de mesa">
-                                </div>
-                                <div class="mb-3">
-                                    <div></div>
-                                    <label for="txt-cantidad-persona" class="form-label fw-bold">
-                                        Cantidad de Personas
-                                    </label>
-                                    <input type="number" class="form-control" id="txt-cantidad-persona"
-                                        name="txt-cantidad-persona" placeholder="Cantidad"
-                                        th:attr="disabled=${#authentication.principal.usuario.empleado.cargo.nombre.equals('ROLE_COCINERO')}">
-                                    <input type="hidden" class="form-control" id="txt-cantidad-maxima">
-
-                                    <input id="txt-id-usuario" th:value="${#authentication.principal.usuario.id}"
-                                        type="hidden">
-
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6  border-custom">
-                                <div class="mb-3">
-                                    <label for="txt-estado-comanda" class="form-label">Estado de la Comanda</label>
-                                    <input disabled type="text" class="form-control" id="txt-estado-comanda"
-                                        value="Generado" placeholder="Estado comanda" name="txt-estado-comanda">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="txt-empleado" class="form-label">Empleado</label>
-                                    <input disabled th:value="${#authentication.principal.usuario.empleado.nombre}"
-                                        type="text" class="form-control" id="txt-empleado" placeholder="Empleado"
-                                        name="txt-empleado">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="precio-total" class="form-label">Precio Total</label>
-                                    <input disabled type="number" class="form-control" id="txt-total"
-                                        placeholder="Precio total" name="txt-total">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row w-100 gap-4 px-4 py-1 d-flex mx-auto">
-                            <th:block sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')">
-                                <button 
-                                th:if="${comanda != null && comanda.getEstadoComanda().getEstado() == 'Preparado'}"
-                                type="button" style="background-color: #6F42C1 !important; "
-                                    class="btn btn-primary  col-md-3" id="btn-facturar-comanda">
-                                    <i class="bi bi-save"></i>
-                                    Facturar
-                                </button>
-
-                                <button th:if="${mesa.getEstado() == 'Ocupado'}" type="button"
-                                    class="btn btn-primary  col-md-3" id="btn-actualizar-comanda">
-                                    <i class="bi bi-save"></i>
-                                    Actualizar Comanda
-                                </button>
-
-                                <button th:if="${mesa.getEstado() != 'Ocupado'}" type="button"
-                                    class="btn btn-primary  col-md-3" id="btn-guardar-comanda">
-                                    <i class="bi bi-save"></i>
-                                    Generar Comanda
-                                </button>
-
-                                <button type="button" class="btn btn-primary col-md-3" id="btn-add-plato">
-                                    Añadir Plato
-                                    <i class="bi bi-plus-circle"></i>
-                                </button>
-
-                                <button th:if="${mesa.getEstado() == 'Ocupado'}" type="button"
-                                    class="btn btn-danger  col-md-3" id="btn-del-plato">
-                                    Eliminar Comanda
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </th:block>
-
-                            <button sec:authorize="hasAnyRole('COCINERO')" th:if="${mesa.getEstado() == 'Ocupado' && comanda.getEstadoComanda().getEstado() == 'Generado'}" type="button" class="btn btn-primary col-md-3" id="btn-actualizar-estado-comanda">
-                              <i class="bi bi-save"></i>
-                              Actualizar Comanda
-                            </button>
-
-                            <a href="http://localhost:8091/configuracion/comanda"
-                                class="btn btn-secondary  col-md-3">Regresar</a>
-                        </div>
-                    </form>
-                    <hr class="separator" />
-                    <div class="row px-4">
-                        <div class="col-12">
-                            <h3 class="fw-bold">Platos</h3>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table id="tablaDetalleComanda" class="table display" style="width: 100%"
-                                aria-describedby="Tabla de Detalle Comanda">
-                                <thead class="align-middle">
-                                    <th>Código</th>
-                                    <th>Imagen</th>
-                                    <th>Nombre</th>
-                                    <th>Cantidad</th>
-                                    <th>Categoria</th>
-                                    <th>Precio Total</th>
-                                    <th:block sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')">
-                                        <th>Editar</th>
-                                        <th>Eliminar</th>
-                                    </th:block>
-                                </thead>
-                                <tbody id="tbBodyPlatos">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="col-sm-12 col-md-6 border-custom">
+                  <div class="mb-3">
+                    <label for="txt-estado-comanda" class="form-label"
+                      >Estado de la Comanda</label
+                    >
+                    <input
+                      disabled
+                      type="text"
+                      class="form-control"
+                      id="txt-estado-comanda"
+                      value="Generado"
+                      placeholder="Estado comanda"
+                      name="txt-estado-comanda"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="txt-empleado" class="form-label"
+                      >Empleado</label
+                    >
+                    <input
+                      disabled
+                      th:value="${#authentication.principal.usuario.empleado.nombre}"
+                      type="text"
+                      class="form-control"
+                      id="txt-empleado"
+                      placeholder="Empleado"
+                      name="txt-empleado"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="precio-total" class="form-label"
+                      >Precio Total</label
+                    >
+                    <input
+                      disabled
+                      type="number"
+                      class="form-control"
+                      id="txt-total"
+                      placeholder="Precio total"
+                      name="txt-total"
+                    />
+                  </div>
                 </div>
+              </div>
 
+              <div class="row w-100 gap-4 px-4 py-1 d-flex mx-auto">
+                <button
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')"
+                  th:if="${comanda != null && comanda.getEstadoComanda().getEstado() == 'Preparado'}"
+                  type="button"
+                  style="background-color: #6f42c1 !important"
+                  class="btn btn-primary col-md-3"
+                  id="btn-facturar-comanda"
+                >
+                  <i class="bi bi-save"></i>
+                  Facturar
+                </button>
+
+                <button
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'MESERO')"
+                  th:if="${mesa.getEstado() == 'Ocupado'}"
+                  type="button"
+                  class="btn btn-primary col-md-3"
+                  id="btn-actualizar-comanda"
+                >
+                  <i class="bi bi-save"></i>
+                  Actualizar Comanda
+                </button>
+
+                <button
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'CAJERO', 'MESERO')"
+                  th:if="${mesa.getEstado() != 'Ocupado'}"
+                  type="button"
+                  class="btn btn-primary col-md-3"
+                  id="btn-guardar-comanda"
+                >
+                  <i class="bi bi-save"></i>
+                  Generar Comanda
+                </button>
+
+                <button
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'MESERO')"
+                  type="button"
+                  class="btn btn-primary col-md-3"
+                  id="btn-add-plato"
+                >
+                  Añadir Plato
+                  <i class="bi bi-plus-circle"></i>
+                </button>
+
+                <button
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'MESERO')"
+                  th:if="${mesa.getEstado() == 'Ocupado'}"
+                  type="button"
+                  class="btn btn-danger col-md-3"
+                  id="btn-del-plato"
+                >
+                  Eliminar Comanda
+                  <i class="bi bi-trash"></i>
+                </button>
+
+                <button
+                  sec:authorize="hasAnyRole('COCINERO', 'ADMINISTRADOR')"
+                  th:if="${mesa.getEstado() == 'Ocupado' && comanda.getEstadoComanda().getEstado() == 'Generado'}"
+                  type="button"
+                  class="btn btn-primary col-md-3"
+                  id="btn-actualizar-estado-comanda"
+                >
+                  <i class="bi bi-save"></i>
+                  Actualizar Estado
+                </button>
+
+                <a
+                  href="http://localhost:8091/configuracion/comanda"
+                  class="btn btn-secondary col-md-3"
+                  >Regresar</a
+                >
+              </div>
+            </form>
+
+            <hr class="separator" />
+
+            <div class="row px-4">
+              <div class="col-12">
+                <h3 class="fw-bold">Platos</h3>
+              </div>
+
+              <div class="table-responsive">
+                <table
+                  id="tablaDetalleComanda"
+                  class="table display"
+                  style="width: 100%"
+                  aria-describedby="Tabla de Detalle Comanda"
+                >
+                  <thead class="align-middle">
+                    <th>Código</th>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Categoria</th>
+                    <th>Precio Total</th>
+                    <th:block
+                      sec:authorize="hasAnyRole('ADMINISTRADOR', 'MESERO')"
+                    >
+                      <th>Editar</th>
+                      <th>Eliminar</th>
+                    </th:block>
+                  </thead>
+                  <tbody id="tbBodyPlatos"></tbody>
+                </table>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <div s class="modal fade   " id="modalFactura" tabindex="-1" role="dialog"
-                aria-labelledby="modalFacturaTitle" data-bs-backdrop="static" aria-hidden="true">
-                <div class="modal-dialog  modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header d-flex flex-row  justify-content-between gap-2">
-                            <h5 class="modal-title text-center text-uppercase text-primary fw-bold">
-                                Factura
-                            </h5>
+        <div
+          class="modal fade"
+          id="modalFactura"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="modalFacturaTitle"
+          data-bs-backdrop="static"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+              <div
+                class="modal-header d-flex flex-row justify-content-between gap-2"
+              >
+                <h5
+                  class="modal-title text-center text-uppercase text-primary fw-bold"
+                >
+                  Factura
+                </h5>
 
-                            <div>
+                <div>
+                  <span class="badge bg-primary h5 p-2">
+                    <span class="bi bi-file-earmark-text">
+                      Orden: <span id="txt-orden"></span>
+                    </span>
+                  </span>
 
-                                <span class="badge bg-primary h5 p-2">
-                                    <span class="bi bi-file-earmark-text">
-                                        Orden: <span id="txt-orden"></span>
-                                    </span>
-                                </span>
-                                <span class="badge bg-primary h5 p-2">
-                                    <span class="bi bi-dash-square-fill">
-                                        Menu: <span id="txt-mesa"></span>
-                                    </span>
-                                </span>
+                  <span class="badge bg-primary h5 p-2">
+                    <span class="bi bi-dash-square-fill">
+                      Menu: <span id="txt-mesa"></span>
+                    </span>
+                  </span>
+                </div>
+              </div>
 
-
-                            </div>
-
-
-                        </div>
-                        <div class="modal-body border-top border-bottom py-1">
-                            <div style="display: none;" class="row js-container-errors">
-                                <div class="col-12">
-                                    <div class="alert alert-danger  fade show" role="alert">
-                                        <strong>¡Error!</strong>
-                                        <span id="txt-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-lg-7 border-end ">
-                                    <div class="row">
-                                        <div class="mb-3 col-12 col-md-6">
-                                            <label for="cbo-tipo-factura" class="form-label">
-                                                Tipo de Factura
-                                            </label>
-                                            <select class="form-select" id="cbo-tipo-factura">
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 col-12 col-md-6">
-                                            <label for="cbo-caja" class="form-label">
-                                                Caja
-                                            </label>
-                                            <select class="form-select" id="cbo-caja">
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 col-12 col-md-6  "></div>
-                                        <div class="mb-3 col-12 col-md-6  ">
-                                            <label for="input-descuento" class="form-label">
-                                                Descuento
-                                            </label>
-                                            <input min="1" type="number" class="form-control" id="input-descuento"
-                                                value="0" name="input-descuento">
-                                        </div>
-                                    </div>
-                                    <div class="row flex-row  justify-content-end px-2">
-                                        <button type="button" class="btn btn-primary col-sm-5 col-lg-4 col-12"
-                                            id="btn-descuento">
-                                            Agregar Descuento
-                                        </button>
-                                    </div>
-
-                                    <hr>
-                                    <h6 class="modal-title text-center text-uppercase text-primary fw-bold   mt-3">
-                                        Datos Factura
-                                    </h6>
-                                    <div class="row mt-4">
-                                        <div class="mb-3 col-md-6 col-12">
-                                            <label for="cbo-pago" class="form-label">
-                                                Metodo de Pago
-                                            </label>
-                                            <select class="form-select" id="cbo-pago">
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 col-md-6 col-12">
-                                            <label for="txt-monto" class="form-label">
-                                                Monto
-                                            </label>
-                                            <input type="text" class="form-control" id="txt-monto"
-                                                placeholder="Ingrese un monto" name="txt-monto">
-                                        </div>
-                                        <div class="mb-3 col-12 ">
-                                            <button type="button" id="btn-agregar-pago"
-                                                class="btn btn-primary mt-1 w-100">Agregar</button>
-                                        </div>
-                                    </div>
-
-                                    <hr>
-                                    <h6 class="modal-title text-center text-uppercase text-primary fw-bold mb-3 mt-3">
-                                        Datos del Cliente
-                                    </h6>
-                                    <div class="row mb-2">
-                                        <div class="mb-3 col-md-12 col-12">
-                                            <label for="txt-numero-documento" class="form-label">
-                                                Número de Documento
-                                            </label>
-                                            <input type="number" min="1" max="99999999" class="form-control"
-                                                id="txt-numero-documento" placeholder="Ingrese el número de documento">
-                                        </div>
-                                    </div>
-                                    <div class="row ">
-                                        <div class="mb-3 col-md-6 col-12">
-                                            <label for="txt-nombre-cliente" class="form-label">
-                                                Nombre
-                                            </label>
-                                            <input disabled type="text" class="form-control" id="txt-nombre-cliente"
-                                                placeholder="ingrese el nombre">
-                                        </div>
-                                        <div class="mb-3 col-md-6 col-12">
-                                            <label for="txt-apellido-cliente" class="form-label">
-                                                Apellido
-                                            </label>
-                                            <input disabled type="text" class="form-control" id="txt-apellido-cliente"
-                                                placeholder="ingrese el apellido">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-12 col-lg-5 px-4">
-                                    <h6 class="modal-title text-center text-uppercase text-primary fw-bold mb-3 mt-3">
-                                        Detalle de la Factura
-                                    </h6>
-
-                                    <div class="row px-1 border-bottom border-1 border-dark">
-                                        <span class="text-start  text-dark fw-bold  col-6 ">
-                                            NOMBRE
-                                        </span>
-                                        <span class="text-end  text-dark fw-bold  col-6">
-                                            MONTO
-                                        </span>
-                                    </div>
-                                    <div class="row pt-2 js-container-pedidos">
-
-                                    </div>
-                                    <hr>
-
-                                    <div class="row">
-                                        <div class="col-9 text-center fw-bold">
-                                            Subtotal:
-                                        </div>
-
-                                        <div class="col-3 text-end " id="txt-subtotal">0.0</div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-9 text-center fw-bold">
-                                            IGV:
-                                        </div>
-
-                                        <div class="col-3 text-end" id="txt-igv">0.0</div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-9 text-center fw-bold">
-                                            Descuento:
-                                        </div>
-
-                                        <div class="col-3 text-end" id="txt-descuento">0.0</div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-9 text-center fw-bold">
-                                            Total a Pagar:
-                                        </div>
-
-                                        <div class="col-3 text-end h5 ">
-                                            <span id="txt-total-factura">0.0</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="row  border-top border-1 border-dark  ">
-                                    </div>
-                                    <div class="row">
-                                        <span
-                                            class="text-start  text-dark fw-bold  col-6 d-flex justify-content-start align-items-center">
-                                            <span class="fw-bold">Falta:</span>
-                                            <span id="txt-faltante">0.0</span>
-                                        </span>
-
-
-                                        <span
-                                            class="text-end  text-dark fw-bold  col-6 d-flex justify-content-end align-items-center">
-                                            <span class="fw-bold">Pago:</span>
-                                            <span id="txt-pago">0.0</span>
-
-                                        </span>
-
-                                    </div>
-                                    <div style="max-height: 200px; overflow-y: scroll; overflow-x: hidden;"
-                                        class="row mt-3 p-3 js-container-cards-pago">
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            <div class="modal-footer ">
-                                <button type="button" id="btn-cerrar" class="btn btn-danger"
-                                    data-bs-dismiss="modal">Cerrar</button>
-                                <button id="btn-facturar" type="button" class="btn btn-primary p-3">
-                                    <i class="bi bi-printer"></i>
-                                    Facturar
-                                </button>
-                            </div>
-                        </div>
+              <div class="modal-body border-top border-bottom py-1">
+                <div style="display: none" class="row js-container-errors">
+                  <div class="col-12">
+                    <div class="alert alert-danger fade show" role="alert">
+                      <strong>¡Error!</strong>
+                      <span id="txt-error"></span>
                     </div>
+                  </div>
                 </div>
 
-        </main>
+                <div class="row">
+                  <div class="col-12 col-lg-7 border-end">
+                    <div class="row">
+                      <div class="mb-3 col-12 col-md-6">
+                        <label for="cbo-tipo-factura" class="form-label">
+                          Tipo de Factura
+                        </label>
+                        <select
+                          class="form-select"
+                          id="cbo-tipo-factura"
+                        ></select>
+                      </div>
+                      <div class="mb-3 col-12 col-md-6">
+                        <label for="cbo-caja" class="form-label"> Caja </label>
+                        <select class="form-select" id="cbo-caja"></select>
+                      </div>
+                      <div class="mb-3 col-12 col-md-6"></div>
+                      <div class="mb-3 col-12 col-md-6">
+                        <label for="input-descuento" class="form-label">
+                          Descuento
+                        </label>
+                        <input
+                          min="1"
+                          type="number"
+                          class="form-control"
+                          id="input-descuento"
+                          value="0"
+                          name="input-descuento"
+                        />
+                      </div>
+                    </div>
+                    <div class="row flex-row justify-content-end px-2">
+                      <button
+                        type="button"
+                        class="btn btn-primary col-sm-5 col-lg-4 col-12"
+                        id="btn-descuento"
+                      >
+                        Agregar Descuento
+                      </button>
+                    </div>
 
+                    <hr />
 
+                    <h6
+                      class="modal-title text-center text-uppercase text-primary fw-bold mt-3"
+                    >
+                      Datos Factura
+                    </h6>
 
+                    <div class="row mt-4">
+                      <div class="mb-3 col-md-6 col-12">
+                        <label for="cbo-pago" class="form-label">
+                          Metodo de Pago
+                        </label>
+                        <select class="form-select" id="cbo-pago"></select>
+                      </div>
+                      <div class="mb-3 col-md-6 col-12">
+                        <label for="txt-monto" class="form-label">
+                          Monto
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="txt-monto"
+                          placeholder="Ingrese un monto"
+                          name="txt-monto"
+                        />
+                      </div>
+                      <div class="mb-3 col-12">
+                        <button
+                          type="button"
+                          id="btn-agregar-pago"
+                          class="btn btn-primary mt-1 w-100"
+                        >
+                          Agregar
+                        </button>
+                      </div>
+                    </div>
 
-        <template th:insert="~{/fragments/modal-template}" id="modal-template">
-        </template>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
-            integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"></script>
-        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script type="module" src="/js/comanda-detalle.js"></script>
+                    <hr />
+
+                    <h6
+                      class="modal-title text-center text-uppercase text-primary fw-bold mb-3 mt-3"
+                    >
+                      Datos del Cliente
+                    </h6>
+                    <div class="row mb-2">
+                      <div class="mb-3 col-md-12 col-12">
+                        <label for="txt-numero-documento" class="form-label">
+                          Número de Documento
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="99999999"
+                          class="form-control"
+                          id="txt-numero-documento"
+                          placeholder="Ingrese el número de documento"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="mb-3 col-md-6 col-12">
+                        <label for="txt-nombre-cliente" class="form-label">
+                          Nombre
+                        </label>
+                        <input
+                          disabled
+                          type="text"
+                          class="form-control"
+                          id="txt-nombre-cliente"
+                          placeholder="ingrese el nombre"
+                        />
+                      </div>
+                      <div class="mb-3 col-md-6 col-12">
+                        <label for="txt-apellido-cliente" class="form-label">
+                          Apellido
+                        </label>
+                        <input
+                          disabled
+                          type="text"
+                          class="form-control"
+                          id="txt-apellido-cliente"
+                          placeholder="ingrese el apellido"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-5 px-4">
+                    <h6
+                      class="modal-title text-center text-uppercase text-primary fw-bold mb-3 mt-3"
+                    >
+                      Detalle de la Factura
+                    </h6>
+
+                    <div class="row px-1 border-bottom border-1 border-dark">
+                      <span class="text-start text-dark fw-bold col-6">
+                        NOMBRE
+                      </span>
+                      <span class="text-end text-dark fw-bold col-6">
+                        MONTO
+                      </span>
+                    </div>
+                    <div class="row pt-2 js-container-pedidos"></div>
+                    <hr />
+
+                    <div class="row">
+                      <div class="col-9 text-center fw-bold">Subtotal:</div>
+
+                      <div class="col-3 text-end" id="txt-subtotal">0.0</div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-9 text-center fw-bold">IGV:</div>
+
+                      <div class="col-3 text-end" id="txt-igv">0.0</div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-9 text-center fw-bold">Descuento:</div>
+
+                      <div class="col-3 text-end" id="txt-descuento">0.0</div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-9 text-center fw-bold">
+                        Total a Pagar:
+                      </div>
+
+                      <div class="col-3 text-end h5">
+                        <span id="txt-total-factura">0.0</span>
+                      </div>
+                    </div>
+
+                    <div class="row border-top border-1 border-dark"></div>
+                    <div class="row">
+                      <span
+                        class="text-start text-dark fw-bold col-6 d-flex justify-content-start align-items-center"
+                      >
+                        <span class="fw-bold">Falta:</span>
+                        <span id="txt-faltante">0.0</span>
+                      </span>
+
+                      <span
+                        class="text-end text-dark fw-bold col-6 d-flex justify-content-end align-items-center"
+                      >
+                        <span class="fw-bold">Pago:</span>
+                        <span id="txt-pago">0.0</span>
+                      </span>
+                    </div>
+                    <div
+                      style="
+                        max-height: 200px;
+                        overflow-y: scroll;
+                        overflow-x: hidden;
+                      "
+                      class="row mt-3 p-3 js-container-cards-pago"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  id="btn-cerrar"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Cerrar
+                </button>
+                <button
+                  id="btn-facturar"
+                  type="button"
+                  class="btn btn-primary p-3"
+                >
+                  <i class="bi bi-printer"></i>
+                  Facturar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <template th:insert="~{/fragments/modal-template}" id="modal-template">
+      </template>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"
+      ></script>
+      <script
+        src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"
+      ></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script type="module" src="/js/comanda-detalle.js"></script>
     </th:block>
-</body>
-
+  </body>
 </html>

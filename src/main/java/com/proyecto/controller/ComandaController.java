@@ -245,16 +245,8 @@ public class ComandaController {
         return "redirect:/configuracion/comanda";
       }
 
-      if (comanda.getEstadoComanda().getId() == 2) {
-        redirect.addFlashAttribute("mensaje", "Error! La comanda ya está Preparada");
-        redirect.addFlashAttribute("tipo", "error");
-        return "redirect:/configuracion/comanda";
-      }
-
       for (DetalleComanda dComanda : comanda.getListaDetalleComanda()) {
-
         detalleComandaService.eliminar(dComanda.getId());
-
       }
 
       comandaService.eliminar(comanda.getId());

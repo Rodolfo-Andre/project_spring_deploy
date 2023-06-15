@@ -21,16 +21,19 @@ public class WebSecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf().disable()
-        .authorizeHttpRequests(a ->
-
-        a.requestMatchers("/login/**").permitAll()
+        .authorizeHttpRequests(a -> a.requestMatchers("/login/**").permitAll()
             .requestMatchers("/configuracion/mesa/obtener",
                 "/configuracion/plato/obtener",
                 "/configuracion/categoria-plato/obtener")
             .hasAnyRole("MESERO", "COCINERO", "CAJERO", "ADMINISTRADOR")
+            .requestMatchers("/configuracion/metodo-pago/obtener",
+                "/configuracion/caja/obtener")
+            .hasAnyRole("MESERO", "CAJERO", "ADMINISTRADOR")
+            .requestMatchers("/configuracion/plato/obtener-by-categoria/**").hasAnyRole("MESERO", "ADMINISTRADOR")
             .requestMatchers("/configuracion/comanda/**").hasAnyRole(
-                "ADMINISTRADOR", "MESERO", "COCINERO",
-                "CAJERO")
+                "ADMINISTRADOR", "MESERO", "COCINERO", "CAJERO")
+            .requestMatchers("/configuracion/comprobante/**").hasAnyRole(
+                "ADMINISTRADOR", "MESERO", "GERENTE", "CAJERO")
             .requestMatchers("/configuracion/**").hasRole("ADMINISTRADOR")
             .requestMatchers("/**").authenticated())
         .formLogin(t -> t.loginPage("/login")

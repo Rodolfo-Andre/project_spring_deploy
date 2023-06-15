@@ -18,9 +18,9 @@ const ViewCore = function () {
           console.log(data);
 
           if (!data.length) {
-            $("#tableComandas").html(
-              `<span class="text-center">Sin Mesas</span>`
-            );
+            $("#tableComandas")
+              .html(`<span class="text-center">Sin Mesas</span>`)
+              .addClass("justify-content-center");
             this.showNoTablesModal();
             return;
           }
