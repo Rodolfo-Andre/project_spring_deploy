@@ -15,7 +15,7 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Controller
-@RequestMapping("reportes")
+@RequestMapping("/reportes")
 public class ReporteController {
   @Autowired
   ComprobanteService comprobanteService;
