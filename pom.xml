@@ -60,11 +60,6 @@
 
     <dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-
-    <dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
@@ -81,13 +76,6 @@
       <artifactId>mail</artifactId>
       <version>1.4.7</version>
     </dependency>
-    
-    <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-	<dependency>
-	    <groupId>com.google.code.gson</groupId>
-	    <artifactId>gson</artifactId>
-	    <version>2.10.1</version>
-	</dependency>
     
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -109,27 +97,19 @@
       <version>9.16.0</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-mysql</artifactId>
-    </dependency>
     
     <!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports - REPORTES CON JASPERS -->
+	  <dependency>
+		  <groupId>net.sf.jasperreports</groupId>
+		  <artifactId>jasperreports</artifactId>
+		  <version>6.20.5</version>
+	  </dependency>
 
-	
-	<dependency>
-		    <groupId>net.sf.jasperreports</groupId>
-		    <artifactId>jasperreports</artifactId>
-		    <version>6.20.5</version>
-	</dependency>
-	
-	<dependency>
-	    <groupId>net.sf.jasperreports</groupId>
-	    <artifactId>jasperreports-fonts</artifactId>
-	    <version>6.20.5</version>
-	</dependency>
-	
-
+    <dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -139,17 +119,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-      <plugin>
-        <groupId>org.flywaydb</groupId>
-        <artifactId>flyway-maven-plugin</artifactId>
-        <version>9.16.0</version>
-        <configuration>
-          <url>jdbc:mysql://localhost:3306/restaurante_2023?serverTimezone=America/Lima&amp;useLegacyDatetimeCode=false</url>
-          <user>root</user>
-          <password>root</password>
-          <driver>com.mysql.cj.jdbc.Driver</driver>
-        </configuration>
-      </plugin>
+     
 		</plugins>
 	</build>
 </project>
