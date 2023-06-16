@@ -40,10 +40,10 @@
               aria-describedby="Tabla de Cajas"
             >
               <thead class="align-middle">
-                <th>Código</th>  
+                <th>Código</th>
                 <th>Eliminar</th>
               </thead>
-              
+
               <tbody>
                 <tr th:each="caja:${listaCaja}" class="align-middle">
                   <td th:text="${caja.id}"></td>
@@ -52,13 +52,12 @@
                   </td>
                 </tr>
               </tbody>
-              
             </table>
           </div>
         </div>
       </main>
 
-      <template th:insert="~{/fragments/modal-template}" id="modal-template">
+      <template th:insert="~{fragments/modal-template}" id="modal-template">
       </template>
 
       <!-- Custom JavaScript -->
