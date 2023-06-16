@@ -3,8 +3,8 @@ package com.proyecto.controller;
 import java.util.*;
 import java.io.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import com.proyecto.entity.*;
 import com.proyecto.entity.dto.*;
@@ -32,8 +32,9 @@ public class ReporteController {
     try {
       Comprobante comprobante = comprobanteService.findById(id);
       List<DetalleComanda> lista = comprobante.getComanda().getListaDetalleComanda();
-      File file = ResourceUtils.getFile("classpath:CDP_ciclo5.jrxml");
-      JasperReport jasper = JasperCompileManager.compileReport(file.getAbsolutePath());
+
+      Resource resource = new ClassPathResource("CDP_ciclo5.jrxml");
+      JasperReport jasper = JasperCompileManager.compileReport(resource.getInputStream());
 
       JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(lista);
       Map<String, Object> parameters = new HashMap<>();
@@ -53,11 +54,11 @@ public class ReporteController {
       parameters.put("igv", comprobante.getIgv());
       parameters.put("descuento", comprobante.getDescuento());
       parameters.put("precioTotalPedido", comprobante.getPrecioTotalPedido());
-      parameters.put("logoPrincipal", "classpath:/static/images/logo.jpg");
-      parameters.put("logoDireccion", "classpath:/static/images/direccion.jpg");
-      parameters.put("logoRuc", "classpath:/static/images/ruc.png");
-      parameters.put("logoTelefono", "classpath:/static/images/telefono.jpg");
-      parameters.put("logoUsuario", "classpath:/static/images/usuario.png");
+      parameters.put("logoPrincipal", "static/images/logo.jpg");
+      parameters.put("logoDireccion", "static/images/direccion.jpg");
+      parameters.put("logoRuc", "static/images/ruc.png");
+      parameters.put("logoTelefono", "static/images/telefono.jpg");
+      parameters.put("logoUsuario", "static/images/usuario.png");
 
       JasperPrint jasperPrint = JasperFillManager.fillReport(jasper, parameters, ds);
       response.setContentType("application/pdf");
