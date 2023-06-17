@@ -56,35 +56,35 @@
 			<staticText>
 				<reportElement x="357" y="149" width="139" height="24" uuid="abce38b9-3dc5-4859-acd4-26bbe1d3988f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial Black" size="14"/>
+					<font fontName="DejaVu Serif" size="14"/>
 				</textElement>
 				<text><![CDATA[RECIBIDO POR:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="-3" y="0" width="150" height="30" uuid="21d981c7-2ae5-4d48-9478-8a70ab45b754"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Elephant" size="20"/>
+					<font fontName="DejaVu Serif" size="20"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tipoCDP}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="-3" y="130" width="275" height="30" uuid="718f9438-bd6c-4b75-ad8b-7b5e6900ae77"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial Black" size="18"/>
+					<font fontName="DejaVu Serif" size="18"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nombreEstablecimiento}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="80" y="190" width="100" height="30" uuid="210c9307-6e38-46a5-beab-4c4b21a06130"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Berlin Sans FB" size="14"/>
+					<font fontName="DejaVu Serif" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{telefono}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="80" y="228" width="100" height="30" uuid="8e21bb94-8d33-4f07-b73a-c5b54950c3ae"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Berlin Sans FB" size="14"/>
+					<font fontName="DejaVu Serif" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{direccion}]]></textFieldExpression>
 			</textField>
@@ -105,7 +105,7 @@
 			<textField>
 				<reportElement x="414" y="179" width="130" height="30" uuid="d64e96fd-3d38-4398-a718-231a61f58f61"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Berlin Sans FB Demi" size="15"/>
+					<font fontName="DejaVu Serif" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nombreCliente}]]></textFieldExpression>
 			</textField>
@@ -119,14 +119,14 @@
 			<staticText>
 				<reportElement x="146" y="340" width="130" height="30" uuid="235723d4-b0c3-4665-9344-209f32a0aa7b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial Black" size="12"/>
+					<font fontName="DejaVu Serif" size="12"/>
 				</textElement>
 				<text><![CDATA[FORMA DE PAGO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="126" y="310" width="154" height="30" uuid="ed616a7d-2b14-4f3c-be03-db9b4e3610cc"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial Black" size="12"/>
+					<font fontName="DejaVu Serif" size="12"/>
 				</textElement>
 				<text><![CDATA[FECHA DE EMISIÓN:]]></text>
 			</staticText>
@@ -138,7 +138,7 @@
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial Black" size="18" isBold="true"/>
+					<font fontName="DejaVu Serif" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DETALLE]]></text>
 			</staticText>
@@ -197,7 +197,7 @@
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial Black" size="18" isBold="true"/>
+					<font fontName="DejaVu Serif" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[COMANDAS]]></text>
 			</staticText>
