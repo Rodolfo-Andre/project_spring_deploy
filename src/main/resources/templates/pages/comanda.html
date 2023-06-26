@@ -25,14 +25,22 @@
       <main class="main">
         <div class="box info">
           <div class="header-info">
-            <h2 class="mb-3">Configuracion Comanda</h2>
+            <h2 class="mb-3">Configuracion de Comandas</h2>
           </div>
           <hr class="separator" />
           <div class="container-fluid border border-dark border-1 rounded">
             <div
-              class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-4 g-3 p-3"
+              class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 p-3"
               id="tableComandas"
             ></div>
+
+            <div>
+              <input
+                id="txt-estado-usuario"
+                th:value="${#authentication.principal.usuario.empleado.cargo.nombre}"
+                type="hidden"
+              />
+            </div>
           </div>
         </div>
       </main>

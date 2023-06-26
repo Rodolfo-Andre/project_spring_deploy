@@ -5,7 +5,6 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -241,6 +240,12 @@ public class ComandaController {
 
       if (comanda == null) {
         redirect.addFlashAttribute("mensaje", "Error! La comanda no existe");
+        redirect.addFlashAttribute("tipo", "error");
+        return "redirect:/configuracion/comanda";
+      }
+
+      if (comanda.getEstadoComanda().getId() == 3) {
+        redirect.addFlashAttribute("mensaje", "Error! La comanda ya esta cerrada");
         redirect.addFlashAttribute("tipo", "error");
         return "redirect:/configuracion/comanda";
       }

@@ -32,7 +32,7 @@
                 th:value="${establecimiento.id}"
               />
 
-              <div class="row g-3 align-items-end">
+              <div class="row g-3">
                 <div class="col-12 col-lg-6">
                   <label class="h4">Nombre del establecimiento</label>
                   <div>
@@ -44,8 +44,9 @@
                       th:value="${establecimiento.nombre}"
                     />
                     <div id="name-invalid" class="text-start invalid-feedback">
-                      Introduce el nombre del establecimiento correctamente.
-                      Mínimo 3 caracteres, máximo 100.
+                      Ingresa un nombre válido. Debe tener entre 3 y 100
+                      caracteres, comenzar con una letra mayúscula seguida de
+                      letras mayúsculas o minúsculas.
                     </div>
                   </div>
                 </div>
@@ -64,8 +65,8 @@
                       id="telephone-invalid"
                       class="text-start invalid-feedback"
                     >
-                      Introduce un teléfono válido. Solo acepta 9 dígitos y
-                      comienza con 9.
+                      Ingresa un número de teléfono válido. Debe comenzar con el
+                      dígito 9, seguido de otros 8 dígitos numéricos.
                     </div>
                   </div>
                 </div>
@@ -84,8 +85,10 @@
                       id="address-invalid"
                       class="text-start invalid-feedback"
                     >
-                      Introduce una dirección válida. Mínimo 3 caracteres,
-                      máximo 50.
+                      Ingresa una dirección válida. Debe tener entre 3 y 100
+                      caracteres y comenzar con una letra mayúscula. Puedes
+                      utilizar letras mayúsculas y minúsculas, números, puntos y
+                      guiones.
                     </div>
                   </div>
                 </div>
@@ -101,8 +104,9 @@
                       th:value="${establecimiento.ruc}"
                     />
                     <div id="ruc-invalid" class="text-start invalid-feedback">
-                      Introduce un número de RUC válido, mínimo 11 dígitos y
-                      máximo 20.
+                      Ingresa un número de ruc válido. Debe comenzar con un
+                      dígito del 1 al 9 y tener entre 11 y 20 dígitos numéricos
+                      adicionales.
                     </div>
                   </div>
                 </div>

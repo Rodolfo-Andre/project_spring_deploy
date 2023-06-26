@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table(name = "CATEGORIA_PLATO")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class CategoriaPlato {
   @Id
   private String id;
@@ -23,6 +22,7 @@ public class CategoriaPlato {
 
   @OneToMany(mappedBy = "categoriaPlato")
   @JsonIgnore
+  @JsonIdentityReference(alwaysAsId = false)
   private List<Plato> listaPlato;
 
   public String getId() {

@@ -111,7 +111,7 @@ const addEventToTable = () => {
                 header: `<i class="icon text-center text-warning bi bi-pencil-square"></i>
 											<h4 class="modal-title text-center" id="modal-prototype-label">Plato - ${data.id}</h4>`,
                 body: `<form class="d-flex flex-column gap-4" id="form-update" action="/configuracion/plato/actualizar" method="POST" enctype="multipart/form-data">
-												<input type="hidden" name="id" value="${data.id}"/>
+												<input type="hidden" name="id" id="codPlato" value="${data.id}"/>
 						
 												<div class="container-img-dish">
 													<div class="img-dish">
@@ -123,7 +123,7 @@ const addEventToTable = () => {
 													<label class="col-sm-5 fw-bold" for="name">Nombre del Plato:</label>
 													<div class="col-sm-7">
 														<input class="form-control" type="text" id="name" name="name" value="${data.nombre}"/>
-														<div id="name-invalid" class="text-start invalid-feedback">Introduce el nombre del plato correctamente. Mínimo 3 caracteres, máximo 50.</div>
+														<div id="name-invalid" class="text-start invalid-feedback">Ingresa un nombre válido. Debe tener entre 3 y 50 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas.</div>
 													</div>
 												</div>
 													
@@ -131,7 +131,7 @@ const addEventToTable = () => {
 													<label class="col-sm-5 fw-bold" for="price">Precio del Plato:</label>
 													<div class="col-sm-7">
 														<input class="form-control" type="text" id="price" name="price" value="${data.precioPlato}"/>
-														<div id="name-invalid" class="text-start invalid-feedback">Introduce el precio correctamente. Se acepta como máximo 3 enteros y 2 decimales que son establecidos por un ".".</div>
+														<div id="name-invalid" class="text-start invalid-feedback">Ingresa un número válido. Debe ser un valor numérico de hasta 3 dígitos, con un máximo de 2 decimales opcionales separados por punto.</div>
 													</div>
 												</div>
 													
@@ -139,7 +139,7 @@ const addEventToTable = () => {
 													<label class="col-sm-5 fw-bold" for="image">Imagen del Plato:</label>
 													<div class="col-sm-7">
 														<input class="form-control" type="file" id="image" name="image" accept="image/*"/>
-														<div id="name-invalid" class="text-start invalid-feedback">Introduce una imagen</div>
+														<div id="name-invalid" class="text-start invalid-feedback">Ingresa una imagen</div>
 													</div>
 												</div>
 													
@@ -244,7 +244,7 @@ const addEventToButtonAdd = () => {
 										<label class="col-sm-5 fw-bold" for="name">Nombre del Plato:</label>
 										<div class="col-sm-7">
 											<input class="form-control" type="text" id="name" name="name" value=""/>
-											<div id="name-invalid" class="text-start invalid-feedback">Introduce el nombre del plato correctamente. Mínimo 3 caracteres, máximo 50.</div>
+											<div id="name-invalid" class="text-start invalid-feedback">Ingresa un nombre válido. Debe tener entre 3 y 50 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas.</div>
 										</div>
 									</div>
 										
@@ -252,7 +252,7 @@ const addEventToButtonAdd = () => {
 										<label class="col-sm-5 fw-bold" for="price">Precio del Plato:</label>
 										<div class="col-sm-7">
 											<input class="form-control" type="text" id="price" name="price" value=""/>
-											<div id="name-invalid" class="text-start invalid-feedback">Introduce el precio correctamente. Se acepta como máximo 3 enteros y 2 decimales que son establecidos por un "."</div>
+											<div id="name-invalid" class="text-start invalid-feedback">Ingresa un precio válido. Debe ser un valor numérico de hasta 3 dígitos, con un máximo de 2 decimales opcionales separados por punto.</div>
 										</div>
 									</div>
 										
@@ -260,7 +260,7 @@ const addEventToButtonAdd = () => {
 										<label class="col-sm-5 fw-bold" for="image">Imagen del Plato:</label>
 										<div class="col-sm-7">
 											<input class="form-control" type="file" id="image" name="image" accept="image/*"/>
-											<div id="name-invalid" class="text-start invalid-feedback">Introduce una imagen</div>
+											<div id="name-invalid" class="text-start invalid-feedback">Ingresa una imagen</div>
 										</div>
 									</div>
 										
@@ -292,27 +292,62 @@ const addEventToButtonAdd = () => {
 };
 
 const addEventToButtonConfirmAddAndConfirmUpdate = () => {
-  $($d).on("click", "#add, #update", (e) => {
+  $($d).on("click", "#add, #update", async (e) => {
+    e.preventDefault();
+
     const $btnConfirmAdd = $("#add")[0],
-      $btnConfirmUpdate = $("#update")[0];
+      $btnConfirmUpdate = $("#update")[0],
+      $divNameInvalid = $d.getElementById("name-invalid"),
+      $form = $(e.target.form);
+
+    let isInvalid = false;
 
     if ($btnConfirmAdd == e.target || $btnConfirmUpdate == e.target) {
       let $inputName = $d.getElementById("name");
       let $inputPrice = $d.getElementById("price"),
         $inputFile = $d.getElementById("image");
-      let isInvalid = false;
+
+      $inputName.value = $inputName.value.trim();
+      $inputPrice.value = $inputPrice.value.trim();
 
       if (
         !$inputName.value.match(
           "^(?=.{3,50}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [A-Za-zñáéíóú]+)*$"
         )
       ) {
+        if (
+          $divNameInvalid.textContent !=
+          "Ingresa un nombre válido. Debe tener entre 3 y 50 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas."
+        ) {
+          $divNameInvalid.textContent =
+            "Ingresa un nombre válido. Debe tener entre 3 y 50 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas.";
+        }
+
         if (!$inputName.classList.contains("is-invalid"))
           $inputName.classList.add("is-invalid");
         isInvalid = true;
       } else {
-        if ($inputName.classList.contains("is-invalid"))
-          $inputName.classList.remove("is-invalid");
+        let codPlato = 0;
+        let url = `/configuracion/plato/verificar-nombre/${$inputName.value}`;
+
+        if ($btnConfirmUpdate) {
+          codPlato = $d.getElementById("codPlato").value;
+          url += `/${codPlato}`;
+        }
+
+        const data = await $.get(url);
+
+        if (data.isFound) {
+          $divNameInvalid.textContent = `No se permiten nombres duplicados. Se encontró un registro con el nombre: ${$inputName.value}. Ingresa un nuevo nombre.`;
+          if (!$inputName.classList.contains("is-invalid")) {
+            $inputName.classList.add("is-invalid");
+          }
+          isInvalid = true;
+        } else {
+          if ($inputName.classList.contains("is-invalid")) {
+            $inputName.classList.remove("is-invalid");
+          }
+        }
       }
 
       if (
@@ -335,24 +370,20 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         if ($inputFile.classList.contains("is-invalid"))
           $inputFile.classList.remove("is-invalid");
       }
-
-      if (isInvalid) {
-        e.preventDefault();
-        return;
-      }
     }
 
-    const $form = $(e.target.form);
-    const $loader = $(`<div class="flex-grow-1 text-center">
+    if (!isInvalid) {
+      const $loader = $(`<div class="flex-grow-1 text-center">
                         <div class="spinner-border text-primary" role="status">
                           <span class="visually-hidden">Loading...</span>
                         </div>
                         </div>`);
 
-    $(e.target).replaceWith($loader);
-    $("#btn-cancel").prop("disabled", true);
+      $(e.target).replaceWith($loader);
+      $("#btn-cancel").prop("disabled", true);
 
-    $form.submit();
+      $form.submit();
+    }
   });
 };
 

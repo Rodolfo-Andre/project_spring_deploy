@@ -112,81 +112,99 @@ const addEventToTable = () => {
       }
 
       if ($listBtnUpdate.filter(e.currentTarget).length) {
-        $.get(`/configuracion/cargo/obtener`, (data) => {
-          const listOptions = data.map(
-            (cargo) =>
-              `<option value="${
-                cargo.id
-              }" style="text-transform: capitalize">${cargo.nombre
-                .replace("ROLE_", "")
-                .toLowerCase()}</option>`
-          );
-          const options = listOptions.join(" ");
-
+        $.get(`/configuracion/cargo/obtener`, (dataCargo) => {
           $.get(`/configuracion/empleado/obtener/${id}`, (data) => {
-            if (data) {
-              const contentModal = {
-                header: `<i class="icon text-center text-warning bi bi-pencil-square"></i>
+            const listOptions = dataCargo.map(
+              (cargo) =>
+                `<option value="${
+                  cargo.id
+                }" style="text-transform: capitalize" ${
+                  cargo.id == data.cargo.id ? "selected" : ""
+                }>${cargo.nombre.replace("ROLE_", "").toLowerCase()}</option>`
+            );
+            const options = listOptions.join(" ");
+
+            $.get(`/usuario`, (user) => {
+              const disable = user.id == id;
+
+              if (data) {
+                const contentModal = {
+                  header: `<i class="icon text-center text-warning bi bi-pencil-square"></i>
 						          <h4 class="modal-title text-center" id="modal-prototype-label">Actualizar Empleado - ${data.id}</h4>`,
-                body: `<form class="d-flex flex-column gap-4" id="form-update" action="/configuracion/empleado/actualizar" method="POST">		
-                    <input type="hidden"  id="codEmployed" name="id" value="${data.id}"/>
+                  body: `<form class="d-flex flex-column gap-4" id="form-update" action="/configuracion/empleado/actualizar" method="POST">		
+                    <input type="hidden"  id="codEmployed" name="id" value="${
+                      data.id
+                    }"/>
 							
                     <div class="row align-items-sm-center">
                       <label class="col-sm-5 fw-bold" for="name">Nombre:</label>
                       <div class="col-sm-7">
-                        <input class="form-control" type="text" id="name" name="nameEmpleado" value="${data.nombre}"/>
-                        <div id="name-invalid" class="text-start invalid-feedback">Introduce el nombre correctamente. Mínimo 3 caracteres, máximo 20.</div>
+                        <input class="form-control" type="text" id="name" name="nameEmpleado" value="${
+                          data.nombre
+                        }"/>
+                        <div id="name-invalid" class="text-start invalid-feedback">Ingresa un nombre válido. Debe tener entre 3 y 40 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas. Puedes utilizar espacios entre las palabras, pero la primera letra de cada palabra adicional también debe ser una letra mayúscula seguida de letras minúsculas.</div>
                       </div>
                     </div>
 
                     <div class="row align-items-sm-center">
                       <label class="col-sm-5 fw-bold" for="name">Apellido:</label>
                       <div class="col-sm-7">
-                        <input class="form-control" type="text" id="apellido" name="lastnameEmpleado" value="${data.apellido}"/>
-                        <div id="name-invalid" class="text-start invalid-feedback">Introduce el apellido correctamente. Mínimo 3 caracteres, máximo 20.</div>
+                        <input class="form-control" type="text" id="apellido" name="lastnameEmpleado" value="${
+                          data.apellido
+                        }"/>
+                        <div id="name-invalid" class="text-start invalid-feedback">Ingresa un apellido válido. Debe tener entre 3 y 40 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas. Puedes utilizar espacios entre las palabras, pero la primera letra de cada palabra adicional también debe ser una letra mayúscula seguida de letras minúsculas.</div>
                       </div>
                     </div>
 
                     <div class="row align-items-sm-center">
                       <label class="col-sm-5 fw-bold" for="name">DNI:</label>
                       <div class="col-sm-7">
-                        <input class="form-control" type="text" id="dni" name="dni" value="${data.dni}"/>
-                        <div id="dni-invalid" class="text-start invalid-feedback">Introduce un número válido. Solo acepta 9 dígitos y comienza con 9.</div>
+                        <input class="form-control" type="text" id="dni" name="dni" value="${
+                          data.dni
+                        }"/>
+                        <div id="dni-invalid" class="text-start invalid-feedback">Ingresa un número de teléfono válido. Debe comenzar con el dígito 9, seguido de otros 8 dígitos numéricos.</div>
                       </div>
                     </div>
 
                     <div class="row align-items-sm-center">
                       <label class="col-sm-5 fw-bold" for="name">Correo:</label>
                       <div class="col-sm-7">
-                        <input class="form-control" type="text" id="correo" name="correo" value="${data.usuario.correo}"/>
-                        <div id="correo-invalid" class="text-start invalid-feedback">Introduce un correo válido.</div>
+                        <input class="form-control" type="text" id="correo" name="correo" value="${
+                          data.usuario.correo
+                        }" ${disable ? "disabled" : ""}/>
+                        <div id="correo-invalid" class="text-start invalid-feedback">Ingresa un correo válido.</div>
                       </div>
                     </div>
 
                     <div class="row align-items-sm-center">
                       <label class="col-sm-5 fw-bold" for="name">Telefono:</label>
                       <div class="col-sm-7">
-                        <input class="form-control" type="text" id="telefono" name="telefono" value="${data.telefono}"/>
-                        <div id="telefono-invalid" class="text-start invalid-feedback">Introduce la categoría de plato correctamente. Mínimo 3 caracteres, máximo 20.</div>
+                        <input class="form-control" type="text" id="telefono" name="telefono" value="${
+                          data.telefono
+                        }"/>
+                        <div id="telefono-invalid" class="text-start invalid-feedback">Ingresa la categoría de plato correctamente. Mínimo 3 caracteres, máximo 20.</div>
                       </div>
                     </div>
 
                     <div class="row align-items-sm-center">
                       <label class="col-sm-5 fw-bold">Cargo:</label>
                       <div class="col-sm-7">
-                        <select class="form-select" name="cargo" style="text-transform: capitalize">
+                        <select class="form-select" name="cargo" style="text-transform: capitalize" ${
+                          disable ? "disabled" : ""
+                        }>
                           ${options}
                         </select>
                       </div>
                     </div>
 
                   </form>`,
-                footer: `<input id="update" form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
+                  footer: `<input id="update" form="form-update" type="submit" class="w-50 text-white btn btn-warning" value="MODIFICAR"/>
 										<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-danger">CANCELAR</button>`,
-              };
+                };
 
-              showModal(contentModal);
-            }
+                showModal(contentModal);
+              }
+            });
           });
         });
       }
@@ -231,7 +249,7 @@ const addEventToButtonAdd = () => {
 								<label class="col-sm-5 fw-bold" for="name">Nombre:</label>
 								<div class="col-sm-7">
 									<input class="form-control" type="text" id="name" name="nameEmpleado" value=""/>
-									<div id="name-invalid" class="text-start invalid-feedback">Introduce el nombre correctamente. Mínimo 3 caracteres, máximo 20.</div>
+									<div id="name-invalid" class="text-start invalid-feedback">Ingresa un nombre válido. Debe tener entre 3 y 40 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas. Puedes utilizar espacios entre las palabras, pero la primera letra de cada palabra adicional también debe ser una letra mayúscula seguida de letras minúsculas.</div>
 								</div>
                 </div>
 
@@ -239,7 +257,7 @@ const addEventToButtonAdd = () => {
 								<label class="col-sm-5 fw-bold" for="name">Apellido:</label>
 								<div class="col-sm-7">
 									<input class="form-control" type="text" id="apellido" name="lastnameEmpleado" value=""/>
-									<div id="apellido-invalid" class="text-start invalid-feedback">Introduce el apellido correctamente. Mínimo 3 caracteres, máximo 20.</div>
+									<div id="apellido-invalid" class="text-start invalid-feedback">Ingresa un apellido válido. Debe tener entre 3 y 40 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas. Puedes utilizar espacios entre las palabras, pero la primera letra de cada palabra adicional también debe ser una letra mayúscula seguida de letras minúsculas.</div>
 								</div>
                 </div>
 
@@ -247,7 +265,7 @@ const addEventToButtonAdd = () => {
 								<label class="col-sm-5 fw-bold" for="name">DNI:</label>
 								<div class="col-sm-7">
 									<input class="form-control" type="text" id="dni" name="dni" value=""/>
-									<div id="dni-invalid" class="text-start invalid-feedback">Introduce un número válido. Solo acepta 9 dígitos y comienza con 9.</div>
+									<div id="dni-invalid" class="text-start invalid-feedback">Ingresa un número de teléfono válido. Debe comenzar con el dígito 9, seguido de otros 8 dígitos numéricos.</div>
 								</div>
                 </div>
 
@@ -255,7 +273,7 @@ const addEventToButtonAdd = () => {
 								<label class="col-sm-5 fw-bold" for="name">Correo:</label>
 								<div class="col-sm-7">
 									<input class="form-control" type="text" id="correo" name="correo" value=""/>
-									<div id="correo-invalid" class="text-start invalid-feedback">Introduce un correo válido.</div>
+									<div id="correo-invalid" class="text-start invalid-feedback">Ingresa un correo válido.</div>
 								</div>
                 </div>
 
@@ -263,7 +281,7 @@ const addEventToButtonAdd = () => {
 								<label class="col-sm-5 fw-bold" for="name">Telefono:</label>
 								<div class="col-sm-7">
 									<input class="form-control" type="text" id="telefono" name="telefono" value=""/>
-									<div id="telefono-invalid" class="text-start invalid-feedback">Introduce la categoría de plato correctamente. Mínimo 3 caracteres, máximo 20.</div>
+									<div id="telefono-invalid" class="text-start invalid-feedback">Ingresa la categoría de plato correctamente. Mínimo 3 caracteres, máximo 20.</div>
 								</div>
                 </div>
 
@@ -292,7 +310,10 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
     e.preventDefault();
 
     const $btnConfirmAdd = $("#add")[0],
-      $btnConfirmUpdate = $("#update")[0];
+      $btnConfirmUpdate = $("#update")[0],
+      $form = $(e.target.form);
+
+    let isInvalid = false;
 
     if ($btnConfirmAdd == e.target || $btnConfirmUpdate == e.target) {
       const $inputName = $d.getElementById("name"),
@@ -302,11 +323,13 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         $divEmailInvalid = $d.getElementById("correo-invalid"),
         $divTelephoneInvalid = $d.getElementById("telefono-invalid"),
         $inputDni = $d.getElementById("dni"),
-        $divDniInvalid = $d.getElementById("dni-invalid"),
-        $form =
-          $d.getElementById("form-add") || $d.getElementById("form-update");
+        $divDniInvalid = $d.getElementById("dni-invalid");
 
-      let isInvalid = false;
+      $inputName.value = $inputName.value.trim();
+      $inputApellido.value = $inputApellido.value.trim();
+      $inputCorreo.value = $inputCorreo.value.trim();
+      $inputTelefono.value = $inputTelefono.value.trim();
+      $inputDni.value = $inputDni.value.trim();
 
       if (
         !$inputName.value.match(
@@ -339,8 +362,8 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
           "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
         )
       ) {
-        if ($divEmailInvalid.textContent != "Introduce un correo válido.") {
-          $divEmailInvalid.textContent = "Introduce un correo válido.";
+        if ($divEmailInvalid.textContent != "Ingresa un correo válido.") {
+          $divEmailInvalid.textContent = "Ingresa un correo válido.";
         }
 
         if (!$inputCorreo.classList.contains("is-invalid")) {
@@ -350,19 +373,17 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         isInvalid = true;
       } else {
         let codemployed = 0;
+        let url = `/configuracion/empleado/verificar-correo/${$inputCorreo.value}`;
 
         if ($btnConfirmUpdate) {
           codemployed = $d.getElementById("codEmployed").value;
-          console.log(codemployed);
+          url += `/${codemployed}`;
         }
 
-        const data = await $.get(
-          `/configuracion/empleado/verificar-correo/${$inputCorreo.value}/${codemployed}`
-        );
-        console.log("Correo", data.isFound);
+        const data = await $.get(url);
 
         if (data.isFound) {
-          $divEmailInvalid.textContent = `No se permiten Correo duplicados. Se encontró un registro con el Corre: ${$inputCorreo.value}. Introduce un nuevo Correo.`;
+          $divEmailInvalid.textContent = `No se permiten Correo duplicados. Se encontró un registro con el Correo: ${$inputCorreo.value}. Ingresa un nuevo Correo.`;
           if (!$inputCorreo.classList.contains("is-invalid")) {
             $inputCorreo.classList.add("is-invalid");
           }
@@ -377,10 +398,10 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
       if (!$inputTelefono.value.match("^9[0-9]{8}$")) {
         if (
           $divTelephoneInvalid.textContent !=
-          "Introduce un número válido. Solo acepta 9 dígitos y comienza con 9."
+          "Ingresa un número de teléfono válido. Debe comenzar con el dígito 9, seguido de otros 8 dígitos numéricos."
         ) {
           $divTelephoneInvalid.textContent =
-            "Introduce un número válido. Solo acepta 9 dígitos y comienza con 9.";
+            "Ingresa un número de teléfono válido. Debe comenzar con el dígito 9, seguido de otros 8 dígitos numéricos.";
         }
 
         if (!$inputTelefono.classList.contains("is-invalid")) {
@@ -389,19 +410,17 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         isInvalid = true;
       } else {
         let codemployed = 0;
+        let url = `/configuracion/empleado/verificar-telefono/${$inputTelefono.value}`;
 
         if ($btnConfirmUpdate) {
           codemployed = $d.getElementById("codEmployed").value;
-          console.log(codemployed);
+          url += `/${codemployed}`;
         }
 
-        const data = await $.get(
-          `/configuracion/empleado/verificar-telefono/${$inputTelefono.value}/${codemployed}`
-        );
-        console.log("telefono", data.isFound);
+        const data = await $.get(url);
 
         if (data.isFound) {
-          $divTelephoneInvalid.textContent = `No se permiten Télefonos duplicados. Se encontró un registro con el Telefono: ${$inputTelefono.value}. Introduce un nuevo Telefono.`;
+          $divTelephoneInvalid.textContent = `No se permiten Télefonos duplicados. Se encontró un registro con el Teléfono: ${$inputTelefono.value}. Ingresa un nuevo Telefono.`;
           if (!$inputTelefono.classList.contains("is-invalid")) {
             $inputTelefono.classList.add("is-invalid");
           }
@@ -416,10 +435,10 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
       if (!$inputDni.value.match("^[0-9]{8}$")) {
         if (
           $divDniInvalid.textContent !=
-          "Introduce un dni válido que contenga 8 dígitos."
+          "Ingresa un dni válido que contenga 8 dígitos."
         ) {
           $divDniInvalid.textContent =
-            "Introduce un dni válido que contenga 8 dígitos.";
+            "Ingresa un dni válido que contenga 8 dígitos.";
         }
         if (!$inputDni.classList.contains("is-invalid")) {
           $inputDni.classList.add("is-invalid");
@@ -427,20 +446,18 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
         isInvalid = true;
       } else {
         let codemployed = 0;
+        let url = `/configuracion/empleado/verificar-dni/${$inputDni.value}`;
 
         if ($btnConfirmUpdate) {
           codemployed = $d.getElementById("codEmployed").value;
-          console.log(codemployed);
+          url += `/${codemployed}`;
         }
 
-        const data = await $.get(
-          `/configuracion/empleado/verificar-dni/${$inputDni.value}/${codemployed}`
-        );
-        console.log("Dni", data.isFound);
+        const data = await $.get(url);
 
         if (data.isFound) {
           console.log(data.isFound);
-          $divDniInvalid.textContent = `No se permiten DNI duplicados. Se encontró un registro con el DNI: ${$inputDni.value}. Introduce un nuevo DNI.`;
+          $divDniInvalid.textContent = `No se permiten DNI duplicados. Se encontró un registro con el DNI: ${$inputDni.value}. Ingresa un nuevo DNI.`;
           if (!$inputDni.classList.contains("is-invalid")) {
             $inputDni.classList.add("is-invalid");
           }
@@ -451,10 +468,19 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
           }
         }
       }
+    }
 
-      if (!isInvalid) {
-        $form.submit();
-      }
+    if (!isInvalid) {
+      const $loader = $(`<div class="flex-grow-1 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                        </div>`);
+
+      $(e.target).replaceWith($loader);
+      $("#btn-cancel").prop("disabled", true);
+
+      $form.submit();
     }
   });
 };

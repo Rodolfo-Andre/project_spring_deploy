@@ -1,8 +1,7 @@
 package com.proyecto.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -10,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.proyecto.entity.*;
-import com.proyecto.service.EmpleadoService;
-import com.proyecto.service.UsuarioService;
+import com.proyecto.service.*;
+import com.proyecto.utils.ServicioCorreo;
 
 @Controller
 @RequestMapping(value = "/configuracion/empleado")
@@ -68,6 +67,18 @@ public class EmpleadoController {
       System.out.println("LA CONTRASEÑA GENERADA ES: " + contrasenia);
 
       empleadoService.registrar(e);
+
+      CompletableFuture
+          .runAsync(() -> {
+            try {
+              ServicioCorreo.enviarMensaje(correo,
+                  "Tu contraseña para acceder a nuestra plataforma es: " + contrasenia,
+                  "Bienvenido al sistema de comandas");
+            } catch (Exception e2) {
+              e2.printStackTrace();
+            }
+          });
+
       redirect.addFlashAttribute("mensaje", "Empleado registrado correctamente");
       redirect.addFlashAttribute("tipo", "success");
     } catch (Exception e) {
@@ -85,8 +96,8 @@ public class EmpleadoController {
       @RequestParam("lastnameEmpleado") String apellido,
       @RequestParam("telefono") String telefono,
       @RequestParam("dni") String dni,
-      @RequestParam("cargo") int idCargo,
-      @RequestParam("correo") String correo,
+      @RequestParam(value = "cargo", required = false) Optional<Integer> idCargoOptional,
+      @RequestParam(value = "correo", required = false) String correo,
       RedirectAttributes redirect) {
     try {
 
@@ -95,11 +106,16 @@ public class EmpleadoController {
       e.setApellido(apellido);
       e.setDni(dni);
       e.setTelefono(telefono);
-      Cargo cargo = new Cargo();
-      cargo.setId(idCargo);
-      e.setCargo(cargo);
 
-      e.getUsuario().setCorreo(correo);
+      if (idCargoOptional.isPresent()) {
+        Cargo cargo = new Cargo();
+        cargo.setId(idCargoOptional.get());
+        e.setCargo(cargo);
+      }
+
+      if (correo != null) {
+        e.getUsuario().setCorreo(correo);
+      }
 
       empleadoService.actualizar(e);
       redirect.addFlashAttribute("mensaje", "Empleado actualizado correctamente");
@@ -128,99 +144,57 @@ public class EmpleadoController {
     return "redirect:/configuracion/empleado";
   }
 
-  @GetMapping(value = "/verificar-dni/{dni}/{cod}")
+  @GetMapping(value = { "/verificar-dni/{dni}", "/verificar-dni/{dni}/{cod}" })
   @ResponseBody
-  public Map<String, Boolean> verificarDni(@PathVariable String dni, @PathVariable int cod) {
-
-    Map<String, Boolean> respuesta = new HashMap<String, Boolean>();
-    Empleado empleado = empleadoService.obtenerPorDni(dni);
-
-    Empleado empleadoActualizar = null;
+  public Map<String, Boolean> verificarDni(@PathVariable String dni,
+      @PathVariable(required = false) Optional<Integer> cod) {
+    Map<String, Boolean> respuesta = new HashMap<>();
     boolean seEncontro = false;
 
-    if (cod > 0) {
-      empleadoActualizar = empleadoService.obtenerxId(cod);
-
-    }
-    if (empleado != null) {
-
-      if (empleadoActualizar != null) {
-        if (!empleadoActualizar.getDni().equals(dni)) {
-          seEncontro = empleado.getDni().equals(dni);
-
-        }
-
-      } else {
-        seEncontro = empleado.getDni().equals(dni);
-      }
-    }
-    respuesta.put("isFound", seEncontro);
-    return respuesta;
-
-  }
-
-  @GetMapping(value = "/verificar-correo/{email}/{cod}")
-  @ResponseBody
-  public Map<String, Boolean> verificarEmail(@PathVariable String email, @PathVariable int cod) {
-
-    Map<String, Boolean> respuesta = new HashMap<String, Boolean>();
-    Usuario usuarioActualizar = null;
-    Usuario usuario = usuarioService.obtenerUsuarioPorCorreo(email);
-    boolean seEncontro = false;
-    if (cod > 0) {
-      usuarioActualizar = usuarioService.obtenerPorId(cod);
-
-    }
-    if (usuario != null) {
-
-      if (usuarioActualizar != null) {
-        if (!usuarioActualizar.getCorreo().equals(email)) {
-          seEncontro = usuario.getCorreo().equals(email);
-
-        }
-
-      } else {
-        seEncontro = usuario.getCorreo().equals(email);
-      }
+    if (!cod.isPresent()) {
+      seEncontro = empleadoService.obtenerPorDni(dni) != null;
+    } else {
+      Empleado empleado = empleadoService.obtenerPorDni(dni);
+      seEncontro = empleado != null && !empleado.getId().equals(cod.get());
     }
 
     respuesta.put("isFound", seEncontro);
-
     return respuesta;
-
   }
 
-  @GetMapping(value = "/verificar-telefono/{telefono}/{cod}")
+  @GetMapping(value = { "/verificar-correo/{email}", "/verificar-correo/{email}/{cod}" })
   @ResponseBody
-  public Map<String, Boolean> verificarTelephone(@PathVariable String telefono, @PathVariable int cod) {
-
-    Map<String, Boolean> respuesta = new HashMap<String, Boolean>();
-    Empleado empleado = empleadoService.obtenerPorTelefono(telefono);
-
-    Empleado empleadoActualizar = null;
-
+  public Map<String, Boolean> verificarEmail(@PathVariable String email,
+      @PathVariable(required = false) Optional<Integer> cod) {
+    Map<String, Boolean> respuesta = new HashMap<>();
     boolean seEncontro = false;
-    if (cod > 0) {
-      empleadoActualizar = empleadoService.obtenerxId(cod);
 
-    }
-    if (empleado != null) {
-
-      if (empleadoActualizar != null) {
-        if (!empleadoActualizar.getTelefono().equals(telefono)) {
-          seEncontro = empleado.getTelefono().equals(telefono);
-
-        }
-
-      } else {
-        seEncontro = empleado.getTelefono().equals(telefono);
-      }
+    if (!cod.isPresent()) {
+      seEncontro = usuarioService.obtenerUsuarioPorCorreo(email) != null;
+    } else {
+      Usuario usuario = usuarioService.obtenerUsuarioPorCorreo(email);
+      seEncontro = usuario != null && !usuario.getId().equals(cod.get());
     }
 
     respuesta.put("isFound", seEncontro);
-
     return respuesta;
-
   }
 
+  @GetMapping(value = { "/verificar-telefono/{telefono}", "/verificar-telefono/{telefono}/{cod}" })
+  @ResponseBody
+  public Map<String, Boolean> verificarTelephone(@PathVariable String telefono,
+      @PathVariable(required = false) Optional<Integer> cod) {
+    Map<String, Boolean> respuesta = new HashMap<>();
+    boolean seEncontro = false;
+
+    if (!cod.isPresent()) {
+      seEncontro = empleadoService.obtenerPorTelefono(telefono) != null;
+    } else {
+      Empleado empleado = empleadoService.obtenerPorTelefono(telefono);
+      seEncontro = empleado != null && !empleado.getId().equals(cod.get());
+    }
+
+    respuesta.put("isFound", seEncontro);
+    return respuesta;
+  }
 }

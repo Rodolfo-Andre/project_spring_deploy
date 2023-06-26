@@ -1,13 +1,12 @@
 package com.proyecto.controller;
 
-import java.util.List;
-
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.proyecto.entity.MetodoPago;
+import com.proyecto.entity.*;
 import com.proyecto.service.MetodoPagoService;
 
 @Controller
@@ -86,4 +85,27 @@ public class MetodoPagoController {
     return "redirect:/configuracion/metodo-pago";
   }
 
+  @GetMapping(value = "/obtener-tamano-comprobante-por-metodo/{id}")
+  @ResponseBody
+  public int obtenerTamanoComprobanteDeMetodoPago(@PathVariable Integer id) {
+    return metodoPagoService.obtenerTamanoComprobanteDeMetodoPago(id);
+  }
+
+  @GetMapping(value = { "/verificar-metodo/{metodo}", "/verificar-metodo/{metodo}/{cod}" })
+  @ResponseBody
+  public Map<String, Boolean> verificarMetodo(@PathVariable String metodo,
+      @PathVariable(required = false) Optional<Integer> cod) {
+    Map<String, Boolean> respuesta = new HashMap<>();
+    boolean seEncontro = false;
+
+    if (!cod.isPresent()) {
+      seEncontro = metodoPagoService.obtenerPorMetodo(metodo) != null;
+    } else {
+      MetodoPago metodoPago = metodoPagoService.obtenerPorMetodo(metodo);
+      seEncontro = metodoPago != null && !metodoPago.getId().equals(cod.get());
+    }
+
+    respuesta.put("isFound", seEncontro);
+    return respuesta;
+  }
 }

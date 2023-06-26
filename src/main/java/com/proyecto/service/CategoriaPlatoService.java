@@ -36,6 +36,10 @@ public class CategoriaPlatoService {
     return categoriaPlatoRepository.count();
   }
 
+  public CategoriaPlato obtenerPorNombre(String nombre) {
+    return categoriaPlatoRepository.findByNombre(nombre);
+  }
+
   public int obtenerTamanoPlatoDeCategoria(String id) {
     CategoriaPlato categoriaPlato = categoriaPlatoRepository.findById(id).orElse(null);
     int tamanoPlato = 0;

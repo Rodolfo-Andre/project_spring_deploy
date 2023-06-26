@@ -91,4 +91,22 @@ public class CategoriaPlatoController {
   public int obtenerTamanoPlatoDeCategoria(@PathVariable String id) {
     return categoriaPlatoService.obtenerTamanoPlatoDeCategoria(id);
   }
+
+  @GetMapping(value = { "/verificar-nombre/{nombre}", "/verificar-nombre/{nombre}/{cod}" })
+  @ResponseBody
+  public Map<String, Boolean> verificarNombre(@PathVariable String nombre,
+      @PathVariable(required = false) String cod) {
+    Map<String, Boolean> respuesta = new HashMap<>();
+    boolean seEncontro = false;
+
+    if (cod == null) {
+      seEncontro = categoriaPlatoService.obtenerPorNombre(nombre) != null;
+    } else {
+      CategoriaPlato categoriaPlato = categoriaPlatoService.obtenerPorNombre(nombre);
+      seEncontro = categoriaPlato != null && !categoriaPlato.getId().equals(cod);
+    }
+
+    respuesta.put("isFound", seEncontro);
+    return respuesta;
+  }
 }

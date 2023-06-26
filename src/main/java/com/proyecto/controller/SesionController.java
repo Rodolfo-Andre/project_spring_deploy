@@ -62,7 +62,6 @@ public class SesionController {
             ServicioCorreo.enviarMensaje(usuario.getCorreo(),
                 "Tu código de verificación es: " + codigo, "Código de Verificaión");
           } catch (Exception e) {
-
             e.printStackTrace();
           }
         });

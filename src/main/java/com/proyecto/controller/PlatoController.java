@@ -1,7 +1,6 @@
 package com.proyecto.controller;
 
-import java.util.List;
-
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -126,5 +125,23 @@ public class PlatoController {
   public List<Plato> obtenerPlatoPorCategoria(@PathVariable String id) {
     List<Plato> listaPlato = platoService.obtenerPlatoByCategoriId(id);
     return listaPlato;
+  }
+
+  @GetMapping(value = { "/verificar-nombre/{nombre}", "/verificar-nombre/{nombre}/{cod}" })
+  @ResponseBody
+  public Map<String, Boolean> verificarNombre(@PathVariable String nombre,
+      @PathVariable(required = false) String cod) {
+    Map<String, Boolean> respuesta = new HashMap<>();
+    boolean seEncontro = false;
+
+    if (cod == null) {
+      seEncontro = platoService.obtenerPorNombre(nombre) != null;
+    } else {
+      Plato plato = platoService.obtenerPorNombre(nombre);
+      seEncontro = plato != null && !plato.getId().equals(cod);
+    }
+
+    respuesta.put("isFound", seEncontro);
+    return respuesta;
   }
 }

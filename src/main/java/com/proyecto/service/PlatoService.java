@@ -48,4 +48,8 @@ public class PlatoService {
   public List<Plato> obtenerPlatoByCategoriId(String idCategoria) {
     return platoRepository.findPlatoByCategoriaId(idCategoria);
   }
+
+  public Plato obtenerPorNombre(String nombre) {
+    return platoRepository.findByNombre(nombre);
+  }
 }

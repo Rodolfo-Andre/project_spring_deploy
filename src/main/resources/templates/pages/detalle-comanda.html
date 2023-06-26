@@ -113,6 +113,11 @@
                       th:value="${#authentication.principal.usuario.id}"
                       type="hidden"
                     />
+                    <input
+                      id="txt-estado-usuario"
+                      th:value="${#authentication.principal.usuario.empleado.cargo.nombre}"
+                      type="hidden"
+                    />
                   </div>
                 </div>
                 <div class="col-sm-12 col-md-6 border-custom">
@@ -136,7 +141,7 @@
                     >
                     <input
                       disabled
-                      th:value="${#authentication.principal.usuario.empleado.nombre}"
+                      th:value="${#authentication.principal.usuario.empleado.nombre + ' ' + #authentication.principal.usuario.empleado.apellido}"
                       type="text"
                       class="form-control"
                       id="txt-empleado"
@@ -245,7 +250,7 @@
               <div class="table-responsive">
                 <table
                   id="tablaDetalleComanda"
-                  class="table display"
+                  class="table display text-center"
                   style="width: 100%"
                   aria-describedby="Tabla de Detalle Comanda"
                 >
@@ -256,11 +261,16 @@
                     <th>Cantidad</th>
                     <th>Categoria</th>
                     <th>Precio Total</th>
+                    <th>Información</th>
                     <th:block
                       sec:authorize="hasAnyRole('ADMINISTRADOR', 'MESERO')"
                     >
                       <th>Editar</th>
-                      <th>Eliminar</th>
+                      <th
+                        th:if="${comanda == null || comanda.getEstadoComanda().getEstado() == 'Generado'}"
+                      >
+                        Eliminar
+                      </th>
                     </th:block>
                   </thead>
                   <tbody id="tbBodyPlatos"></tbody>
@@ -337,11 +347,11 @@
                           Descuento
                         </label>
                         <input
-                          min="1"
-                          type="number"
+                          type="text"
+                          value="0"
                           class="form-control"
                           id="input-descuento"
-                          value="0"
+                          placeholder="Ingrese el descuento"
                           name="input-descuento"
                         />
                       </div>
@@ -401,19 +411,27 @@
                     >
                       Datos del Cliente
                     </h6>
-                    <div class="row mb-2">
-                      <div class="mb-3 col-md-12 col-12">
+                    <div class="row mb-2 d-flex flex-row align-items-center">
+                      <div class="col-md-6 col-12">
                         <label for="txt-numero-documento" class="form-label">
                           Número de Documento
                         </label>
                         <input
-                          type="number"
-                          min="1"
-                          max="99999999"
+                          type="text"
                           class="form-control"
                           id="txt-numero-documento"
                           placeholder="Ingrese el número de documento"
                         />
+                      </div>
+                      <div class="col-md-6 col-12">
+                        <button
+                          class="btn btn-primary mt-4 w-100"
+                          type="button"
+                          id="btn-buscar-cliente"
+                          disabled
+                        >
+                          Buscar Cliente
+                        </button>
                       </div>
                     </div>
                     <div class="row">

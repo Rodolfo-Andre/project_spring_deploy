@@ -28,6 +28,7 @@ const ViewCore = function () {
 
       this.txtNumeroComanda = $("#txt-numero-comanda");
       this.IdUsuario = $("#txt-id-usuario");
+
       this.txtEstadoMesa = $("#txt-estado-mesa");
       this.txtNumeroMesa = $("#txt-numero-mesa");
       this.txtCantidadPersonas = $("#txt-cantidad-persona");
@@ -43,6 +44,7 @@ const ViewCore = function () {
       this.btnActualizar = $("#btn-actualizar-comanda");
       this.btnActualizarEstado = $("#btn-actualizar-estado-comanda");
       this.listaDeEnvioPlatos = [];
+      this.listaDeCategoriaDePlatos = [];
 
       this.modalFactura = $("#modalFactura");
       this.btnFacturar = $("#btn-facturar-comanda");
@@ -52,7 +54,7 @@ const ViewCore = function () {
       this.txtPrecioTotal.val(0);
 
       if (this.txtEstadoMesa.val() == "Ocupado") {
-        await this.getSingle(this.getUrlParameter());
+        await this.obtenerComandaPorId(this.getUrlParameter());
       }
       this.attachEvents();
     },
@@ -151,6 +153,28 @@ const ViewCore = function () {
 
         me.viewFactura.Core.setPedidos(me.listaDeEnvioPlatos);
       });
+
+      this.txtCantidadPersonas.on("keyup", function (ev) {
+        ev.preventDefault();
+        const val = ev.target.value;
+
+        if (val == "") {
+          me.txtCantidadPersonas.val(1);
+          return;
+        }
+
+        if (val <= 0) {
+          me.txtCantidadPersonas.val(1);
+          return;
+        }
+
+        if (val > 15) {
+          me.txtCantidadPersonas.val(15);
+          return;
+        }
+
+        me.txtCantidadPersonas.val(val);
+      });
     },
     getValues: function () {
       return {
@@ -161,6 +185,7 @@ const ViewCore = function () {
       };
     },
     getCategoriaPlato: async function () {
+      let me = this;
       const url = "/configuracion/categoria-plato/obtener";
       return new Promise((resolve, reject) => {
         $.ajax({
@@ -168,6 +193,7 @@ const ViewCore = function () {
           type: "GET",
           dataType: "json",
           success: function (response) {
+            me.listaDeCategoriaDePlatos = response;
             resolve(response);
           },
           error: function (error) {
@@ -184,8 +210,6 @@ const ViewCore = function () {
           type: "GET",
           dataType: "json",
           success: function (response) {
-            console.log(response);
-
             resolve(response);
           },
           error: function (error) {
@@ -281,7 +305,6 @@ const ViewCore = function () {
       $("#categoria").change(async function (e) {
         const categoria = $("#categoria").val();
         const platos = await me.getPlato(categoria);
-        console.log(platos);
 
         $("#plato").html("");
         listPlatos = platos;
@@ -299,6 +322,26 @@ const ViewCore = function () {
         });
       });
 
+      $("#cantidadDePedido").on("keyup", function (e) {
+        const val = parseInt($(this).val());
+
+        if (val > 15) {
+          $(this).val(15);
+        }
+
+        if (val < 0) {
+          $(this).val(1);
+        }
+
+        if (isNaN(val)) {
+          $(this).val(1);
+        }
+
+        if (val == "") {
+          $(this).val(1);
+        }
+      });
+
       if (dataModal) {
         $("#categoria").trigger("change");
       }
@@ -312,7 +355,23 @@ const ViewCore = function () {
         e.preventDefault();
 
         const platoId = $("#plato").val();
-        const cantidad = parseInt($("#cantidadDePedido").val());
+        const cantidad = parseInt($("#cantidadDePedido").val()) || 0;
+
+        if (!platoId) {
+          me.showMessage("Seleccione un plato", "error", "Error!");
+          return;
+        }
+
+        if (cantidad <= 0 || !cantidad || isNaN(cantidad) || cantidad == "") {
+          me.showMessage("Ingrese una cantidad valida", "error", "Error!");
+          return;
+        }
+
+        if (cantidad > 16) {
+          me.showMessage("Ingrese una cantidad menor a 15", "error", "Error!");
+          return;
+        }
+
         const observacion = $("#txt-observacion").val();
 
         if (dataModal) {
@@ -347,7 +406,7 @@ const ViewCore = function () {
           precio: plato.precioPlato,
         };
 
-        $("#cantidadDePedido").val("");
+        $("#cantidadDePedido").val(1);
         const errors = Object.keys(data).filter((key) => {
           return (
             data[key] == "" ||
@@ -362,15 +421,9 @@ const ViewCore = function () {
           return;
         }
 
-        if (cantidad <= 0) {
-          $("#error-platos")
-            .text("La cantidad debe ser mayor a 0")
-            .css("display", "block");
-          return;
-        }
+        data.observacion = observacion;
 
-        (data.observacion = observacion),
-          $("#error-platos").text("").css("display", "none");
+        $("#error-platos").text("").css("display", "none");
         me.initTable(data);
         me.showMessage(
           "Plato añadido correctamente",
@@ -385,20 +438,18 @@ const ViewCore = function () {
       let me = this;
       me.initTable(data);
     },
-    getSingle: async function (id) {
+    obtenerComandaPorId: async function (id) {
       let me = this;
       try {
         const url = "/configuracion/comanda/obtener/" + id;
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data);
 
         me.txtCantidadPersonas.val(data.cantidadAsientos);
         me.txtEmpleado.val(data.empleado.nombre + " " + data.empleado.apellido);
         me.txtPrecioTotal.val(data.precioTotal);
         me.txtEstadoComanda.val(data.estadoComanda.estado);
         const listado = [];
-        console.log(data);
 
         if (data.estadoComanda.estado == "Preparado") {
           me.btnFacturar.css("display", "block");
@@ -439,8 +490,6 @@ const ViewCore = function () {
         observacion: plato.observacion,
       }));
 
-      console.log(me.txtNumeroComanda);
-
       const baseUrl = this.contextUrl + this.apis.save;
       const baseData = {
         id: me.txtNumeroComanda.val(),
@@ -451,8 +500,16 @@ const ViewCore = function () {
         idUsuario: me.IdUsuario.val(),
       };
 
-      console.log(baseData);
-
+      if (
+        baseData.cantidadPersonas <= 0 ||
+        baseData.cantidadPersonas == "" ||
+        isNaN(baseData.cantidadPersonas)
+      ) {
+        me.showError("La cantidad de personas no puede ser menor o igual a 0");
+        me.containerError.append(ext);
+        return;
+      }
+      me.containerError.empty();
       try {
         me.btnGenerar.prop("disabled", true);
         me.btnActualizar.prop("disabled", true);
@@ -485,6 +542,7 @@ const ViewCore = function () {
       }
     },
     updateComandaStatus: async function () {
+      let me = this;
       const url =
         this.contextUrl + `/preparar-comanda/${this.txtNumeroComanda.val()}`;
 
@@ -533,8 +591,6 @@ const ViewCore = function () {
       $("#tbBodyPlatos").html("");
 
       if (data != null && data != undefined) {
-        console.log("data", data);
-
         const plato = me.listaDeEnvioPlatos.find(
           (plato) => plato.id == data.id
         );
@@ -547,25 +603,44 @@ const ViewCore = function () {
       }
 
       if (me.listaDeEnvioPlatos.length > 0) {
-        const cantidadDeColumnas = $("#tablaDetalleComanda > thead > tr").find(
-          "th"
-        ).length;
+        const columnas = $("#tablaDetalleComanda > thead > tr th")
+          .map(function () {
+            return $(this).text().trim();
+          })
+          .get();
 
-        const controles = `
-            <td> 
+        const controles = [
+          `<td> 
               <button class="btn btn-warning btn-sm js-btn-edit">
                 <i class="bi bi-pencil-fill"></i>
               </button>
-            </td>
-            <td>
-                <button class="btn btn-danger btn-sm js-btn-delete">
-                  <i class="bi bi-trash-fill"></i>    
-                </button>
-            </td>`;
+            </td>`,
+          `<td>
+              <button class="btn btn-danger btn-sm js-btn-delete">
+                <i class="bi bi-trash-fill"></i>    
+              </button>
+            </td>`,
+        ];
+
+        const obtenerControler = () => {
+          if (columnas.includes("Editar") && columnas.includes("Eliminar")) {
+            return controles.join(",");
+          }
+
+          if (columnas.includes("Editar")) {
+            return controles[0];
+          }
+
+          if (columnas.includes("Eliminar")) {
+            return controles[1];
+          }
+
+          return "";
+        };
 
         me.listaDeEnvioPlatos.forEach((plato) => {
           $("#tbBodyPlatos").append(`
-          <tr data-id="${plato.id}">
+          <tr data-id="${plato.id}" class="align-middle">
             <td>${plato.id}</td>
             <td>
               <img src="${plato.imagen}" alt="" width="50" height="50">
@@ -580,7 +655,12 @@ const ViewCore = function () {
             <td
             class="js-total"
             >${plato.precio * plato.cantidad}</td>
-            ${cantidadDeColumnas > 6 && controles}
+            <td>
+              <button class="btn btn-primary btn-sm js-btn-info">
+                <i class="bi bi-info-square-fill"></i>
+              </button>
+            </td>
+            ${obtenerControler()}
           </tr>`);
         });
       }
@@ -589,7 +669,6 @@ const ViewCore = function () {
       }, 0);
 
       me.txtPrecioTotal.val(total);
-      console.log("me.listaDeEnvioPlatos", me.listaDeEnvioPlatos);
 
       $(".js-btn-edit").click(function (e) {
         e.preventDefault();
@@ -612,6 +691,15 @@ const ViewCore = function () {
           }, 0)
         );
       });
+
+      $(".js-btn-info").click(function (e) {
+        e.preventDefault();
+        const id = $(this).parents("tr").data("id");
+
+        const plato = me.listaDeEnvioPlatos.find((plato) => plato.id == id);
+        me.modalObservacion(plato);
+        console.log(me.listaDeEnvioPlatos);
+      });
     },
     showError: function (mesage) {
       return ` <div 
@@ -622,6 +710,18 @@ const ViewCore = function () {
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
    </div>`;
+    },
+    modalObservacion: function (plato) {
+      const contentModal = {
+        header: `<i class="icon text-center text-link bi bi-info-circle-fill"></i>
+						<h4 class="modal-title text-center" id="modal-prototype-label">INFORMACIÓN DEL ${plato.nombre.toUpperCase()}</h4>`,
+        body: `<p class="text-center m-0"><b>Observación:</b> ${
+          plato.observacion || "Sin observación"
+        }</p>`,
+        footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-primary">CANCELAR</button>`,
+      };
+
+      showModal(contentModal);
     },
   };
 };

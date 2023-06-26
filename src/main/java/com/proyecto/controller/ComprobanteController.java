@@ -95,11 +95,17 @@ public class ComprobanteController {
       return ResponseEntity.ok().body(Map.of("mensaje", mensaje, "status", status));
     }
     Cliente cliente;
+
+    if(input.cliente.getDni() == "" || input.cliente.getDni() == null || input.cliente.getDni().length() != 8  ){
+
+      cliente =  clienteService.obtenerPorId(1);
+     
+    }else{
     cliente = clienteService.obtenerPorDni(input.cliente.getDni());
 
     if (cliente == null) {
 
-      cliente = new Cliente();
+       cliente = new Cliente();
 
       cliente.setDni(input.cliente.getDni());
       cliente.setNombre(input.cliente.getNombre());
@@ -107,7 +113,10 @@ public class ComprobanteController {
 
       clienteService.agregar(cliente);
 
+      }
     }
+
+
 
     Comprobante comprobante = new Comprobante();
     Date fecha = new Date();

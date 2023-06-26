@@ -102,7 +102,7 @@ const addEventToTable = () => {
 											<label class="col-sm-5 fw-bold" for="name">Cantidad de Asientos:</label>
 											<div class="col-sm-7">
 												<input class="form-control" type="text" id="quantityChairs" name="quantityChairs" value="${data.cantidadAsientos}"/>
-												<div id="name-invalid" class="text-start invalid-feedback">Introduce la cantidad de asientos correctamente. Solo se acepta 1 dígito.</div>
+												<div id="name-invalid" class="text-start invalid-feedback">Ingresa un número válido. Debe ser un dígito del 1 al 9.</div>
 											</div>
 										</div>	
 									</form>`,
@@ -158,7 +158,7 @@ const addEventToButtonAdd = () => {
 								<label class="col-sm-5 fw-bold" for="name">Cantidad de Asientos:</label>
 								<div class="col-sm-7">
 									<input class="form-control" type="text"  id="quantityChairs" name="quantityChairs" value=""/>
-									<div id="name-invalid" class="text-start invalid-feedback">Introduce la cantidad de asientos correctamente. Solo se acepta 1 dígito.</div>
+									<div id="name-invalid" class="text-start invalid-feedback">Ingresa un número válido. Debe ser un dígito del 1 al 9.</div>
 								</div>
 							</div>		
 						</form>`,
@@ -180,6 +180,8 @@ const addEventToButtonConfirmAddAndConfirmUpdate = () => {
       $btnConfirmUpdate == e.currentTarget
     ) {
       let $inputQuantityChairs = $d.getElementById("quantityChairs");
+
+      $inputQuantityChairs.value = $inputQuantityChairs.value.trim();
 
       let isInvalid = false;
 

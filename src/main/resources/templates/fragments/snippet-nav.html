@@ -7,7 +7,7 @@
   <div class="offcanvas-body d-flex flex-column flex-grow-1 p-0">
     <a
       href="/"
-      class="p-2 link-dark text-decoration-none text-center border-bottom d-flex align-items-center gap-2 border-2 border-light shadow bg-body"
+      class="p-2 link-dark text-decoration-none border-bottom d-flex align-items-center justify-content-center gap-2 border-2 border-light shadow bg-body"
     >
       <img
         th:src="@{/images/reddit.svg}"
@@ -16,7 +16,11 @@
         height="32"
         class="rounded-circle"
       />
-      <span class="fs-5 fw-semibold">Nombre de la Empresa</span>
+      <span
+        th:text="${@globalVariables.getEstablecimiento().getNombre()}"
+        class="fs-5 fw-semibold"
+        >Nombre de la Empresa</span
+      >
     </a>
 
     <ul class="list-unstyled m-2 mb-auto nav nav-pills flex-column">

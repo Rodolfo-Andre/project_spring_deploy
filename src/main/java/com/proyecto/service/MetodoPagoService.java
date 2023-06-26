@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.proyecto.dao.MetodoPagoRepository;
 import com.proyecto.entity.MetodoPago;
+import com.proyecto.entity.Plato;
 
 @Service
 public class MetodoPagoService {
@@ -33,5 +34,22 @@ public class MetodoPagoService {
 
   public long obtenerTamano() {
     return metodoPagoRepository.count();
+  }
+
+  public int obtenerTamanoComprobanteDeMetodoPago(Integer id) {
+    MetodoPago metodoPago = metodoPagoRepository.findById(id).orElse(null);
+    int tamanoComprobante = 0;
+
+    if (metodoPago == null) {
+      return 0;
+    }
+
+    tamanoComprobante = metodoPago.getComprobante().size();
+
+    return tamanoComprobante;
+  }
+
+  public MetodoPago obtenerPorMetodo(String metodo) {
+    return metodoPagoRepository.findByMetodo(metodo);
   }
 }

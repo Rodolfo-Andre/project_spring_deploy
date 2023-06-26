@@ -39,6 +39,8 @@ const createTableReportDish = () => {
       language: {
         url: "/language/datatables-es-mx.json",
       },
+      lengthChange: false,
+      pageLength: 5,
       ordering: false,
       responsive: true,
       fixedHeader: true,

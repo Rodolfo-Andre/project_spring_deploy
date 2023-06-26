@@ -94,13 +94,13 @@ const addEventToTable = () => {
               header: `<i class="icon text-center text-warning bi bi-pencil-square"></i>
 											<h4 class="modal-title text-center" id="modal-prototype-label">Categoría de Plato - ${data.id}</h4>`,
               body: `<form class="d-flex flex-column gap-4" id="form-update" action="/configuracion/categoria-plato/actualizar" method="POST">					
-											<input type="hidden" name="id" value="${data.id}"/>
+											<input type="hidden" name="id" id="codCategoriaPlato" value="${data.id}"/>
 		
 											<div class="row align-items-sm-center">
 												<label class="col-sm-5 fw-bold" for="name">Nombre de la Categoría:</label>
 												<div class="col-sm-7">
 													<input class="form-control" type="text" id="name" name="name" value="${data.nombre}"/>
-													<div id="name-invalid" class="text-start invalid-feedback">Introduce la categoría de plato correctamente. Mínimo 3 caracteres, máximo 20'.</div>
+													<div id="name-invalid" class="text-start invalid-feedback">Ingresa un nombre válido. Debe tener entre 3 y 20 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas.</div>
 												</div>
 											</div>		
 										</form>`,
@@ -156,7 +156,7 @@ const addEventToButtonAdd = () => {
 								<label class="col-sm-5 fw-bold" for="name">Nombre de la Categoría:</label>
 								<div class="col-sm-7">
 									<input class="form-control" type="text" id="name" name="name" value=""/>
-									<div id="name-invalid" class="text-start invalid-feedback">Introduce la categoría de plato correctamente. Mínimo 3 caracteres, máximo 20.</div>
+									<div id="name-invalid" class="text-start invalid-feedback">Ingresa un nombre válido. Debe tener entre 3 y 20 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas.</div>
 								</div>
 							</div>
 						</form>`,
@@ -169,43 +169,73 @@ const addEventToButtonAdd = () => {
 };
 
 const addEventToButtonConfirmAddAndConfirmUpdate = () => {
-  $($d).on("click", "#add, #update", (e) => {
+  $($d).on("click", "#add, #update", async (e) => {
+    e.preventDefault();
+
     const $btnConfirmAdd = $("#add")[0],
-      $btnConfirmUpdate = $("#update")[0];
+      $btnConfirmUpdate = $("#update")[0],
+      $divNameInvalid = $d.getElementById("name-invalid"),
+      $form = $(e.target.form);
+
+    let isInvalid = false;
 
     if ($btnConfirmAdd == e.target || $btnConfirmUpdate == e.target) {
       let $inputName = $d.getElementById("name");
-      let isInvalid = false;
+
+      $inputName.value = $inputName.value.trim();
 
       if (
         !$inputName.value.match(
           "^(?=.{3,20}$)[A-ZÑÁÉÍÓÚ][a-zñáéíóú]+(?: [A-Za-zñáéíóú]+)*$"
         )
       ) {
+        if (
+          $divNameInvalid.textContent !=
+          "Ingresa un nombre válido. Debe tener entre 3 y 20 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas."
+        ) {
+          $divNameInvalid.textContent =
+            "Ingresa un nombre válido. Debe tener entre 3 y 20 caracteres, comenzar con una letra mayúscula seguida de letras minúsculas.";
+        }
+
         if (!$inputName.classList.contains("is-invalid"))
           $inputName.classList.add("is-invalid");
         isInvalid = true;
       } else {
-        if ($inputName.classList.contains("is-invalid"))
-          $inputName.classList.remove("is-invalid");
-      }
+        let codCategoriaPlato = 0;
+        let url = `/configuracion/categoria-plato/verificar-nombre/${$inputName.value}`;
 
-      if (isInvalid) {
-        e.preventDefault();
-        return;
+        if ($btnConfirmUpdate) {
+          codCategoriaPlato = $d.getElementById("codCategoriaPlato").value;
+          url += `/${codCategoriaPlato}`;
+        }
+
+        const data = await $.get(url);
+
+        if (data.isFound) {
+          $divNameInvalid.textContent = `No se permiten nombres duplicados. Se encontró un registro con el nombre: ${$inputName.value}. Introduce un nuevo nombre.`;
+          if (!$inputName.classList.contains("is-invalid")) {
+            $inputName.classList.add("is-invalid");
+          }
+          isInvalid = true;
+        } else {
+          if ($inputName.classList.contains("is-invalid")) {
+            $inputName.classList.remove("is-invalid");
+          }
+        }
       }
     }
 
-    const $form = $(e.target.form);
-    const $loader = $(`<div class="flex-grow-1 text-center">
+    if (!isInvalid) {
+      const $loader = $(`<div class="flex-grow-1 text-center">
                         <div class="spinner-border text-primary" role="status">
                           <span class="visually-hidden">Loading...</span>
                         </div>
                         </div>`);
 
-    $(e.target).replaceWith($loader);
-    $("#btn-cancel").prop("disabled", true);
+      $(e.target).replaceWith($loader);
+      $("#btn-cancel").prop("disabled", true);
 
-    $form.submit();
+      $form.submit();
+    }
   });
 };

@@ -94,13 +94,13 @@ const addEventToTable = () => {
               header: `<i class="icon text-center text-warning bi bi-pencil-square"></i>
 										<h4 class="modal-title text-center" id="modal-prototype-label">Método de Pago - ${data.id}</h4>`,
               body: `<form class="d-flex flex-column gap-4" id="form-update" action="/configuracion/metodo-pago/actualizar" method="POST">
-										<input type="hidden" name="id" value="${data.id}"/>
+										<input type="hidden" id="codMetodoPago" name="id" value="${data.id}"/>
 								
 										<div class="row align-items-sm-center">
 											<label class="col-sm-5 fw-bold" for="name">Nombre del Método:</label>
 											<div class="col-sm-7">
 												<input class="form-control" type="text" id="name" name="name" value="${data.metodo}"/>
-												<div id="name-invalid" class="text-start invalid-feedback">Introduce el método de pago correctamente. Mínimo 3 caracteres, máximo 40.</div>
+												<div id="name-invalid" class="text-start invalid-feedback">Ingresa un método de pago válido. Debe tener entre 3 y 40 caracteres, comenzar con una letra mayúscula seguida de letras mayúsculas o minúsculas.</div>
 											</div>
 										</div>		
 									</form>`,
@@ -114,7 +114,7 @@ const addEventToTable = () => {
       }
 
       if ($listBtnDelete.filter(e.currentTarget).length) {
-        const contentModal = {
+        let contentModal = {
           header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
 						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR EL MÉTODO DE PAGO - ${id}?</h4>`,
           body: `<form id="form-delete" action="/configuracion/metodo-pago/eliminar" method="POST">
@@ -124,7 +124,23 @@ const addEventToTable = () => {
 						<button id="btn-cancel" data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
         };
 
-        showModal(contentModal);
+        $.get(
+          `/configuracion/metodo-pago/obtener-tamano-comprobante-por-metodo/${id}`,
+          (quantityOfOrderFound) => {
+            if (quantityOfOrderFound) {
+              contentModal = {
+                header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
+										<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR EL MÉTODO DE PAGO - ${id}</h4>`,
+                body: `<p>No es posible eliminar el método de pago debido a que se encontró ${quantityOfOrderFound} ${
+                  quantityOfOrderFound > 1 ? "comprobantes" : "comprobante"
+                } asignado a dicho método de pago.</p>`,
+                footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
+              };
+            }
+
+            showModal(contentModal);
+          }
+        );
       }
     }
   );
@@ -140,7 +156,7 @@ const addEventToButtonAdd = () => {
 								<label class="col-sm-5 fw-bold" for="name">Nombre del Método:</label>
 								<div class="col-sm-7">
 									<input class="form-control" type="text" id="name" name="name" value=""/>
-									<div id="name-invalid" class="text-start invalid-feedback">Introduce el método de pago correctamente. Mínimo 3 caracteres, máximo 40.</div>
+									<div id="name-invalid" class="text-start invalid-feedback">Ingresa un método de pago válido. Debe tener entre 3 y 40 caracteres, comenzar con una letra mayúscula seguida de letras mayúsculas o minúsculas.</div>
 								</div>
 							</div>
 						</form>`,
@@ -153,92 +169,73 @@ const addEventToButtonAdd = () => {
 };
 
 const addEventToButtonConfirmAddAndConfirmUpdate = () => {
-  $($d).on("click", "#add, #update", (e) => {
-    const $btnConfirmAdd = $("#add")[0],
-      $btnConfirmUpdate = $("#update")[0];
+  $($d).on("click", "#add, #update", async (e) => {
     e.preventDefault();
+
+    const $btnConfirmAdd = $("#add")[0],
+      $btnConfirmUpdate = $("#update")[0],
+      $divNameInvalid = $d.getElementById("name-invalid"),
+      $form = $(e.target.form);
+
+    let isInvalid = false;
+
     if ($btnConfirmAdd == e.target || $btnConfirmUpdate == e.target) {
       let $inputName = $d.getElementById("name");
 
-      let isInvalid = false;
+      $inputName.value = $inputName.value.trim();
 
       if (
         !$inputName.value.match(
           "^(?=.{3,40}$)[A-ZÑÁÉÍÓÚ][A-ZÑÁÉÍÓÚa-zñáéíóú]+(?: [A-ZÑÁÉÍÓÚa-zñáéíóú]+)*$"
         )
       ) {
+        if (
+          $divNameInvalid.textContent !=
+          "Ingresa un método de pago válido. Debe tener entre 3 y 40 caracteres, comenzar con una letra mayúscula seguida de letras mayúsculas o minúsculas."
+        ) {
+          $divNameInvalid.textContent =
+            "Ingresa un método de pago válido. Debe tener entre 3 y 40 caracteres, comenzar con una letra mayúscula seguida de letras mayúsculas o minúsculas.";
+        }
+
         if (!$inputName.classList.contains("is-invalid"))
           $inputName.classList.add("is-invalid");
         isInvalid = true;
       } else {
-        if ($inputName.classList.contains("is-invalid"))
-          $inputName.classList.remove("is-invalid");
-      }
+        let codMetodoPago = 0;
+        let url = `/configuracion/metodo-pago/verificar-metodo/${$inputName.value}`;
 
-      if (isInvalid) {
-        e.preventDefault();
-        return;
+        if ($btnConfirmUpdate) {
+          codMetodoPago = $d.getElementById("codMetodoPago").value;
+          url += `/${codMetodoPago}`;
+        }
+
+        const data = await $.get(url);
+
+        if (data.isFound) {
+          $divNameInvalid.textContent = `No se permiten métodos duplicados. Se encontró un registro con el método: ${$inputName.value}. Introduce un nuevo método.`;
+          if (!$inputName.classList.contains("is-invalid")) {
+            $inputName.classList.add("is-invalid");
+          }
+          isInvalid = true;
+        } else {
+          if ($inputName.classList.contains("is-invalid")) {
+            $inputName.classList.remove("is-invalid");
+          }
+        }
       }
     }
 
-    const $form = $(e.target.form);
-    const $loader = $(`<div class="flex-grow-1 text-center">
+    if (!isInvalid) {
+      const $loader = $(`<div class="flex-grow-1 text-center">
                         <div class="spinner-border text-primary" role="status">
                           <span class="visually-hidden">Loading...</span>
                         </div>
                         </div>`);
 
-    $(e.target).replaceWith($loader);
-    $("#btn-cancel").prop("disabled", true);
+      $(e.target).replaceWith($loader);
+      $("#btn-cancel").prop("disabled", true);
 
-    $form.submit();
+      $form.submit();
+    }
   });
 };
-
-/* if ($listBtnDelete.includes(e.target)) {
-      let $btnDelete = e.target,
-        $inputId = $btnDelete.parentNode.parentNode.querySelector(
-          ".data > input[name='id']"
-        );
-
-      let id = $inputId.value;
-
-      let contentModal = {
-        header: `<i class="icon text-center text-danger bi bi-trash-fill"></i>
-						<h4 class="modal-title text-center" id="modal-prototype-label">¿ESTÁS SEGURO DE ELIMINAR EL MÉTODO DE PAGO - ${id}?</h4>`,
-        body: `<form id="form-delete" action="metodo-pago" method="POST">
-							<input type="hidden" name="type" value="deleteInfoObject"/>
-							<input type="hidden" name="id" value="${id}"/>
-						</form>`,
-        footer: `<input form="form-delete" type="submit" class="w-50 text-white btn btn-danger" value="ELIMINAR"/>
-						<button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
-      };
-
-      let params = {
-        type: "findMetPayInCDP",
-        id,
-      };
-
-      let props = {
-        url: "metodo-pago?" + new URLSearchParams(params),
-        success: async (json) => {
-          let { foundMetPayInCDP } = await json;
-
-          if (foundMetPayInCDP) {
-            contentModal = {
-              header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>
-									<h4 class="modal-title text-center" id="modal-prototype-label">NO SE PUEDE ELIMINAR EL MÉTODO DE PAGO - ${id}</h4>`,
-              body: `<p>No se puede eliminar el método de pago porque se encontró comprobantes de pagos que utilizan este método de pago.</p>`,
-              footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
-            };
-          }
-
-          showModal(contentModal);
-        },
-        options: {
-          method: "POST",
-        },
-      };
-
-      useFetch(props);
-    } */

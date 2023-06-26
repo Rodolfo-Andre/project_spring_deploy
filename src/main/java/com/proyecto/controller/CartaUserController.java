@@ -8,7 +8,7 @@ import com.proyecto.service.CategoriaPlatoService;
 import com.proyecto.service.PlatoService;
 
 @Controller
-@RequestMapping(value = "carta")
+@RequestMapping(value = "/carta")
 public class CartaUserController {
   @Autowired
   CategoriaPlatoService categoriaPlatoService;

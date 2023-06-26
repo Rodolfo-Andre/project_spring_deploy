@@ -78,11 +78,11 @@ public class ReporteController {
 
     for (Object[] result : datos) {
       ReporteVentas reporteVentas = new ReporteVentas();
-      reporteVentas.setFechaEmision((String) result[1]);
-      reporteVentas.setqRecaudada((double) result[2]);
-      reporteVentas.setqComprobante(Integer.parseInt(result[3].toString()));
-      reporteVentas.setqPlatos(Integer.parseInt(result[4].toString()));
-      reporteVentas.setPlatoMasVendido((String) result[5]);
+      reporteVentas.setFechaEmision((String) result[0]);
+      reporteVentas.setqRecaudada((double) result[1]);
+      reporteVentas.setqComprobante(Integer.parseInt(result[2].toString()));
+      reporteVentas.setqPlatos(Integer.parseInt(result[3].toString()));
+      reporteVentas.setPlatoMasVendido((String) result[4]);
 
       listaReporteVentas.add(reporteVentas);
     }

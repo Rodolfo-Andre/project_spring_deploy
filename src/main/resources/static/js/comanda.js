@@ -9,17 +9,18 @@ const ViewCore = function () {
     init: function () {
       this.getComandas();
       this.bntAddComanda = $("#btn-add");
+      this.estadoUsuario = $("#txt-estado-usuario");
     },
     getComandas: function () {
+      let me = this;
       const url = this.contextUrl + this.apis.listar;
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-
           if (!data.length) {
             $("#tableComandas")
-              .html(`<span class="text-center">Sin Mesas</span>`)
+              .html(`<span class="text-center">${me.estadoUsuario == "ROLE_COCINERO"? "No hay comandas" : "No hay mesas disponibles"}</span>`)
               .addClass("justify-content-center");
             this.showNoTablesModal();
             return;
@@ -29,80 +30,44 @@ const ViewCore = function () {
         });
     },
     generateComanda: function (data) {
-      let html = "";
+       const container =   $("#tableComandas");
+      const listContainer = [];
 
-      data.forEach((element) => {
+      const promises = data.map((element, i) => {
         if (element.estado == "Ocupado") {
           const url = `/configuracion/comanda/comanda-libre/${element.id}`;
-          fetch(url)
+          return fetch(url)
             .then((response) => response.json())
             .then((comanda) => {
-              console.log(comanda);
-
               if (comanda) {
-                html += `
-                <div class="col">
-                  <div class="card h-100 border-4 border-danger js-container-comanda" data-id="${element.id}">
-                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                      <h5 class="card-title text-center">ID: ${element.id}</h5>
-                      
-                      <h5 class="card-title text-center text-danger">
-                      ${element.estado}
-                      </h5>
-                      
-                      <h5 class="card-title text-center">
-                      Empleado: ${comanda.empleado.nombre}
-                      </h5>
-                      
-                      <h5 class="card-title text-center ">
-                      Fecha: ${comanda.fechaEmision}
-                      </h5>
-                      
-                      <h5 class="card-title text-center ">
-                      Estado: ${comanda.estadoComanda.estado}
-                      </h5>
-                    
-                      <h5 class="card-title text-center">
-                      Precio comanda: ${comanda.precioTotal}
-                      </h5> 
-                    </div>
-                  </div>
-                </div>
-              `;
+                return { template: this.templateComanda().cardComandaOcupada(comanda), index: i };
               }
-
-              $("#tableComandas").html(html);
-
-              $(".js-container-comanda").on("click", function (ev) {
-                const id = $(this).data("id");
-                window.location.href = "/configuracion/comanda/detalle/" + id;
-              });
             })
             .catch((error) => {
               console.error("Error en la solicitud AJAX:", error);
             });
         } else {
-          html += `
-          <div class="col">
-            <div class="card h-100 border-4 border-success js-container-comanda" data-id="${element.id}" style="min-height: 224px;">
-              <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                <h5 class="card-title text-center">ID: ${element.id}</h5>
-                
-                <h5 class="card-title text-center text-success">
-                  ${element.estado}
-                </h5>
-              </div>
-            </div>  
-          </div>
-        `;
+          return { template: this.templateComanda().cardComandaDisponible(element), index: i };
         }
       });
+       
+      Promise.all(promises).then((values) => {
+        values.forEach((element) => {
+          if (element) {
+            listContainer[element.index] = element.template;
+          }
+         
+        });
+        container.html(listContainer.join(""));
+        $(".js-container-comanda").on("click", function (ev) {
+          const id = $(this).data("id");
+          window.location.href = "/configuracion/comanda/detalle/" + id;
+        });
+      } );
+    
 
-      $("#tableComandas").html(html);
-      $(".js-container-comanda").on("click", function (ev) {
-        const id = $(this).data("id");
-        window.location.href = "/configuracion/comanda/detalle/" + id;
-      });
+  
+
     },
     showInfoComanda: function (id) {
       const data = {
@@ -134,18 +99,19 @@ const ViewCore = function () {
       const modalInfo = this.templateComanda().modalInfoComanda(data);
       showModal(modalInfo);
     },
-    showNoTablesModal: function () {
+    showNoTablesModal: function (text) {
       const contentModal = {
         header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i>	
-                    <h4 class="modal-title text-center" id="modal-prototype-label">NO HAY MESAS</h4>`,
-        body: `<p>No se puede realizar ninguna acción porque no exiten mesas</p>`,
+                    <h4 class="modal-title text-center" id="modal-prototype-label">NO HAY ${text} </h4>`,
+        body: `<p style="text-align: justify;">No se puede realizar ninguna acción porque no exiten ${text.toLowerCase()}</p>`,
         footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-danger">CERRAR</button>`,
       };
 
       showModal(contentModal);
     },
-    deleteComanda: function (id) {
-      const url = this.contextUrl + this.apis.delete;
+    getCurrentUser: async function () {
+      const result = await $.ajax("/usuario");
+      return result;
     },
     convertDate: function (date) {
       let d = new Date(date);
@@ -153,19 +119,6 @@ const ViewCore = function () {
       let mo = new Intl.DateTimeFormat("en", { month: "2-digit" }).format(d);
       let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
       return `${da}/${mo}/${ye}`;
-    },
-    modalError: function (message) {
-      const contentModal = {
-        header: `<i class="icon text-center text-danger bi bi-exclamation-circle-fill"></i> `,
-        body: `<div class="text-center">
-        <div><strong>ERROR:</strong> ${message}</div>
-        </div>`,
-        footer: `<button data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-primary">CERRAR</button>`,
-      };
-
-      $(".js-modal-content-comanda").children().remove();
-      $(".js-modal-content-comanda").html(contentModal);
-      $("#modalInfoComanda").modal("show");
     },
     templateComanda: function () {
       let me = this;
@@ -202,6 +155,51 @@ const ViewCore = function () {
                               <button data-bs-dismiss="modal" aria-label="Close" class="w-50 btn btn-primary">CANCELAR</button>`,
           };
         },
+        cardComandaOcupada: function (data) {
+          console.log(data);
+          return `
+          <div class="card mx-auto  bg-danger text-white js-container-comanda pointer" style="max-width: 180px;cursor:pointer" data-id="${data.mesa.id}">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <h1 class="h5 title text-center">Mesa: ${data.mesa.id}</h1>
+            <div class="d-grid gap-2 pb-3  ">
+              <span class="h6 ">
+                <i class="bi bi-person"></i>
+                  S./ ${data.cantidadAsientos}
+              </span>
+              <span class="h6 ">
+                <i class="bi bi-calendar"></i>
+                 ${data.fechaEmision}
+              </span>
+              <span>
+                S./ ${data.precioTotal}
+              </span>
+            </div>
+            <h5 class="text-center mt-auto font-weight-bold text-uppercase">
+              ${data.mesa.estado}
+            </h5>
+          </div>
+        </div>
+          `;
+        },
+        cardComandaDisponible: function (data) {
+            return `
+            <div class="card mx-auto  bg-success text-white js-container-comanda" style="max-width: 180px; height: 220px;" data-id="${data.id}">
+            <div class="card-body d-flex flex-column justify-content-between">
+              <h1 class="h5 title text-center">Mesa: ${data.id}</h1>
+              <div class="d-grid gap-2 pb-3  ">
+                <span class="h6 mt-2 d-flex align-items-center gap-2">
+                 <i class="bi bi-tablet-landscape-fill"></i>
+                   ${data.cantidadAsientos}
+                </span>
+              </div>
+              <h5 class="text-center mt-auto font-weight-bold text-uppercase">
+                ${data.estado}
+              </h5>
+            </div>
+          </div>
+            `
+        },
+
       };
     },
   };
